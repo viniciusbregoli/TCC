@@ -1,0 +1,410 @@
+\documentclass[
+    12pt,               % Tamanho da fonte
+    openright,          % Capítulos começam em página ímpar
+    oneside,            % Impressão em um lado
+    a4paper,            % Tamanho do papel
+    brazil              % Idioma principal
+]{abntex2}
+
+% ---
+% Pacotes básicos 
+% ---
+\usepackage{times}             % Usa fonte Times New Roman
+% \usepackage{lmodern}          % Alternativa: Latin Modern (comentado)
+\usepackage[T1]{fontenc}        % Seleção de códigos de fonte
+\usepackage[utf8]{inputenc}     % Codificação do documento
+\usepackage{indentfirst}        % Indenta o primeiro parágrafo
+\usepackage{color}              % Controle das cores
+\usepackage{graphicx}           % Inclusão de gráficos
+\usepackage{microtype}          % Para melhorias de justificação
+\usepackage{lipsum}             % Para texto de exemplo
+\usepackage{lastpage}           % Para referência à última página
+
+% ---
+% Pacotes de citações
+% ---
+\usepackage[brazilian,hyperpageref]{backref}     % Páginas com as citações
+\usepackage[alf]{abntex2cite}   % Citações padrão ABNT
+
+% ---
+% Configurações do pacote backref
+% ---
+\renewcommand{\backrefpagesname}{Citado na(s) página(s):~}
+\renewcommand{\backref}{}
+\renewcommand*{\backrefalt}[4]{
+    \ifcase #1 %
+        Nenhuma citação no texto.%
+    \or
+        Citado na página #2.%
+    \else
+        Citado #1 vezes nas páginas #2.%
+    \fi}%
+
+% ---
+% Informações do documento
+% ---
+\titulo{DESENVOLVIMENTO DE GERADOR DE MODELOS DE SIMULAÇÃO PARA TOMADA DE DECISÃO NO CURSO PRAZO USANDO PM}
+\autor{VINÍCIUS LEOBET BREGOLI}
+\local{Curitiba}
+\data{2025}
+\orientador{Prof. Dr. Edson Emílio Scalabrin}
+\instituicao{%
+  PONTIFÍCIA UNIVERSIDADE CATÓLICA DO PARANÁ -- PUCPR
+  \par
+  ESCOLA POLITÉCNICA
+  \par
+  CURSO DE ENGENHARIA DE COMPUTAÇÃO}
+\tipotrabalho{Trabalho de Conclusão de Curso}
+\preambulo{Trabalho de Conclusão de Curso apresentado ao Curso de Engenharia de Computação da Pontifícia Universidade Católica do Paraná como requisito parcial para obtenção do grau de Bacharel em Engenharia de Computação.}
+
+% ---
+% Configurações de aparência do PDF
+% ---
+\definecolor{blue}{RGB}{41,5,195}
+
+\makeatletter
+\hypersetup{
+    pdftitle={\@title}, 
+    pdfauthor={\@author},
+    pdfsubject={\imprimirpreambulo},
+    pdfcreator={LaTeX with abnTeX2},
+    pdfkeywords={abnt}{latex}{tcc}{engenharia de computação}, 
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    filecolor=magenta,
+    urlcolor=blue,
+    bookmarksdepth=4,
+    pdfstartview=FitH,
+    unicode=true
+}
+\makeatother
+
+% Corrigir warnings do hyperref para títulos com acentos
+\pdfstringdefDisableCommands{%
+  \def\\{}%
+  \def\textbf#1{<#1>}%
+  \def\textit#1{<#1>}%
+  \def\uppercase#1{#1}%
+}
+
+% ---
+% Configurações de formatação ABNT
+% ---
+
+% Margens: 3cm superior e esquerda, 2cm inferior e direita
+\usepackage[
+    top=3cm,
+    left=3cm,
+    right=2cm,
+    bottom=2cm
+]{geometry}
+
+% Espaçamento 1,5 no texto
+\usepackage{setspace}
+
+% Configurações de parágrafo
+\setlength{\parindent}{1.3cm}
+\setlength{\parskip}{0.2cm}
+
+% Justificação do texto (já é padrão no LaTeX, mas garantindo)
+\usepackage{ragged2e}
+\justifying
+
+% Garantir que títulos também usem Times New Roman (ABNT exige mesma fonte)
+\renewcommand{\ABNTEXchapterfont}{\rmfamily\bfseries}
+\renewcommand{\ABNTEXsectionfont}{\rmfamily\bfseries}
+\renewcommand{\ABNTEXsubsectionfont}{\rmfamily\bfseries}
+\renewcommand{\ABNTEXsubsubsectionfont}{\rmfamily\bfseries}
+
+% Configuração para citações longas (espaçamento simples)
+\renewenvironment{citacao}{%
+    \small
+    \begin{singlespace}
+    \begin{list}{}{%
+        \setlength{\leftmargin}{4cm}%
+        \setlength{\parsep}{0pt}%
+        \setlength{\parskip}{0pt}%
+        \setlength{\itemsep}{0pt}%
+    }
+    \item\relax
+}{%
+    \end{list}
+    \end{singlespace}
+}
+
+% ---
+% Compila o índice
+% ---
+\makeindex
+
+% ----
+% Início do documento
+% ----
+\begin{document}
+
+\selectlanguage{brazil}
+\frenchspacing
+
+% O abnTeX2 já aplica espaçamento 1,5 por padrão
+
+% ----------------------------------------------------------
+% ELEMENTOS PRÉ-TEXTUAIS
+% ----------------------------------------------------------
+
+% ---
+% Capa
+% ---
+\imprimircapa
+
+% ---
+% Folha de rosto
+% ---
+\imprimirfolhaderosto*
+
+
+% ---
+% RESUMOS
+% ---
+
+% Resumo em português
+\setlength{\absparsep}{18pt}
+\begin{resumo}
+    Este trabalho apresenta o desenvolvimento de um sistema de gerenciamento acadêmico utilizando tecnologias web modernas. O objetivo principal foi criar uma solução eficiente e escalável para o gerenciamento de informações acadêmicas. A metodologia utilizada consistiu em análise de requisitos, desenvolvimento iterativo e testes de usabilidade. Os principais resultados obtidos foram a implementação de um sistema funcional com interface intuitiva e performance otimizada. Conclui-se que as tecnologias web modernas proporcionam uma base sólida para o desenvolvimento de sistemas de gerenciamento acadêmico eficazes.
+
+    \textbf{Palavras-chave}: Sistema de Gerenciamento. Tecnologias Web. Desenvolvimento de Software. Engenharia de Computação. Interface de Usuário.
+\end{resumo}
+
+% Resumo em inglês
+\begin{resumo}[Abstract]
+    \begin{otherlanguage*}{english}
+        This work presents the development of an academic management system using modern web technologies. The main objective was to create an efficient and scalable solution for managing academic information. The methodology consisted of requirements analysis, iterative development and usability testing. The main results obtained were the implementation of a functional system with intuitive interface and optimized performance. It is concluded that modern web technologies provide a solid foundation for developing effective academic management systems.
+
+        \vspace{\onelineskip}
+
+        \noindent
+        \textbf{Keywords}: Management System. Web Technologies. Software Development. Computer Engineering. User Interface.
+    \end{otherlanguage*}
+\end{resumo}
+
+% ---
+% Lista de ilustrações
+% ---
+\pdfbookmark[0]{\listfigurename}{lof}
+\listoffigures*
+\cleardoublepage
+
+% ---
+% Lista de tabelas
+% ---
+\pdfbookmark[0]{\listtablename}{lot}
+\listoftables*
+\cleardoublepage
+
+% ---
+% Sumário
+% ---
+\pdfbookmark[0]{\contentsname}{toc}
+\tableofcontents*
+\cleardoublepage
+
+% ----------------------------------------------------------
+% ELEMENTOS TEXTUAIS
+% ----------------------------------------------------------
+\textual
+
+% ----------------------------------------------------------
+% Introdução
+% ----------------------------------------------------------
+\chapter{Introdução}
+
+A crescente digitalização dos processos educacionais tem demandado sistemas de gerenciamento acadêmico cada vez mais eficientes e user-friendly. Este trabalho apresenta o desenvolvimento de uma solução moderna para essa necessidade.
+
+\section{Contexto e Problema}
+
+As instituições de ensino enfrentam desafios constantes no gerenciamento de informações acadêmicas, incluindo dados de alunos, professores, disciplinas e avaliações. Sistemas legados muitas vezes não atendem às expectativas modernas de usabilidade e performance.
+
+\section{Objetivos}
+
+\subsection{Objetivo Geral}
+
+Desenvolver um sistema de gerenciamento acadêmico utilizando tecnologias web modernas que atenda às necessidades de instituições de ensino.
+
+\subsection{Objetivos Específicos}
+
+\begin{itemize}
+    \item Analisar os requisitos funcionais e não-funcionais do sistema
+    \item Implementar uma interface de usuário intuitiva e responsiva
+    \item Desenvolver uma API robusta para gerenciamento de dados
+    \item Realizar testes de usabilidade e performance
+    \item Documentar o sistema desenvolvido
+\end{itemize}
+
+\section{Justificativa}
+
+O desenvolvimento de sistemas de gerenciamento acadêmico modernos é fundamental para melhorar a eficiência administrativa das instituições de ensino e proporcionar melhor experiência aos usuários.
+
+\section{Estrutura do Trabalho}
+
+Este trabalho está organizado em 5 capítulos. O Capítulo 1 apresenta a introdução. O Capítulo 2 aborda o referencial teórico sobre tecnologias web e sistemas de gerenciamento. O Capítulo 3 descreve a metodologia utilizada. O Capítulo 4 apresenta o desenvolvimento e resultados obtidos. O Capítulo 5 contém as conclusões e trabalhos futuros.
+
+% ----------------------------------------------------------
+% Referencial Teórico
+% ----------------------------------------------------------
+\chapter{Referencial Teórico}
+
+Este capítulo apresenta os conceitos fundamentais necessários para o entendimento do trabalho desenvolvido.
+
+\section{Tecnologias Web Modernas}
+
+As tecnologias web evoluíram significativamente nas últimas décadas, proporcionando ferramentas poderosas para o desenvolvimento de aplicações robustas e escaláveis.
+
+\subsection{Frameworks Frontend}
+
+Os frameworks frontend modernos, como React, Vue.js e Angular, revolucionaram o desenvolvimento de interfaces de usuário, proporcionando componentização, reatividade e melhor organização do código.
+
+\subsection{Tecnologias Backend}
+
+No backend, tecnologias como Node.js, Python (Django/Flask), e frameworks baseados em Java oferecem soluções escaláveis para o desenvolvimento de APIs e serviços web.
+
+\section{Sistemas de Gerenciamento Acadêmico}
+
+Os sistemas de gerenciamento acadêmico são ferramentas essenciais para instituições de ensino, permitindo o controle eficiente de processos educacionais.
+
+\subsection{Características Essenciais}
+
+Um sistema de gerenciamento acadêmico deve contemplar funcionalidades como cadastro de usuários, gerenciamento de disciplinas, controle de notas e frequência, entre outras.
+
+% ----------------------------------------------------------
+% Metodologia
+% ----------------------------------------------------------
+\chapter{Metodologia}
+
+Este capítulo descreve a metodologia utilizada para o desenvolvimento do sistema de gerenciamento acadêmico.
+
+\section{Tipo de Pesquisa}
+
+Esta pesquisa caracteriza-se como aplicada, com abordagem qualitativa e quantitativa, utilizando métodos de desenvolvimento de software.
+
+\section{Procedimentos Metodológicos}
+
+O desenvolvimento seguiu uma abordagem iterativa, com as seguintes etapas:
+
+\begin{enumerate}
+    \item Análise de requisitos
+    \item Definição da arquitetura do sistema
+    \item Desenvolvimento do backend
+    \item Desenvolvimento do frontend
+    \item Integração e testes
+    \item Documentação
+\end{enumerate}
+
+\section{Ferramentas Utilizadas}
+
+Para o desenvolvimento do sistema, foram utilizadas as seguintes tecnologias:
+
+\begin{itemize}
+    \item \textbf{Frontend}: React.js, TypeScript, Material-UI
+    \item \textbf{Backend}: Node.js, Express.js, PostgreSQL
+    \item \textbf{Ferramentas}: Git, Docker, Jest (testes)
+\end{itemize}
+
+% ----------------------------------------------------------
+% Desenvolvimento
+% ----------------------------------------------------------
+\chapter{Desenvolvimento}
+
+Este capítulo apresenta o desenvolvimento do sistema de gerenciamento acadêmico.
+
+\section{Arquitetura do Sistema}
+
+O sistema foi desenvolvido seguindo uma arquitetura em camadas, separando claramente as responsabilidades entre frontend, backend e banco de dados.
+
+\section{Implementação do Backend}
+
+O backend foi desenvolvido utilizando Node.js e Express.js, implementando uma API RESTful para comunicação com o frontend.
+
+\section{Implementação do Frontend}
+
+O frontend foi desenvolvido em React.js, proporcionando uma interface moderna e responsiva para os usuários do sistema.
+
+\section{Testes e Validação}
+
+Foram realizados testes unitários, de integração e de usabilidade para garantir a qualidade do sistema desenvolvido.
+
+% ----------------------------------------------------------
+% Conclusão
+% ----------------------------------------------------------
+\chapter{Conclusão}
+
+Este trabalho apresentou o desenvolvimento de um sistema de gerenciamento acadêmico utilizando tecnologias web modernas.
+
+\section{Considerações Finais}
+
+Os objetivos propostos foram alcançados com sucesso, resultando em um sistema funcional e eficiente para o gerenciamento de informações acadêmicas.
+
+\section{Contribuições}
+
+As principais contribuições deste trabalho incluem:
+
+\begin{itemize}
+    \item Desenvolvimento de uma solução moderna para gerenciamento acadêmico
+    \item Aplicação prática de tecnologias web atuais
+    \item Documentação detalhada do processo de desenvolvimento
+\end{itemize}
+
+\section{Trabalhos Futuros}
+
+Como trabalhos futuros, sugere-se:
+
+\begin{itemize}
+    \item Implementação de funcionalidades avançadas de relatórios
+    \item Integração com sistemas externos
+    \item Desenvolvimento de aplicativo mobile
+    \item Implementação de inteligência artificial para análise de dados
+\end{itemize}
+
+% ----------------------------------------------------------
+% ELEMENTOS PÓS-TEXTUAIS
+% ----------------------------------------------------------
+\postextual
+
+% ----------------------------------------------------------
+% Referências bibliográficas
+% ----------------------------------------------------------
+\bibliography{referencias}
+
+% ----------------------------------------------------------
+% Apêndices
+% ----------------------------------------------------------
+\begin{apendicesenv}
+
+    \partapendices
+
+    \chapter[Código Fonte Principal]{Código Fonte Principal}
+
+    Neste apêndice são apresentados os principais trechos de código desenvolvidos no sistema.
+
+    \section{Estrutura do Projeto}
+
+    O projeto foi organizado seguindo as melhores práticas de desenvolvimento web moderno.
+
+\end{apendicesenv}
+
+% ----------------------------------------------------------
+% Anexos
+% ----------------------------------------------------------
+\begin{anexosenv}
+
+    \partanexos
+
+    \chapter[Documentação da API]{Documentação da API}
+
+    Este anexo contém a documentação completa da API desenvolvida.
+
+\end{anexosenv}
+
+\phantompart
+\printindex
+
+\end{document}

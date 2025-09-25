@@ -1,0 +1,38 @@
+# Configuração personalizada do latexindent para TCC
+defaultIndent: "    "
+
+# Configurações de indentação
+indentRules:
+    chapter: 1
+    section: 1
+    subsection: 1
+    subsubsection: 1
+    paragraph: 1
+    subparagraph: 1
+
+# Ambientes
+indentAfterItems:
+    itemize: 1
+    enumerate: 1
+    description: 1
+
+# Comandos específicos do abnTeX2
+lookForAlignDelims:
+    tabular: 1
+    array: 1
+    matrix: 1
+    bmatrix: 1
+    pmatrix: 1
+
+# Configurações para não quebrar linhas muito longas
+modifyLineBreaks:
+    preserveBlankLines: 1
+    condenseMultipleBlankLinesInto: 1
+    
+# Manter formatação de alguns ambientes
+verbatimEnvironments:
+    verbatim: 1
+    lstlisting: 1
+    minted: 1
+
+
