@@ -1,5 +1,5 @@
 # Fdb version 4
-["bibtex tcc"] 0 "tcc.aux" "tcc.bbl" "tcc" 1758842823.05757 0
+["bibtex tcc"] 0 "tcc.aux" "tcc.bbl" "tcc" 1758843416.66289 0
   "/usr/share/texmf-dist/bibtex/bib/abntex2/abntex2-options.bib" 1755987285 5396 4eb260dac60f150ae608d45252853090 ""
   "/usr/share/texmf-dist/bibtex/bst/abntex2/abntex2-alf.bst" 1755987285 60064 0819ac8568f9a482510a46e3a8a6f605 ""
   "referencias.bib" 0 -1 0 ""
@@ -8,14 +8,14 @@
   "tcc.bbl"
   "tcc.blg"
   (rewritten before read)
-["makeindex tcc.idx"] 1758842817.76488 "tcc.idx" "tcc.ind" "tcc" 1758842823.05717 0
-  "tcc.idx" 1758842821.58524 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
+["makeindex tcc.idx"] 1758842817.76488 "tcc.idx" "tcc.ind" "tcc" 1758843416.66256 0
+  "tcc.idx" 1758843415.31136 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
   (generated)
   "tcc.ilg"
   "tcc.ind"
   (rewritten before read)
-["pdflatex"] 1758842820.54444 "/home/bregoli/Code/TCC/tcc.tex" "tcc.pdf" "tcc" 1758842823.05821 0
-  "/home/bregoli/Code/TCC/tcc.tex" 1758842817.00372 34226 ef9fd8bf13784b2234ef8cf494c62d1f ""
+["pdflatex"] 1758843414.48682 "/home/bregoli/Code/TCC/tcc.tex" "tcc.pdf" "tcc" 1758843416.66336 0
+  "/home/bregoli/Code/TCC/tcc.tex" 1758843410.96819 49937 c660bf52f13c274dbe1f34931d65c675 ""
   "/usr/share/texmf-dist/fonts/enc/dvips/base/8r.enc" 1755987285 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/share/texmf-dist/fonts/tfm/adobe/times/ptmb8r.tfm" 1755987285 4524 6bce29db5bc272ba5f332261583fee9c ""
   "/usr/share/texmf-dist/fonts/tfm/adobe/times/ptmb8t.tfm" 1755987285 6880 f19b8995b61c334d78fc734065f6b4d4 ""
@@ -100,14 +100,11 @@
   "/usr/share/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty" 1755987285 13815 760b0c02f691ea230f5359c4e1de23a7 ""
   "/usr/share/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def" 1755987285 29785 9f93ab201fe5dd053afcc6c1bcf7d266 ""
   "/usr/share/texmf-dist/tex/latex/l3kernel/expl3.sty" 1755987285 6565 f51d809db6193fae7b06c1bc26ca8f75 ""
-  "/usr/share/texmf-dist/tex/latex/l3packages/l3keys2e/l3keys2e.sty" 1755987285 4674 22943918cc84173478a588d6efbc800b ""
   "/usr/share/texmf-dist/tex/latex/l3packages/xparse/xparse.sty" 1755987285 9783 ab4bee47700c04aadedb8da27591b0ab ""
   "/usr/share/texmf-dist/tex/latex/lastpage/lastpage.sty" 1755987285 2865 e1ad4181fc95487720e03eafe579b4f4 ""
   "/usr/share/texmf-dist/tex/latex/lastpage/lastpage2e.sty" 1755987285 2716 70bb44a7e59e4fbed7e7eb88bcb91598 ""
   "/usr/share/texmf-dist/tex/latex/lastpage/lastpagemodern.sty" 1755987285 9115 fd1b3e63899fc1f95826155a1cc342ca ""
   "/usr/share/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg" 1755987285 678 4792914a8f45be57bb98413425e4c7af ""
-  "/usr/share/texmf-dist/tex/latex/lipsum/lipsum.ltd.tex" 1755987285 95525 6fd0552101a6b1f9b7a84b402ec435ba ""
-  "/usr/share/texmf-dist/tex/latex/lipsum/lipsum.sty" 1755987285 14690 c2c754218a7108db7823a4839c1bc3cd ""
   "/usr/share/texmf-dist/tex/latex/memoir/mem12.clo" 1755987285 4280 78cdcf597764ba6b1c5d710a1e16e833 ""
   "/usr/share/texmf-dist/tex/latex/memoir/memhfixc.sty" 1755987285 11038 db3235cb17e82e9d37efbcc348482b2b ""
   "/usr/share/texmf-dist/tex/latex/memoir/memoir.cls" 1755987285 384902 c6b38ae22d8e48b668a69ca72172a36d ""
@@ -137,13 +134,13 @@
   "/usr/share/texmf-dist/web2c/texmf.cnf" 1755987285 42087 b0f9697c952c8f5a8eede4134282cb0d ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1758742541 5306604 df2447a3a3aadc3acfc686cd8dc19dd6 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1758742439 2009821 017fa9be778210daaeff160ccdc6b3ea ""
-  "tcc.aux" 1758842822.4747 38558 d1fcf82ffccbeadb7e6c1239b90a2163 "pdflatex"
+  "tcc.aux" 1758843416.20073 52607 63340600cdca8c8be78e7a50d4c2321a "pdflatex"
   "tcc.bbl" 0 -1 0 "bibtex tcc"
   "tcc.ind" 1758842817.89316 0 d41d8cd98f00b204e9800998ecf8427e "makeindex tcc.idx"
-  "tcc.lof" 1758842822.49751 58 29d9d42ff4957e64b6fbf83bd5f476ea "pdflatex"
-  "tcc.lot" 1758842822.49751 271 b7517f2150e527487cbfae329f93695e "pdflatex"
-  "tcc.tex" 1758842817.00372 34226 ef9fd8bf13784b2234ef8cf494c62d1f ""
-  "tcc.toc" 1758842822.49751 8625 e399022e23b94c1f1f82fbe3e5d84912 "pdflatex"
+  "tcc.lof" 1758843416.2284 58 29d9d42ff4957e64b6fbf83bd5f476ea "pdflatex"
+  "tcc.lot" 1758843416.2284 271 eb1b77c265c58ee1dd2b3b092e99fe9e "pdflatex"
+  "tcc.tex" 1758843410.96819 49937 c660bf52f13c274dbe1f34931d65c675 ""
+  "tcc.toc" 1758843416.2284 11344 f80c7e6c2a88f4c80f151c39a3697fb7 "pdflatex"
   (generated)
   "tcc.aux"
   "tcc.idx"

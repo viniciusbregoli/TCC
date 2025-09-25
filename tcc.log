@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2026/dev/Arch Linux) (preloaded format=pdflatex 2025.9.24)  25 SEP 2025 20:27
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2026/dev/Arch Linux) (preloaded format=pdflatex 2025.9.24)  25 SEP 2025 20:36
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -590,20 +590,13 @@ Package microtype Info: Loading configuration file microtype.cfg.
 File: microtype.cfg 2025/02/11 v3.2a microtype main configuration file (RS)
 )
 LaTeX Info: Redefining \microtypesetup on input line 3065.
-) (/usr/share/texmf-dist/tex/latex/lipsum/lipsum.sty (/usr/share/texmf-dist/tex/latex/l3packages/l3keys2e/l3keys2e.sty
-Package: l3keys2e 2024-08-16 LaTeX2e option processing using LaTeX3 keys
-)
-Package: lipsum 2021-09-20 v2.7 150 paragraphs of Lorem Ipsum dummy text
-\g__lipsum_par_int=\count352
-\l__lipsum_a_int=\count353
-\l__lipsum_b_int=\count354
- (/usr/share/texmf-dist/tex/latex/lipsum/lipsum.ltd.tex)) (/usr/share/texmf-dist/tex/latex/lastpage/lastpage.sty
+) (/usr/share/texmf-dist/tex/latex/lastpage/lastpage.sty
 Package: lastpage 2025/01/27 v2.1e lastpage: 2.09 or 2e? (HMM)
  (/usr/share/texmf-dist/tex/latex/lastpage/lastpage2e.sty
 Package: lastpage2e 2025/01/27 v2.1e Decide which 2e lastpage version to use (HMM)
  (/usr/share/texmf-dist/tex/latex/lastpage/lastpagemodern.sty
 Package: lastpagemodern 2025-01-27 v2.1e Refers to last page's name (HMM; JPG)
-\c@lastpagecount=\count355
+\c@lastpagecount=\count352
 ) 
 )) (/usr/share/texmf-dist/tex/latex/hyperref/backref.sty
 Package: backref 2023-11-26 v1.44 Bibliographical back referencing
@@ -612,8 +605,8 @@ Package: abntex2cite 2018/11/24 v-1.9.7 abnTeX2
  (/usr/share/texmf-dist/tex/latex/abntex2/abntex2abrev.sty)
 \minimumbiblabelwidth=\skip259
 \ABCIauxlen=\skip260
-\c@ABCIaux=\count356
-\c@ABCImax=\count357
+\c@ABCIaux=\count353
+\c@ABCImax=\count354
  (/usr/share/texmf-dist/tex/generic/iftex/ifpdf.sty
 Package: ifpdf 2019/10/25 v3.4 ifpdf legacy package. Use iftex instead.
 ) (/usr/share/texmf-dist/tex/generic/iftex/ifxetex.sty
@@ -626,17 +619,17 @@ LaTeX Info: Redefining \newblock on input line 591.
 LaTeX Info: Redefining \cite on input line 618.
 \ABCItoken=\toks30
 )
-Package color Info: Redefining color blue on input line 63.
-Package hyperref Info: Option `colorlinks' set `true' on input line 80.
-Package hyperref Info: Option `unicode' set `true' on input line 80.
+Package color Info: Redefining color blue on input line 61.
+Package hyperref Info: Option `colorlinks' set `true' on input line 78.
+Package hyperref Info: Option `unicode' set `true' on input line 78.
  (/usr/share/texmf-dist/tex/latex/geometry/geometry.sty
 Package: geometry 2020/01/02 v5.9 Page Geometry
  (/usr/share/texmf-dist/tex/generic/iftex/ifvtex.sty
 Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
 )
-\Gm@cnth=\count358
-\Gm@cntv=\count359
-\c@Gm@tempcnt=\count360
+\Gm@cnth=\count355
+\Gm@cntv=\count356
+\c@Gm@tempcnt=\count357
 \Gm@bindingoffset=\dimen197
 \Gm@wd@mp=\dimen198
 \Gm@odd@mp=\dimen199
@@ -671,39 +664,39 @@ Writing index file tcc.idx
 (./tcc.aux)
 \openout1 = `tcc.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 144.
-LaTeX Font Info:    ... okay on input line 144.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 144.
-LaTeX Font Info:    ... okay on input line 144.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 144.
-LaTeX Font Info:    ... okay on input line 144.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 144.
-LaTeX Font Info:    ... okay on input line 144.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 144.
-LaTeX Font Info:    ... okay on input line 144.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 144.
-LaTeX Font Info:    ... okay on input line 144.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 144.
-LaTeX Font Info:    ... okay on input line 144.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 144.
-LaTeX Font Info:    ... okay on input line 144.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 144.
-LaTeX Font Info:    ... okay on input line 144.
-Package hyperref Info: Link coloring ON on input line 144.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 142.
+LaTeX Font Info:    ... okay on input line 142.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 142.
+LaTeX Font Info:    ... okay on input line 142.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 142.
+LaTeX Font Info:    ... okay on input line 142.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 142.
+LaTeX Font Info:    ... okay on input line 142.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 142.
+LaTeX Font Info:    ... okay on input line 142.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 142.
+LaTeX Font Info:    ... okay on input line 142.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 142.
+LaTeX Font Info:    ... okay on input line 142.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 142.
+LaTeX Font Info:    ... okay on input line 142.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 142.
+LaTeX Font Info:    ... okay on input line 142.
+Package hyperref Info: Link coloring ON on input line 142.
 \myptabbox=\box60
 \myptabboxwidth=\skip276
  (/usr/share/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count361
+\scratchcounter=\count358
 \scratchdimen=\dimen261
 \scratchbox=\box61
-\nofMPsegments=\count362
-\nofMParguments=\count363
+\nofMPsegments=\count359
+\nofMParguments=\count360
 \everyMPshowfont=\toks32
-\MPscratchCnt=\count364
+\MPscratchCnt=\count361
 \MPscratchDim=\dimen262
-\MPnumerator=\count365
-\makeMPintoPDFobject=\count366
+\MPnumerator=\count362
+\makeMPintoPDFobject=\count363
 \everyMPtoPDFconversion=\toks33
 ) (/usr/share/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
@@ -711,20 +704,20 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 48
  (/usr/share/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
-LaTeX Info: Redefining \microtypecontext on input line 144.
-Package microtype Info: Applying patch `item' on input line 144.
-Package microtype Info: Applying patch `toc' on input line 144.
-Package microtype Info: Applying patch `eqnum' on input line 144.
-Package microtype Info: Applying patch `footnote' on input line 144.
-Package microtype Info: Applying patch `verbatim' on input line 144.
-LaTeX Info: Redefining \microtypesetup on input line 144.
+LaTeX Info: Redefining \microtypecontext on input line 142.
+Package microtype Info: Applying patch `item' on input line 142.
+Package microtype Info: Applying patch `toc' on input line 142.
+Package microtype Info: Applying patch `eqnum' on input line 142.
+Package microtype Info: Applying patch `footnote' on input line 142.
+Package microtype Info: Applying patch `verbatim' on input line 142.
+LaTeX Info: Redefining \microtypesetup on input line 142.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
 Package microtype Info: Automatic font expansion enabled (level 2),
 (microtype)             stretch: 20, shrink: 20, step: 1, non-selected.
 Package microtype Info: Using default expansion set `alltext-nott'.
-LaTeX Info: Redefining \showhyphens on input line 144.
+LaTeX Info: Redefining \showhyphens on input line 142.
 Package microtype Info: No adjustment of tracking.
 Package microtype Info: No adjustment of interword spacing.
 Package microtype Info: No adjustment of character kerning.
@@ -773,18 +766,18 @@ File: mt-ptm.cfg 2006/04/20 v1.7 microtype config. file: Times (RS)
 File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman (RS)
 )
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 164.
+(Font)              <12> on input line 160.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 164.
+(Font)              <8> on input line 160.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 164.
+(Font)              <6> on input line 160.
 
 
 
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.164 
+l.160 
        [1
 
 
@@ -793,7 +786,7 @@ l.164
 
 [2] (/usr/share/texmf-dist/tex/generic/babel/locale/en/babel-english.tex)
 Package babel Info: Importing data for english
-(babel)             from babel-en.ini. Reported on input line 180.
+(babel)             from babel-en.ini. Reported on input line 175.
 
 
 [3
@@ -811,16 +804,16 @@ Package babel Info: Importing data for english
 [6
 
 ]
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <14.4> on input line 86.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 86.
 
-
-[7])
+[7]
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <14.4> on input line 114.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 114.
+)
 
 [8]
-LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 232.
+LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 227.
  (/usr/share/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 )
@@ -840,23 +833,21 @@ File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 
 ]
 
-[14
-
-]
+[14]
 
 [15]
 
 [16]
 
-[17]
+[17
+
+]
 
 [18]
 
 [19]
 
-[20
-
-]
+[20]
 
 [21]
 
@@ -864,29 +855,47 @@ File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 
 [23]
 
-[24]
+[24
+
+]
+
+[25]
+
+[26]
+
+[27]
+
+[28]
+
+[29]
+
+[30]
+
+[31
+
+]
+
+[32]
 No file tcc.bbl.
 
 
-[25
+[33]
 
-]
-
-[26
+[34
 
 
 ]
 
-[27
+[35
 
 ]
 
-[28
+[36
 
 
 ] (./tcc.ind)
 
-[29
+[37
 
 ]
 \tf@lof=\write5
@@ -907,18 +916,18 @@ L3 programming layer <2020/03/25>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 18964 strings out of 475151
- 305013 string characters out of 5766386
- 866509 words of memory out of 5000000
- 41372 multiletter control sequences out of 15000+600000
- 602578 words of font info for 203 fonts, out of 8000000 for 9000
+ 18665 strings out of 475151
+ 296349 string characters out of 5766386
+ 770761 words of memory out of 5000000
+ 41007 multiletter control sequences out of 15000+600000
+ 604371 words of font info for 231 fonts, out of 8000000 for 9000
  16 hyphenation exceptions out of 8191
- 99i,12n,107p,1023b,682s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 99i,12n,107p,1066b,701s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on tcc.pdf (30 pages, 97879 bytes).
+Output written on tcc.pdf (38 pages, 117146 bytes).
 PDF statistics:
- 598 PDF objects out of 1000 (max. 8388607)
- 554 compressed objects within 6 object streams
- 127 named destinations out of 1000 (max. 500000)
- 50825 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 783 PDF objects out of 1000 (max. 8388607)
+ 729 compressed objects within 8 object streams
+ 163 named destinations out of 1000 (max. 500000)
+ 51049 words of extra memory for PDF output out of 51595 (max. 10000000)
 

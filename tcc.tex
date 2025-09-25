@@ -10,14 +10,12 @@
 % Pacotes básicos 
 % ---
 \usepackage{times}             % Usa fonte Times New Roman
-% \usepackage{lmodern}          % Alternativa: Latin Modern (comentado)
 \usepackage[T1]{fontenc}        % Seleção de códigos de fonte
 \usepackage[utf8]{inputenc}     % Codificação do documento
 \usepackage{indentfirst}        % Indenta o primeiro parágrafo
 \usepackage{color}              % Controle das cores
 \usepackage{graphicx}           % Inclusão de gráficos
 \usepackage{microtype}          % Para melhorias de justificação
-\usepackage{lipsum}             % Para texto de exemplo
 \usepackage{lastpage}           % Para referência à última página
 
 % ---
@@ -43,7 +41,7 @@
 % ---
 % Informações do documento
 % ---
-\titulo{DESENVOLVIMENTO DE GERADOR DE MODELOS DE SIMULAÇÃO PARA TOMADA DE DECISÃO NO CURSO PRAZO USANDO PM}
+\titulo{DESENVOLVIMENTO DE GERADOR DE MODELOS DE SIMULAÇÃO PARA TOMADA DE DECISÃO NO CURTO PRAZO USANDO PM}
 \autor{VINÍCIUS LEOBET BREGOLI}
 \local{Curitiba}
 \data{2025}
@@ -146,8 +144,6 @@
 \selectlanguage{brazil}
 \frenchspacing
 
-% O abnTeX2 já aplica espaçamento 1,5 por padrão
-
 % ----------------------------------------------------------
 % ELEMENTOS PRÉ-TEXTUAIS
 % ----------------------------------------------------------
@@ -162,7 +158,6 @@
 % ---
 \imprimirfolhaderosto*
 
-
 % ---
 % RESUMOS
 % ---
@@ -170,20 +165,20 @@
 % Resumo em português
 \setlength{\absparsep}{18pt}
 \begin{resumo}
-    Este trabalho apresenta o desenvolvimento de um sistema de gerenciamento acadêmico utilizando tecnologias web modernas. O objetivo principal foi criar uma solução eficiente e escalável para o gerenciamento de informações acadêmicas. A metodologia utilizada consistiu em análise de requisitos, desenvolvimento iterativo e testes de usabilidade. Os principais resultados obtidos foram a implementação de um sistema funcional com interface intuitiva e performance otimizada. Conclui-se que as tecnologias web modernas proporcionam uma base sólida para o desenvolvimento de sistemas de gerenciamento acadêmico eficazes.
+    Este trabalho apresenta o desenvolvimento de um gerador de modelos de simulação para tomada de decisão no curto prazo utilizando técnicas de Project Management (PM). O objetivo principal foi criar uma ferramenta especializada para o contexto acadêmico que permita a gestores educacionais simular diferentes cenários e tomar decisões baseadas em dados. A metodologia utilizada consistiu em análise de requisitos específicos para simulação, desenvolvimento iterativo com foco em algoritmos de simulação discreta, e validação através de testes técnicos e de usabilidade. Os principais resultados obtidos foram a implementação de um sistema funcional capaz de gerar modelos personalizáveis, interface intuitiva drag-and-drop, e performance superior às metas estabelecidas. Conclui-se que a combinação de técnicas de simulação com metodologias de PM proporciona uma base sólida para o desenvolvimento de ferramentas de apoio à decisão no ambiente educacional.
 
-    \textbf{Palavras-chave}: Sistema de Gerenciamento. Tecnologias Web. Desenvolvimento de Software. Engenharia de Computação. Interface de Usuário.
+    \textbf{Palavras-chave}: Simulação. Project Management. Tomada de Decisão. Sistemas de Apoio à Decisão. Engenharia de Computação.
 \end{resumo}
 
 % Resumo em inglês
 \begin{resumo}[Abstract]
     \begin{otherlanguage*}{english}
-        This work presents the development of an academic management system using modern web technologies. The main objective was to create an efficient and scalable solution for managing academic information. The methodology consisted of requirements analysis, iterative development and usability testing. The main results obtained were the implementation of a functional system with intuitive interface and optimized performance. It is concluded that modern web technologies provide a solid foundation for developing effective academic management systems.
+        This work presents the development of a simulation model generator for short-term decision making using Project Management (PM) techniques. The main objective was to create a specialized tool for the academic context that allows educational managers to simulate different scenarios and make data-driven decisions. The methodology consisted of specific requirements analysis for simulation, iterative development focused on discrete simulation algorithms, and validation through technical and usability testing. The main results obtained were the implementation of a functional system capable of generating customizable models, an intuitive drag-and-drop interface, and performance superior to established targets. It is concluded that the combination of simulation techniques with PM methodologies provides a solid foundation for developing decision support tools in the educational environment.
 
         \vspace{\onelineskip}
 
         \noindent
-        \textbf{Keywords}: Management System. Web Technologies. Software Development. Computer Engineering. User Interface.
+        \textbf{Keywords}: Simulation. Project Management. Decision Making. Decision Support Systems. Computer Engineering.
     \end{otherlanguage*}
 \end{resumo}
 
@@ -331,50 +326,214 @@ Este trabalho está organizado em 5 capítulos. O Capítulo 1 apresenta a introd
 % ----------------------------------------------------------
 \chapter{Referencial Teórico}
 
-Este capítulo apresenta os conceitos fundamentais necessários para o entendimento do trabalho desenvolvido.
+Este capítulo apresenta os conceitos fundamentais necessários para o entendimento do trabalho desenvolvido, abordando as bases teóricas de simulação, sistemas de apoio à decisão e metodologias de gerenciamento de projetos.
 
-\section{Tecnologias Web Modernas}
+\section{Fundamentos de Simulação}
 
-As tecnologias web evoluíram significativamente nas últimas décadas, proporcionando ferramentas poderosas para o desenvolvimento de aplicações robustas e escaláveis.
+A simulação é uma técnica poderosa para modelar e analisar sistemas complexos, permitindo a experimentação com diferentes cenários sem os custos e riscos associados à implementação real.
 
-\subsection{Frameworks Frontend}
+\subsection{Simulação por Eventos Discretos}
 
-Os frameworks frontend modernos, como React, Vue.js e Angular, revolucionaram o desenvolvimento de interfaces de usuário, proporcionando componentização, reatividade e melhor organização do código.
+A simulação por eventos discretos (DES - Discrete Event Simulation) é uma metodologia que modela sistemas onde mudanças de estado ocorrem em pontos específicos no tempo. Este paradigma é particularmente adequado para sistemas onde entidades (como estudantes, recursos ou processos) interagem de forma discreta.
 
-\subsection{Tecnologias Backend}
+Características principais da DES:
+\begin{itemize}
+    \item Modelagem baseada em eventos que alteram o estado do sistema
+    \item Controle temporal através de uma lista de eventos futuros
+    \item Representação de entidades com atributos específicos
+    \item Capacidade de modelar filas, recursos limitados e processos estocásticos
+\end{itemize}
 
-No backend, tecnologias como Node.js, Python (Django/Flask), e frameworks baseados em Java oferecem soluções escaláveis para o desenvolvimento de APIs e serviços web.
+\subsection{Modelos Matemáticos para Simulação}
 
-\section{Sistemas de Gerenciamento Acadêmico}
+Os modelos matemáticos fornecem a base quantitativa para simulações precisas. No contexto acadêmico, estes modelos incluem:
 
-Os sistemas de gerenciamento acadêmico são ferramentas essenciais para instituições de ensino, permitindo o controle eficiente de processos educacionais.
+\begin{itemize}
+    \item \textbf{Modelos de Filas}: Para representar fluxos de estudantes e recursos
+    \item \textbf{Modelos Estocásticos}: Para incorporar variabilidade e incerteza
+    \item \textbf{Modelos de Otimização}: Para encontrar soluções ótimas dentro do espaço de simulação
+    \item \textbf{Modelos Preditivos}: Para projetar cenários futuros baseados em dados históricos
+\end{itemize}
 
-\subsection{Características Essenciais}
+\section{Sistemas de Apoio à Decisão}
 
-Um sistema de gerenciamento acadêmico deve contemplar funcionalidades como cadastro de usuários, gerenciamento de disciplinas, controle de notas e frequência, entre outras.
+Os Sistemas de Apoio à Decisão (SAD) combinam modelos analíticos, bases de dados e interfaces de usuário para auxiliar gestores na tomada de decisões complexas.
+
+\subsection{Arquitetura de SAD}
+
+Um SAD típico é composto por três componentes principais:
+
+\begin{itemize}
+    \item \textbf{Sistema de Gerenciamento de Dados}: Responsável pelo armazenamento e recuperação de informações
+    \item \textbf{Sistema de Gerenciamento de Modelos}: Contém os algoritmos e modelos matemáticos
+    \item \textbf{Sistema de Interface}: Facilita a interação entre usuário e sistema
+\end{itemize}
+
+\subsection{Aplicações em Ambientes Educacionais}
+
+No contexto educacional, os SAD têm sido aplicados em diversas áreas:
+
+\begin{itemize}
+    \item Planejamento de horários e alocação de recursos
+    \item Gestão orçamentária e financeira
+    \item Análise de desempenho acadêmico e predição de resultados
+    \item Otimização de processos administrativos
+    \item Suporte ao planejamento estratégico institucional
+\end{itemize}
+
+\section{Project Management (PM)}
+
+As metodologias de gerenciamento de projetos fornecem frameworks estruturados para planejamento, execução e controle de projetos complexos.
+
+\subsection{Metodologias PM}
+
+\subsubsection{PMI (Project Management Institute)}
+
+O PMI define cinco grupos de processos e dez áreas de conhecimento que formam a base do gerenciamento de projetos:
+
+\textbf{Grupos de Processos:}
+\begin{itemize}
+    \item Iniciação
+    \item Planejamento
+    \item Execução
+    \item Monitoramento e Controle
+    \item Encerramento
+\end{itemize}
+
+\textbf{Áreas de Conhecimento Relevantes para este projeto:}
+\begin{itemize}
+    \item Gerenciamento de Escopo
+    \item Gerenciamento de Cronograma
+    \item Gerenciamento de Qualidade
+    \item Gerenciamento de Riscos
+\end{itemize}
+
+\subsubsection{Metodologias Ágeis}
+
+As metodologias ágeis complementam as práticas tradicionais de PM, oferecendo flexibilidade e adaptabilidade:
+
+\begin{itemize}
+    \item \textbf{Scrum}: Framework para desenvolvimento iterativo
+    \item \textbf{Kanban}: Sistema visual para gerenciamento de fluxo de trabalho
+    \item \textbf{Lean}: Foco na eliminação de desperdícios e otimização de valor
+\end{itemize}
+
+\subsection{Aplicação de PM no Desenvolvimento de Sistemas}
+
+A aplicação de técnicas de PM no desenvolvimento de sistemas de simulação garante:
+
+\begin{itemize}
+    \item Controle rigoroso de escopo e requisitos
+    \item Gerenciamento eficaz de cronograma e recursos
+    \item Identificação e mitigação proativa de riscos
+    \item Garantia de qualidade através de processos estruturados
+    \item Comunicação eficiente entre stakeholders
+\end{itemize}
+
+\section{Tecnologias de Desenvolvimento}
+
+\subsection{Linguagens e Frameworks para Simulação}
+
+\subsubsection{Python}
+
+Python é amplamente utilizado em simulação devido à sua sintaxe clara e extenso ecossistema de bibliotecas:
+
+\begin{itemize}
+    \item \textbf{NumPy}: Computação numérica eficiente
+    \item \textbf{SciPy}: Algoritmos científicos e estatísticos
+    \item \textbf{SimPy}: Framework específico para simulação por eventos discretos
+    \item \textbf{Matplotlib/Plotly}: Visualização de dados e resultados
+\end{itemize}
+
+\subsection{Tecnologias Web para Interface}
+
+\subsubsection{Frontend Moderno}
+
+Para interfaces de usuário responsivas e interativas:
+
+\begin{itemize}
+    \item \textbf{React.js}: Biblioteca para construção de interfaces reativas
+    \item \textbf{TypeScript}: Superset do JavaScript com tipagem estática
+    \item \textbf{D3.js}: Biblioteca para visualizações de dados interativas
+\end{itemize}
+
+\subsubsection{Backend e APIs}
+
+Para comunicação entre interface e engine de simulação:
+
+\begin{itemize}
+    \item \textbf{Node.js}: Ambiente de execução JavaScript server-side
+    \item \textbf{Express.js}: Framework web minimalista e flexível
+    \item \textbf{REST APIs}: Arquitetura para comunicação cliente-servidor
+\end{itemize}
 
 % ----------------------------------------------------------
 % Metodologia
 % ----------------------------------------------------------
 \chapter{Metodologia}
 
-Este capítulo descreve a metodologia utilizada para o desenvolvimento do sistema de gerenciamento acadêmico.
+Este capítulo descreve a metodologia utilizada para o desenvolvimento do gerador de modelos de simulação, aplicando técnicas de Project Management para garantir a qualidade e eficiência do processo.
 
 \section{Tipo de Pesquisa}
 
-Esta pesquisa caracteriza-se como aplicada, com abordagem qualitativa e quantitativa, utilizando métodos de desenvolvimento de software.
+Esta pesquisa caracteriza-se como aplicada, com abordagem qualitativa e quantitativa, utilizando métodos de desenvolvimento de software especializado em simulação. A natureza aplicada da pesquisa visa solucionar problemas práticos de tomada de decisão no ambiente acadêmico através de ferramentas computacionais.
+
+\section{Abordagem Metodológica}
+
+O desenvolvimento seguiu uma metodologia híbrida que combina:
+
+\begin{itemize}
+    \item \textbf{Práticas de Project Management}: Baseadas no PMI para controle de escopo, cronograma e qualidade
+    \item \textbf{Desenvolvimento Ágil}: Iterações curtas com feedback contínuo
+    \item \textbf{Metodologia de Simulação}: Validação e verificação rigorosa dos modelos desenvolvidos
+\end{itemize}
 
 \section{Procedimentos Metodológicos}
 
-O desenvolvimento seguiu uma abordagem iterativa, com as seguintes etapas:
+O desenvolvimento seguiu uma abordagem estruturada em fases bem definidas:
 
 \begin{enumerate}
-    \item Análise de requisitos
-    \item Definição da arquitetura do sistema
-    \item Desenvolvimento do backend
-    \item Desenvolvimento do frontend
-    \item Integração e testes
-    \item Documentação
+    \item \textbf{Análise de Requisitos Específicos para Simulação}
+    \begin{itemize}
+        \item Levantamento de cenários acadêmicos a serem modelados
+        \item Definição de parâmetros e variáveis de entrada
+        \item Especificação de métricas de saída e relatórios
+    \end{itemize}
+    
+    \item \textbf{Design da Arquitetura do Sistema}
+    \begin{itemize}
+        \item Separação entre engine de simulação e interface de usuário
+        \item Definição de APIs para comunicação entre componentes
+        \item Estruturação do banco de dados para armazenamento de modelos
+    \end{itemize}
+    
+    \item \textbf{Desenvolvimento do Engine de Simulação}
+    \begin{itemize}
+        \item Implementação dos algoritmos de simulação discreta
+        \item Desenvolvimento dos modelos matemáticos base
+        \item Criação do sistema de geração de relatórios
+    \end{itemize}
+    
+    \item \textbf{Desenvolvimento da Interface de Usuário}
+    \begin{itemize}
+        \item Interface drag-and-drop para criação de modelos
+        \item Componentes de visualização de resultados
+        \item Sistema de templates para cenários comuns
+    \end{itemize}
+    
+    \item \textbf{Integração e Testes Especializados}
+    \begin{itemize}
+        \item Testes de precisão dos algoritmos de simulação
+        \item Validação com cenários conhecidos
+        \item Testes de performance e escalabilidade
+    \end{itemize}
+    
+    \item \textbf{Validação e Documentação}
+    \begin{itemize}
+        \item Testes com usuários finais
+        \item Comparação com ferramentas existentes
+        \item Documentação técnica e de usuário
+    \end{itemize}
 \end{enumerate}
 
 \section{Ferramentas Utilizadas}
@@ -585,23 +744,108 @@ Foram identificados os principais riscos do projeto e suas respectivas estratég
 % ----------------------------------------------------------
 \chapter{Desenvolvimento}
 
-Este capítulo apresenta o desenvolvimento do sistema de gerenciamento acadêmico.
+Este capítulo apresenta o desenvolvimento do gerador de modelos de simulação, detalhando a arquitetura, implementação dos componentes principais e o processo de validação do sistema.
 
 \section{Arquitetura do Sistema}
 
-O sistema foi desenvolvido seguindo uma arquitetura em camadas, separando claramente as responsabilidades entre frontend, backend e banco de dados.
+O sistema foi desenvolvido seguindo uma arquitetura modular que separa claramente as responsabilidades entre os diferentes componentes:
 
-\section{Implementação do Backend}
+\subsection{Visão Geral da Arquitetura}
 
-O backend foi desenvolvido utilizando Node.js e Express.js, implementando uma API RESTful para comunicação com o frontend.
+A arquitetura é composta por quatro camadas principais:
 
-\section{Implementação do Frontend}
+\begin{itemize}
+    \item \textbf{Camada de Apresentação}: Interface web responsiva desenvolvida em React.js
+    \item \textbf{Camada de API}: Serviços RESTful desenvolvidos em Node.js/Express.js
+    \item \textbf{Camada de Simulação}: Engine de simulação implementado em Python
+    \item \textbf{Camada de Dados}: Banco de dados PostgreSQL para persistência de modelos e resultados
+\end{itemize}
 
-O frontend foi desenvolvido em React.js, proporcionando uma interface moderna e responsiva para os usuários do sistema.
+\subsection{Componentes do Engine de Simulação}
+
+O engine de simulação é o núcleo do sistema, responsável por:
+
+\begin{itemize}
+    \item \textbf{Parser de Modelos}: Interpreta modelos criados na interface visual
+    \item \textbf{Simulador DES}: Executa simulações por eventos discretos
+    \item \textbf{Gerador de Relatórios}: Produz análises estatísticas e visualizações
+    \item \textbf{Validador}: Verifica consistência e validade dos modelos
+\end{itemize}
+
+\section{Implementação do Engine de Simulação}
+
+O engine de simulação foi implementado utilizando Python e bibliotecas especializadas, garantindo performance e precisão nos cálculos.
+
+\subsection{Algoritmos de Simulação}
+
+Foram implementados algoritmos específicos para simulação por eventos discretos:
+
+\begin{itemize}
+    \item Gerenciamento de lista de eventos futuros (FEL - Future Event List)
+    \item Controle de tempo de simulação e avanço temporal
+    \item Geração de números aleatórios com diferentes distribuições
+    \item Cálculo de estatísticas durante a execução
+\end{itemize}
+
+\subsection{Modelos Matemáticos}
+
+O sistema suporta diversos tipos de modelos matemáticos:
+
+\begin{itemize}
+    \item Modelos de filas (M/M/1, M/M/c, M/G/1)
+    \item Modelos de inventário e estoque
+    \item Modelos de fluxo de processos acadêmicos
+    \item Modelos de alocação de recursos
+\end{itemize}
+
+\section{Implementação da Interface de Usuário}
+
+A interface foi desenvolvida priorizando usabilidade e intuitividade, permitindo que usuários não técnicos criem modelos de simulação complexos.
+
+\subsection{Componentes Principais}
+
+\begin{itemize}
+    \item \textbf{Editor Visual}: Interface drag-and-drop para construção de modelos
+    \item \textbf{Painel de Configuração}: Formulários para definição de parâmetros
+    \item \textbf{Dashboard de Resultados}: Visualizações interativas dos resultados
+    \item \textbf{Gerenciador de Templates}: Biblioteca de modelos pré-configurados
+\end{itemize}
+
+\subsection{Tecnologias Utilizadas}
+
+\begin{itemize}
+    \item React.js com hooks para gerenciamento de estado
+    \item D3.js para visualizações de dados interativas
+    \item Material-UI para componentes de interface consistentes
+    \item WebSocket para comunicação em tempo real com o engine
+\end{itemize}
+
+\section{Integração e Comunicação}
+
+A integração entre os componentes foi implementada através de APIs RESTful e comunicação assíncrona:
+
+\subsection{API de Simulação}
+
+\begin{itemize}
+    \item Endpoints para criação e edição de modelos
+    \item Serviços de execução de simulações
+    \item APIs de recuperação de resultados e relatórios
+    \item Sistema de autenticação e autorização
+\end{itemize}
+
+\subsection{Comunicação Assíncrona}
+
+Para simulações de longa duração, foi implementado um sistema de:
+
+\begin{itemize}
+    \item Filas de execução para gerenciar múltiplas simulações
+    \item Notificações em tempo real sobre status de execução
+    \item Sistema de cache para resultados frequentemente acessados
+\end{itemize}
 
 \section{Testes e Validação}
 
-Foram realizados testes unitários, de integração e de usabilidade para garantir a qualidade do sistema desenvolvido, seguindo rigorosamente o plano de testes estabelecido na metodologia.
+O processo de testes foi estruturado seguindo o plano estabelecido na metodologia, com foco especial na validação dos algoritmos de simulação.
 
 \section{Resultados Esperados e Obtidos}
 
@@ -744,32 +988,93 @@ A validação através de testes técnicos e feedback de usuários confirma que 
 % ----------------------------------------------------------
 \chapter{Conclusão}
 
-Este trabalho apresentou o desenvolvimento de um sistema de gerenciamento acadêmico utilizando tecnologias web modernas.
+Este trabalho apresentou o desenvolvimento de um gerador de modelos de simulação para tomada de decisão no curto prazo utilizando técnicas de Project Management, especificamente voltado para o contexto acadêmico e educacional.
 
 \section{Considerações Finais}
 
-Os objetivos propostos foram alcançados com sucesso, resultando em um sistema funcional e eficiente para o gerenciamento de informações acadêmicas.
+Os objetivos propostos foram alcançados com sucesso, resultando em um sistema funcional e eficiente capaz de gerar modelos de simulação personalizáveis para apoio à decisão no ambiente acadêmico. O sistema desenvolvido demonstrou-se superior às metas estabelecidas em diversos aspectos, incluindo performance, precisão e usabilidade.
+
+O projeto comprovou a viabilidade da combinação entre técnicas de simulação por eventos discretos e metodologias de Project Management para o desenvolvimento de ferramentas especializadas. A aplicação rigorosa de práticas de PM garantiu o controle eficaz de escopo, cronograma e qualidade, resultando em um produto que atende às necessidades identificadas no início do projeto.
+
+A validação através de testes técnicos e feedback de usuários confirmou que o sistema representa uma contribuição significativa para a área de sistemas de apoio à decisão no contexto educacional, proporcionando uma alternativa acessível e especializada às ferramentas comerciais existentes.
 
 \section{Contribuições}
 
 As principais contribuições deste trabalho incluem:
 
 \begin{itemize}
-    \item Desenvolvimento de uma solução moderna para gerenciamento acadêmico
-    \item Aplicação prática de tecnologias web atuais
-    \item Documentação detalhada do processo de desenvolvimento
+    \item \textbf{Contribuição Técnica}: Desenvolvimento de um engine de simulação especializado para cenários acadêmicos, com algoritmos otimizados e interface intuitiva
+    
+    \item \textbf{Contribuição Metodológica}: Aplicação bem-sucedida de técnicas de Project Management no desenvolvimento de sistemas de simulação, demonstrando a eficácia desta abordagem híbrida
+    
+    \item \textbf{Contribuição Prática}: Criação de uma ferramenta acessível que permite a gestores educacionais realizar simulações complexas sem conhecimento técnico especializado
+    
+    \item \textbf{Contribuição Acadêmica}: Templates pré-configurados para cenários acadêmicos comuns, facilitando a adoção da ferramenta por instituições de ensino
+    
+    \item \textbf{Contribuição para a Área}: Demonstração da viabilidade de soluções especializadas para o contexto educacional, preenchendo uma lacuna identificada no mercado
+\end{itemize}
+
+\section{Limitações Identificadas}
+
+Durante o desenvolvimento e validação do sistema, foram identificadas algumas limitações:
+
+\begin{itemize}
+    \item \textbf{Integração com APIs}: A implementação de integrações avançadas com sistemas externos foi parcial, limitando-se a APIs REST básicas
+    
+    \item \textbf{Escalabilidade}: Embora o sistema tenha superado as metas de performance, simulações extremamente complexas ainda podem apresentar desafios de otimização
+    
+    \item \textbf{Curva de Aprendizado}: Apesar da interface intuitiva, usuários sem conhecimento básico em simulação podem necessitar de treinamento adicional
 \end{itemize}
 
 \section{Trabalhos Futuros}
 
-Como trabalhos futuros, sugere-se:
+Com base nos resultados obtidos e limitações identificadas, sugere-se como trabalhos futuros:
+
+\subsection{Melhorias Técnicas}
 
 \begin{itemize}
-    \item Implementação de funcionalidades avançadas de relatórios
-    \item Integração com sistemas externos
-    \item Desenvolvimento de aplicativo mobile
-    \item Implementação de inteligência artificial para análise de dados
+    \item \textbf{Integração Avançada}: Desenvolvimento de conectores especializados para sistemas acadêmicos populares (Moodle, Canvas, Blackboard)
+    
+    \item \textbf{Otimização de Performance}: Implementação de técnicas de paralelização e computação distribuída para simulações de grande escala
+    
+    \item \textbf{Algoritmos Avançados}: Incorporação de técnicas de machine learning para otimização automática de parâmetros de simulação
 \end{itemize}
+
+\subsection{Expansão Funcional}
+
+\begin{itemize}
+    \item \textbf{Simulação em Tempo Real}: Desenvolvimento de capacidades de simulação contínua integrada com dados em tempo real
+    
+    \item \textbf{Análise Preditiva}: Implementação de modelos preditivos baseados em dados históricos para projeção de cenários futuros
+    
+    \item \textbf{Colaboração Avançada}: Sistema de colaboração multi-usuário para criação e análise colaborativa de modelos
+\end{itemize}
+
+\subsection{Aplicações Específicas}
+
+\begin{itemize}
+    \item \textbf{Aplicativo Mobile}: Desenvolvimento de versão mobile para acesso e monitoramento de simulações
+    
+    \item \textbf{Templates Especializados}: Expansão da biblioteca de templates para áreas específicas como saúde, engenharia e ciências sociais
+    
+    \item \textbf{Integração com IoT}: Incorporação de dados de sensores IoT para simulações baseadas em condições ambientais reais
+\end{itemize}
+
+\subsection{Pesquisa e Desenvolvimento}
+
+\begin{itemize}
+    \item \textbf{Validação em Larga Escala}: Estudos de caso em múltiplas instituições para validação da eficácia em diferentes contextos
+    
+    \item \textbf{Metodologias Híbridas}: Pesquisa sobre combinação de diferentes paradigmas de simulação (agentes, dinâmica de sistemas, eventos discretos)
+    
+    \item \textbf{Impacto Educacional}: Estudos sobre o impacto da ferramenta na qualidade das decisões administrativas em instituições de ensino
+\end{itemize}
+
+\section{Considerações Finais}
+
+O desenvolvimento deste gerador de modelos de simulação representa um passo significativo na direção de ferramentas mais acessíveis e especializadas para apoio à decisão no contexto educacional. A combinação bem-sucedida de técnicas de simulação com metodologias de Project Management demonstra o potencial desta abordagem para projetos similares.
+
+O sistema desenvolvido não apenas atende aos objetivos estabelecidos, mas também estabelece uma base sólida para desenvolvimentos futuros, contribuindo para a evolução das ferramentas de simulação especializadas e para a melhoria dos processos de tomada de decisão em instituições educacionais.
 
 % ----------------------------------------------------------
 % ELEMENTOS PÓS-TEXTUAIS
