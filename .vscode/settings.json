@@ -1,0 +1,90 @@
+{
+    // Format on save - handled by LaTeX Workshop
+    "editor.formatOnSave": false,
+    
+    // LaTeX specific settings
+    "[latex]": {
+        "editor.formatOnSave": false
+    },
+    // LaTeX Workshop configuration
+    "latex-workshop.latex.autoBuild.run": "onSave",
+    "latex-workshop.latex.recipe.default": "format + compile",
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "format + compile",
+            "tools": [
+                "latexindent",
+                "pdflatex",
+                "bibtex",
+                "pdflatex",
+                "pdflatex"
+            ]
+        },
+        {
+            "name": "compile only",
+            "tools": [
+                "pdflatex",
+                "bibtex",
+                "pdflatex",
+                "pdflatex"
+            ]
+        }
+    ],
+    "latex-workshop.latex.tools": [
+        {
+            "name": "latexindent",
+            "command": "latexindent",
+            "args": [
+                "-m",
+                "-l",
+                "-s",
+                "-w",
+                "-g=/dev/null",
+                "-c=/tmp/",
+                "%DOC%.tex"
+            ]
+        },
+        {
+            "name": "pdflatex",
+            "command": "pdflatex",
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "%DOC%"
+            ]
+        },
+        {
+            "name": "bibtex",
+            "command": "bibtex",
+            "args": [
+                "%DOCFILE%"
+            ]
+        }
+    ],
+    // Auto-clean auxiliary files
+    "latex-workshop.latex.autoClean.run": "onBuilt",
+    "latex-workshop.latex.clean.fileTypes": [
+        "*.aux",
+        "*.bbl",
+        "*.blg",
+        "*.idx",
+        "*.ind",
+        "*.lof",
+        "*.lot",
+        "*.out",
+        "*.toc",
+        "*.acn",
+        "*.acr",
+        "*.alg",
+        "*.glg",
+        "*.glo",
+        "*.gls",
+        "*.fls",
+        "*.log",
+        "*.fdb_latexmk",
+        "*.synctex.gz"
+    ],
+    // PDF viewer
+    "latex-workshop.view.pdf.viewer": "tab"
+}

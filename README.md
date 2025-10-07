@@ -1,144 +1,154 @@
-# Configuração LaTeX para TCC
-## Template ABNT Completo (`tcc.tex`) 🎯
+# TCC - LaTeX Project
 
-O template principal utiliza **abnTeX2** e segue rigorosamente as normas ABNT:
+Template LaTeX para TCC seguindo normas ABNT usando abnTeX2.
 
-### ✅ Elementos Pré-textuais ABNT:
-- **Capa** - Formatação automática com dados da instituição
-- **Folha de rosto** - Com ficha técnica do trabalho
-- **Resumo** - Em português com palavras-chave
-- **Abstract** - Em inglês com keywords
-- **Sumário** - Geração automática com hyperlinks
-- **Lista de figuras/tabelas** - Automática
+## 📁 Estrutura do Projeto
 
-### 📖 Elementos Textuais ABNT:
-- **Introdução** - Contexto, objetivos, justificativa
-- **Referencial teórico** - Base conceitual
-- **Metodologia** - Procedimentos metodológicos
-- **Desenvolvimento** - Resultados e análises
-- **Conclusão** - Considerações finais e trabalhos futuros
-
-### 📚 Elementos Pós-textuais ABNT:
-- **Referências** - Bibliografia conforme ABNT
-- **Apêndices** - Material elaborado pelo autor
-- **Anexos** - Material de terceiros
-
-### 🎨 Formatação ABNT Automática:
-- ✅ Margens: 3cm (esq), 2cm (dir), 3cm (sup/inf)
-- ✅ Fonte: Times New Roman equivalente (Latin Modern)
-- ✅ Tamanho: 12pt para texto normal
-- ✅ Espaçamento: 1,5 entre linhas
-- ✅ Parágrafo: Primeira linha com recuo de 1,3cm
-- ✅ Citações: Formatação automática ABNT
-- ✅ Referências: Estilo ABNT automático
-- ✅ Numeração: Páginas conforme norma
-
-## Estrutura do Template Básico
-
-O arquivo `tcc_completo.tex` (alternativo) inclui:
-
-1. **Elementos Pré-textuais**:
-   - Capa
-   - Folha de rosto
-   - Resumo
-   - Abstract
-   - Sumário
-   - Lista de figuras
-   - Lista de tabelas
-
-2. **Elementos Textuais**:
-   - Introdução
-   - Referencial teórico
-   - Metodologia
-   - Desenvolvimento
-   - Conclusão
-
-3. **Elementos Pós-textuais**:
-   - Referências
-   - Apêndices
-   - Anexos
-
-## Configurações Incluídas
-
-- ✅ Margens ABNT (3cm esq, 2cm dir, 3cm sup/inf)
-- ✅ Espaçamento 1.5
-- ✅ Fonte 12pt
-- ✅ Numeração de páginas
-- ✅ Hyperlinks funcionais
-- ✅ Formatação de seções
-
-## Próximos Passos
-
-1. **Edite seu TCC**: Abra o arquivo `tcc.tex`
-2. **Personalize** os dados: Nome, universidade, título, orientador
-3. **Substitua** o conteúdo exemplo pelo seu trabalho
-4. **Adicione** suas referências na seção de bibliografia  
-5. **Compile** regularmente com `./auto_compile.sh`
-
-## Dicas
-
-- Use sempre UTF-8 para caracteres especiais
-- Compile duas vezes para atualizar referências cruzadas
-- Para figuras, use formatos PDF, PNG ou JPG
-- Mantenha backup dos arquivos `.tex`
-
-## 🎉 Resumo Final
-
-✅ **LaTeX instalado e funcionando**  
-✅ **abnTeX2 configurado para normas ABNT**  
-✅ **Template completo pronto para uso**  
-✅ **Compilação automática configurada**  
-✅ **Suporte completo ao português**  
-
-**Seu ambiente está 100% pronto para escrever o TCC conforme normas ABNT!** 🎓
-
-## 🚀 Workflow de Produtividade
-
-### Para começar a escrever:
-```bash
-cd /home/bregoli/Code/TCC
-./auto_compile.sh &  # Compilação automática em background
-code tcc.tex        # Abrir no VS Code (ou seu editor preferido)
+```
+TCC/
+├── tcc.tex              # Documento principal
+├── referencias.bib      # Bibliografia (adicione suas referências aqui)
+├── tcc.pdf             # PDF gerado (atualiza automaticamente)
+├── compile.sh          # Script de compilação completa
+├── format.sh           # Script de formatação do código
+├── pdfs/               # PDFs de referência
+└── .vscode/            # Configurações do editor
 ```
 
-### ✅ O que funciona AUTOMATICAMENTE:
-- **Compilação**: PDF atualiza sozinho a cada Ctrl+S
-- **Formatação ABNT**: Margens, fonte, espaçamento aplicados
-- **Numeração**: Seções, figuras, tabelas numeradas automaticamente
-- **Sumário**: Atualizado automaticamente com hyperlinks
-- **Referências cruzadas**: `\ref{fig:1}` vira "Figura 1" automaticamente
-- **Bibliografia**: Links automáticos entre citações e referências
-- **Detecção de erros**: Avisos em tempo real
+## 🚀 Como Usar
 
-### 🔄 O que é SEMI-AUTOMÁTICO:
-- **Formatação de código**: `Shift + Alt + F` organiza o LaTeX
-- **Figuras**: Você insere, sistema numera e lista automaticamente
-- **Citações**: Você escreve `\cite{ref}`, sistema formata ABNT
+### Método 1: Auto-compilação (Recomendado)
 
-### ✋ O que você faz MANUALMENTE:
-- Escrever o conteúdo (óbvio! 😄)
-- Criar estrutura de seções
-- Adicionar figuras e tabelas
-- Escrever referências bibliográficas
-- Salvar arquivo (`Ctrl + S`)
+Se você tem o **LaTeX Workshop** instalado no Cursor/VS Code:
 
-**📖 Veja exemplo completo em:** [`WORKFLOW_EXEMPLO.md`](WORKFLOW_EXEMPLO.md)
+1. Abra `tcc.tex`
+2. Pressione `Ctrl+S` para salvar
+3. ✨ **Pronto!** O arquivo será formatado E compilado automaticamente
 
-## 🎯 Conclusões do Setup
+### Método 2: Scripts manuais
 
-### ✅ **Ambiente Profissional Completo:**
-- **LaTeX + abnTeX2**: Formatação ABNT automática e precisa
-- **Times New Roman**: Fonte unificada em todo documento (texto + títulos)
-- **Compilação automática**: Produtividade máxima durante escrita
-- **Formatador configurado**: Código sempre organizado
-- **Template completo**: Estrutura profissional pronta
+```bash
+# Formatar código LaTeX
+./format.sh
 
-### 💪 **Vantagens Conquistadas:**
-1. **Foco no conteúdo**: Zero preocupação com formatação
-2. **Conformidade ABNT**: 100% automática e precisa
-3. **Produtividade**: PDF sempre atualizado, sem esforço manual
-4. **Profissionalismo**: Resultado final impecável
-5. **Eficiência**: Workflow otimizado para escrita acadêmica
+# Compilar PDF
+./compile.sh
 
-### 🎓 **Resultado Final:**
-**Você tem um ambiente de escrita acadêmica profissional que rival qualquer editor pago, com formatação ABNT automática, compilação em tempo real e produtividade máxima. Seu foco fica 100% no que importa: o conteúdo do seu TCC!**
+# Ambos
+./format.sh && ./compile.sh
+```
+
+### Método 3: Watch mode (auto-compila ao salvar)
+
+```bash
+latexmk -pdf -pvc tcc.tex
+```
+
+## ✅ Formatação ABNT Automática
+
+- ✅ Margens: 3cm (esquerda/superior), 2cm (direita/inferior)
+- ✅ Fonte: Times New Roman 12pt
+- ✅ Espaçamento: 1,5 linhas
+- ✅ Parágrafo: Recuo de 1,3cm
+- ✅ Citações e referências: Padrão ABNT
+- ✅ Sumário, listas e numeração: Automáticos
+
+## 📝 Editando seu TCC
+
+1. **Informações básicas** (linhas 44-56 de `tcc.tex`):
+   - Título, autor, orientador, instituição, ano
+
+2. **Resumo** (linhas 167-171):
+   - Escreva seu resumo e palavras-chave
+
+3. **Abstract** (linhas 174-183):
+   - Versão em inglês do resumo
+
+4. **Conteúdo** (linhas 214+):
+   - Edite os capítulos: Introdução, Referencial Teórico, Metodologia, etc.
+
+5. **Referências** (arquivo `referencias.bib`):
+   - Adicione suas referências bibliográficas no formato BibTeX
+
+## 🎯 Elementos do Template
+
+### Pré-textuais
+- Capa
+- Folha de rosto
+- Resumo (português)
+- Abstract (inglês)
+- Lista de figuras
+- Lista de tabelas
+- Sumário
+
+### Textuais
+- Introdução
+- Referencial Teórico
+- Metodologia
+- Desenvolvimento
+- Conclusão
+
+### Pós-textuais
+- Referências
+- Apêndices
+- Anexos
+
+## 🔧 Ferramentas Instaladas
+
+- **TeX Live** - Distribuição LaTeX completa
+- **abnTeX2** - Formatação ABNT
+- **latexindent** - Formatador de código
+- **LaTeX Workshop** - Extensão VS Code (opcional mas recomendado)
+
+## 💡 Dicas
+
+- Use `Ctrl+S` para salvar, formatar e compilar automaticamente
+- O formatador quebra linhas automaticamente (1 sentença por linha)
+- Arquivos auxiliares (`.aux`, `.log`, etc.) são limpos automaticamente
+- Para figuras, use formatos PDF, PNG ou JPG
+- Mantenha backup do arquivo `.tex`
+
+## 📚 Referências Bibliográficas
+
+Adicione suas referências no arquivo `referencias.bib` usando formato BibTeX:
+
+```bibtex
+@article{exemplo2023,
+  author = {Sobrenome, Nome},
+  title = {Título do Artigo},
+  journal = {Nome da Revista},
+  year = {2023},
+  volume = {1},
+  pages = {1--10}
+}
+
+@book{exemplo2022,
+  author = {Sobrenome, Nome},
+  title = {Título do Livro},
+  publisher = {Editora},
+  year = {2022},
+  address = {Cidade}
+}
+```
+
+Cite no texto usando: `\cite{exemplo2023}`
+
+## 🐛 Solução de Problemas
+
+**PDF não atualiza:**
+- Certifique-se que LaTeX Workshop está instalado
+- Verifique a aba "Output" > "LaTeX Workshop" para erros
+- Use `./compile.sh` como fallback
+
+**Erros de compilação:**
+- Verifique a sintaxe LaTeX
+- Confira se todas as referências estão corretas
+- Veja o arquivo `.log` para detalhes
+
+**Formatação não funciona:**
+- Execute `./format.sh` manualmente para testar
+- Verifique se `latexindent` está instalado: `latexindent --version`
+
+---
+
+**Ambiente pronto! Bom trabalho! 📝🎓**

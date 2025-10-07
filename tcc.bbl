@@ -5,4 +5,11 @@
 \providecommand{\abntbstabout}[1]{}
 \abntbstabout{v-1.9.7 }
 
+\bibitem[Ferronato 2022]{ferronato2022}
+\abntrefinfo{Ferronato}{FERRONATO}{2022}
+{FERRONATO, J.~J.
+\emph{PM4SOS: Um Framework para suporte à tomada de decisão operacional}.
+Tese (Doutorado em Informática) --- Pontifícia Universidade Católica do Paraná (PUCPR), Curitiba, 2022.
+Dispon{\'\i}vel em: \url{https://www.ppgia.pucpr.br/pt/arquivos/doutorado/teses/2022/Tese\_Jair\_Jose\_Ferronato.pdf}. Acesso em: 6 out. 2025.}
+
 \end{thebibliography}

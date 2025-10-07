@@ -41,7 +41,7 @@
 % ---
 % Informações do documento
 % ---
-\titulo{DESENVOLVIMENTO DE GERADOR DE MODELOS DE SIMULAÇÃO PARA TOMADA DE DECISÃO NO CURTO PRAZO USANDO PM}
+\titulo{DESENVOLVIMENTO DE GERADOR DE MODELOS DE SIMULAÇÃO PARA TOMADA DE DECISÃO NO CURTO PRAZO USANDO PROCESS MINING}
 \autor{VINÍCIUS LEOBET BREGOLI}
 \local{Curitiba}
 \data{2025}
@@ -165,21 +165,41 @@
 % Resumo em português
 \setlength{\absparsep}{18pt}
 \begin{resumo}
-    A tomada de decisão no curto prazo em ambientes complexos, como em centros cirúrgicos, exige ferramentas capazes de integrar dados e informações em tempo real. Nesse contexto, a mineração de processos (Process Mining) e a simulação computacional emergem como tecnologias complementares para apoiar administradores na alocação eficiente de recursos, detecção de desvios e previsão de cenários. Este trabalho propõe o desenvolvimento de um gerador de modelos de simulação baseado em mineração de processos, com foco em reduzir o esforço humano e o tempo necessário para a construção de modelos. O gerador utiliza logs de eventos como fonte de dados para criar automaticamente modelos de simulação, permitindo avaliar alternativas de curto prazo e apoiar a tomada de decisão operacional. O estudo se apoia no framework PM4SOS, estendido e adaptado para o domínio hospitalar, e integra métodos multicritério e técnicas de otimização. O resultado esperado é a disponibilização de um protótipo que auxilie gestores a analisar filas, prever ocupação de salas, otimizar agendas e reduzir gargalos, contribuindo para maior eficiência operacional, redução de custos e melhor qualidade no atendimento.
 
-    \textbf{Palavras-chave}: Simulação. Project Management. Tomada de Decisão. Sistemas de Apoio à Decisão. Engenharia de Computação.
+	A tomada de decisão no curto prazo em ambientes complexos, como
+	centros cirúrgicos, exige ferramentas capazes de integrar dados
+	históricos e informações em tempo real. Nesse contexto, a mineração
+	de processos (Process Mining - PM) e a simulação computacional
+	emergem como tecnologias para apoiar gestores na alocação eficiente
+	de recursos, detecção de desvios e previsão de cenários. Este
+	trabalho propõe o desenvolvimento de um gerador de modelos de
+	simulação baseado em PM, com foco em reduzir o esforço humano e o
+	tempo necessário para a construção de modelos. O gerador utiliza logs
+	de eventos como fonte de dados para criar automaticamente modelos de
+	simulação, permitindo avaliar alternativas de curto prazo e apoiar a
+	tomada de decisão operacional. O estudo se apoia no framework PM4SOS,
+	estendido e adaptado para o domínio hospitalar, e integra métodos
+	multicritério e técnicas de otimização. O resultado esperado é a
+	disponibilização de um protótipo que auxilie gestores a analisar
+	filas, prever ocupação de salas, otimizar agendas e reduzir gargalos,
+	contribuindo para maior eficiência operacional, redução de custos e
+	melhor qualidade no atendimento. \vspace{\onelineskip}
+
+	\noindent
+	\textbf{Palavras-chave}: Mineração
+	de Processos, Simulação Computacional, Tomada de Decisão, Otimização,
+	Agendamento.
 \end{resumo}
 
 % Resumo em inglês
 \begin{resumo}[Abstract]
-    \begin{otherlanguage*}{english}
-        This work presents the development of a simulation model generator for short-term decision making using Project Management (PM) techniques. The main objective was to create a specialized tool for the academic context that allows educational managers to simulate different scenarios and make data-driven decisions. The methodology consisted of specific requirements analysis for simulation, iterative development focused on discrete simulation algorithms, and validation through technical and usability testing. The main results obtained were the implementation of a functional system capable of generating customizable models, an intuitive drag-and-drop interface, and performance superior to established targets. It is concluded that the combination of simulation techniques with PM methodologies provides a solid foundation for developing decision support tools in the educational environment.
+	\begin{otherlanguage*}{english}
+		Short-term decision-making in complex environments, such as surgical centers, requires tools capable of integrating historical data and real-time information. In this context, Process Mining (PM) and computer simulation emerge as key technologies to support managers in efficient resource allocation, deviation detection, and scenario prediction. This work proposes the development of a simulation model generator based on PM, focusing on reducing human effort and the time required to build models. The generator uses event logs as a data source to automatically create simulation models, allowing the evaluation of short-term alternatives and supporting operational decision-making. The study is based on the PM4SOS framework, extended and adapted to the hospital domain, and integrates multicriteria methods and optimization techniques. The expected outcome is a prototype that helps managers analyze queues, predict room occupancy, optimize schedules, and reduce bottlenecks, contributing to greater operational efficiency, cost reduction, and improved service quality.
+		\vspace{\onelineskip}
 
-        \vspace{\onelineskip}
-
-        \noindent
-        \textbf{Keywords}: Simulation. Project Management. Decision Making. Decision Support Systems. Computer Engineering.
-    \end{otherlanguage*}
+		\noindent
+		\textbf{Keywords}: Process Mining, Computer Simulation, Decision-Making, Optimization, Scheduling.
+	\end{otherlanguage*}
 \end{resumo}
 
 % ---
@@ -213,160 +233,350 @@
 % ----------------------------------------------------------
 \chapter{Introdução}
 
-A crescente digitalização dos processos educacionais tem demandado sistemas de gerenciamento acadêmico cada vez mais eficientes e user-friendly. Este trabalho apresenta o desenvolvimento de uma solução moderna para essa necessidade, focando na criação de um gerador de modelos de simulação para tomada de decisão no curto prazo utilizando técnicas de Project Management (PM).
+Em organizações modernas, a complexidade operacional e o dinamismo
+dos processos exigem decisões cada vez mais rápidas e embasadas em
+dados. Setores como saúde, manufatura, logística e serviços
+compartilham desafios semelhantes: alocação eficiente de recursos,
+detecção de gargalos, redução de custos e melhoria contínua de
+desempenho. Em todos esses contextos, as decisões de curto prazo —
+aquelas que precisam ser tomadas em horas ou dias — têm impacto
+direto na produtividade e na qualidade do serviço prestado.
+
+Apesar do avanço dos sistemas de informação e do grande volume de
+dados disponíveis, a transformação desses dados em conhecimento útil
+para a tomada de decisão ainda depende, em grande parte, de análise
+manual e da experiência de gestores e especialistas. Esse processo,
+além de demorado, está sujeito a erros humanos e vieses cognitivos,
+dificultando a reação rápida diante de mudanças operacionais.
+
+A mineração de processos (Process Mining – PM) surge como uma
+abordagem capaz de extrair, a partir de logs de eventos, informações
+estruturadas sobre o comportamento real dos processos. Essa técnica
+permite descobrir modelos de processos, analisar desvios e
+identificar gargalos com base em dados reais de execução. No entanto,
+por si só, a mineração de processos não oferece mecanismos preditivos
+para antecipar cenários futuros ou testar alternativas operacionais.
+
+Por outro lado, a simulação computacional é amplamente utilizada para
+avaliar o impacto de decisões antes de sua aplicação prática. Modelos
+de simulação permitem experimentar diferentes cenários, mensurar
+indicadores de desempenho e prever resultados. Contudo, a construção
+manual desses modelos é uma tarefa complexa, que exige tempo,
+conhecimento técnico e compreensão detalhada do processo — fatores
+que limitam sua aplicação em situações que demandam respostas
+rápidas.
+
+Dessa forma, o problema central abordado neste trabalho consiste em
+como automatizar a criação de modelos de simulação baseados em dados
+reais, extraídos por mineração de processos, para apoiar a tomada de
+decisão operacional em curto prazo.
+
+Embora a tese de \cite{ferronato2022} tenha proposto o framework
+PM4SOS para o contexto hospitalar, voltado ao agendamento cirúrgico,
+a aplicação desse conceito pode ser expandida para outros domínios,
+mantendo a mesma lógica de integração entre mineração de processos,
+simulação e otimização. Este trabalho propõe, portanto, generalizar a
+abordagem, tornando o gerador de modelos aplicável a qualquer
+ambiente que possua processos registrados em sistemas de informação,
+tendo o setor hospitalar como estudo de caso para validação prática.
+
+A pesquisa busca preencher lacunas existentes na literatura e na
+prática organizacional, especialmente no que diz respeito à
+integração automatizada entre dados históricos e modelos de
+simulação, reduzindo o esforço cognitivo do tomador de decisão e
+possibilitando análises preditivas em tempo reduzido.
 
 \section{Contexto e Problema}
 
-As instituições de ensino enfrentam desafios constantes no gerenciamento de informações acadêmicas, incluindo dados de alunos, professores, disciplinas e avaliações. Sistemas legados muitas vezes não atendem às expectativas modernas de usabilidade e performance. Além disso, a necessidade de tomar decisões rápidas e eficazes no ambiente acadêmico requer ferramentas que possam simular diferentes cenários e fornecer insights baseados em dados.
+Em organizações modernas, a complexidade operacional e o dinamismo
+dos processos exigem decisões cada vez mais rápidas e embasadas em
+dados. Setores como saúde, manufatura, logística e serviços
+compartilham desafios semelhantes: alocação eficiente de recursos,
+detecção de gargalos, redução de custos e melhoria contínua de
+desempenho. Em todos esses contextos, as decisões de curto prazo —
+aquelas que precisam ser tomadas em horas ou dias — têm impacto
+direto na produtividade e na qualidade do serviço prestado.
+
+Apesar do avanço dos sistemas de informação e do grande volume de
+dados disponíveis, a transformação desses dados em conhecimento útil
+para a tomada de decisão ainda depende, em grande parte, de análise
+manual e da experiência de gestores e especialistas. Esse processo,
+além de demorado, está sujeito a erros humanos e vieses cognitivos,
+dificultando a reação rápida diante de mudanças operacionais.
+
+A mineração de processos surge como uma abordagem capaz de extrair, a
+partir de logs de eventos, informações estruturadas sobre o
+comportamento real dos processos. Essa técnica permite descobrir
+modelos de processos, analisar desvios e identificar gargalos com
+base em dados reais de execução. No entanto, por si só, a mineração
+de processos não oferece mecanismos preditivos para antecipar
+cenários futuros ou testar alternativas operacionais.
+
+Por outro lado, a simulação computacional é amplamente utilizada para
+avaliar o impacto de decisões antes de sua aplicação prática. Modelos
+de simulação permitem experimentar diferentes cenários, mensurar
+indicadores de desempenho e prever resultados. Contudo, a construção
+manual desses modelos é uma tarefa complexa, que exige tempo,
+conhecimento técnico e compreensão detalhada do processo — fatores
+que limitam sua aplicação em situações que demandam respostas
+rápidas.
+
+Dessa forma, o problema central abordado neste trabalho consiste em
+como automatizar a criação de modelos de simulação baseados em dados
+reais, extraídos por mineração de processos, para apoiar a tomada de
+decisão operacional em curto prazo.
+
+Embora a tese de Ferronato (2022) tenha proposto o framework PM4SOS
+para o contexto hospitalar, voltado ao agendamento cirúrgico, a
+aplicação desse conceito pode ser expandida para outros domínios,
+mantendo a mesma lógica de integração entre mineração de processos,
+simulação e otimização. Este trabalho propõe, portanto, generalizar a
+abordagem, tornando o gerador de modelos aplicável a qualquer
+ambiente que possua processos registrados em sistemas de informação,
+tendo o setor hospitalar como estudo de caso para validação prática.
+
+A pesquisa busca preencher lacunas existentes na literatura e na
+prática organizacional, especialmente no que diz respeito à
+integração automatizada entre dados históricos e modelos de
+simulação, reduzindo o esforço cognitivo do tomador de decisão e
+possibilitando análises preditivas em tempo reduzido.
 
 \section{Motivação}
 
-A motivação para este trabalho surge da necessidade crescente de ferramentas que auxiliem na tomada de decisões estratégicas no ambiente acadêmico. Com o aumento da complexidade dos processos educacionais e a pressão por resultados mais eficientes, gestores acadêmicos necessitam de sistemas que possam:
+A crescente digitalização dos processos organizacionais tem gerado um
+volume significativo de dados operacionais, os quais representam uma
+fonte valiosa de informações para análise e melhoria contínua. No
+entanto, a maior parte desses dados permanece subutilizada, sendo
+empregada apenas de forma descritiva, sem oferecer suporte efetivo à
+tomada de decisão operacional em tempo hábil. Esse cenário evidencia
+a necessidade de ferramentas capazes de transformar registros
+históricos e dados em tempo real em conhecimento acionável para
+apoiar decisões rápidas e precisas.
 
-\begin{itemize}
-    \item Simular diferentes cenários de alocação de recursos
-    \item Prever impactos de decisões administrativas
-    \item Otimizar processos acadêmicos através de modelos preditivos
-    \item Fornecer suporte à decisão baseado em dados históricos e projeções
-\end{itemize}
+A mineração de processos se apresenta como uma tecnologia capaz de
+extrair conhecimento a partir de logs de eventos, descrevendo o
+comportamento real dos processos. Já a simulação computacional
+complementa essa análise ao permitir a avaliação de cenários
+alternativos, fornecendo uma visão preditiva e exploratória do
+sistema em estudo. Entretanto, a criação manual de modelos de
+simulação ainda representa um gargalo, exigindo alto esforço
+cognitivo e conhecimento técnico especializado.
 
-A ausência de ferramentas especializadas nesta área representa uma lacuna significativa que este trabalho busca preencher.
+A motivação principal deste trabalho reside na necessidade de
+automatizar a geração de modelos de simulação utilizando informações
+obtidas por meio da mineração de processos. Essa automatização tem
+potencial para reduzir significativamente o tempo e o esforço
+necessários para construção de modelos analíticos, além de ampliar o
+acesso de gestores e analistas a ferramentas de apoio à decisão em
+ambientes de alta complexidade.
+
+Este trabalho propõe criar um gerador de modelos de simulação de
+forma generalizável a diferentes contextos organizacionais, mantendo
+o ambiente hospitalar apenas como estudo de caso para validação
+experimental.
+
+Ao promover a integração entre mineração de processos, simulação e
+otimização multicritério, este estudo busca contribuir para o avanço
+das práticas de gestão operacional baseada em dados, oferecendo uma
+alternativa viável e automatizada para apoio à decisão no curto
+prazo.
 
 \section{Estado da Arte}
 
-O estado atual das tecnologias de simulação e modelagem para tomada de decisão apresenta diversas abordagens e metodologias. No contexto acadêmico, as principais áreas de pesquisa incluem:
+O estado atual das tecnologias de simulação e modelagem para tomada
+de decisão apresenta diversas abordagens e metodologias. No contexto
+acadêmico, as principais áreas de pesquisa incluem:
 
 \subsection{Modelos de Simulação Discreta}
 
-Os modelos de simulação por eventos discretos têm sido amplamente utilizados para modelar processos complexos em ambientes educacionais. Estes modelos permitem a representação de sistemas dinâmicos onde mudanças de estado ocorrem em pontos específicos no tempo.
+Os modelos de simulação por eventos discretos têm sido amplamente
+utilizados para modelar processos complexos em ambientes
+educacionais. Estes modelos permitem a representação de sistemas
+dinâmicos onde mudanças de estado ocorrem em pontos específicos no
+tempo.
 
 \subsection{Sistemas de Apoio à Decisão (SAD)}
 
-Os Sistemas de Apoio à Decisão combinam modelos analíticos, técnicas de simulação e interfaces de usuário para auxiliar gestores na tomada de decisões complexas. No contexto educacional, estes sistemas têm sido aplicados em áreas como:
+Os Sistemas de Apoio à Decisão combinam modelos analíticos, técnicas
+de simulação e interfaces de usuário para auxiliar gestores na tomada
+de decisões complexas. No contexto educacional, estes sistemas têm
+sido aplicados em áreas como:
 
 \begin{itemize}
-    \item Planejamento de horários e alocação de salas
-    \item Gestão de recursos humanos
-    \item Análise de desempenho acadêmico
-    \item Otimização orçamentária
+	\item Planejamento de horários e alocação de salas
+	\item Gestão de recursos humanos
+	\item Análise de desempenho acadêmico
+	\item Otimização orçamentária
 \end{itemize}
 
 \subsection{Técnicas de Project Management}
 
-As metodologias de gerenciamento de projetos, como PMI (Project Management Institute) e PRINCE2, fornecem frameworks estruturados para planejamento, execução e controle de projetos. A aplicação dessas técnicas no desenvolvimento de sistemas de simulação garante maior eficiência e qualidade no processo de desenvolvimento.
+As metodologias de gerenciamento de projetos, como PMI (Project
+Management Institute) e PRINCE2, fornecem frameworks estruturados
+para planejamento, execução e controle de projetos. A aplicação
+dessas técnicas no desenvolvimento de sistemas de simulação garante
+maior eficiência e qualidade no processo de desenvolvimento.
 
 \section{Soluções Similares}
 
-Uma análise das soluções existentes no mercado revela diferentes abordagens para problemas similares:
+Uma análise das soluções existentes no mercado revela diferentes
+abordagens para problemas similares:
 
 \subsection{Sistemas Comerciais}
 
 \begin{itemize}
-    \item \textbf{Arena Simulation Software}: Ferramenta robusta para modelagem e simulação de processos, amplamente utilizada na indústria
-    \item \textbf{AnyLogic}: Plataforma de simulação multimethod que combina diferentes paradigmas de modelagem
-    \item \textbf{MATLAB Simulink}: Ambiente de simulação para sistemas dinâmicos com forte base matemática
+	\item \textbf{Arena Simulation Software}: Ferramenta robusta para modelagem e simulação de processos, amplamente utilizada na indústria
+	\item \textbf{AnyLogic}: Plataforma de simulação multimethod que combina diferentes paradigmas de modelagem
+	\item \textbf{MATLAB Simulink}: Ambiente de simulação para sistemas dinâmicos com forte base matemática
 \end{itemize}
 
 \subsection{Soluções Acadêmicas}
 
 \begin{itemize}
-    \item \textbf{NetLogo}: Ambiente de modelagem baseado em agentes, popular em pesquisas acadêmicas
-    \item \textbf{R e Python}: Linguagens de programação com extensas bibliotecas para simulação e análise estatística
-    \item \textbf{Gephi}: Ferramenta de visualização e análise de redes complexas
+	\item \textbf{NetLogo}: Ambiente de modelagem baseado em agentes, popular em pesquisas acadêmicas
+	\item \textbf{R e Python}: Linguagens de programação com extensas bibliotecas para simulação e análise estatística
+	\item \textbf{Gephi}: Ferramenta de visualização e análise de redes complexas
 \end{itemize}
 
 \subsection{Limitações das Soluções Existentes}
 
-Apesar da variedade de ferramentas disponíveis, observa-se algumas limitações:
+Apesar da variedade de ferramentas disponíveis, observa-se algumas
+limitações:
 
 \begin{itemize}
-    \item Falta de especialização para o contexto acadêmico específico
-    \item Complexidade excessiva para usuários não técnicos
-    \item Custos elevados de licenciamento
-    \item Dificuldade de integração com sistemas acadêmicos existentes
-    \item Ausência de templates específicos para cenários educacionais
+	\item Falta de especialização para o contexto acadêmico específico
+	\item Complexidade excessiva para usuários não técnicos
+	\item Custos elevados de licenciamento
+	\item Dificuldade de integração com sistemas acadêmicos existentes
+	\item Ausência de templates específicos para cenários educacionais
 \end{itemize}
 
 \section{Objetivos}
 
 \subsection{Objetivo Geral}
 
-Desenvolver um gerador de modelos de simulação para tomada de decisão no curto prazo utilizando técnicas de Project Management, especificamente voltado para o contexto acadêmico e educacional.
+Desenvolver um \textbf{gerador de modelos de simulação baseado em
+	mineração de processos} para apoiar a \textbf{tomada de decisão no
+	curto prazo}, capaz de criar automaticamente modelos de simulação a
+partir de logs de eventos, reduzindo o esforço humano e o tempo
+necessário para a modelagem de sistemas complexos.
 
 \subsection{Objetivos Específicos}
 
+Para alcançar o objetivo geral, este trabalho busca atender aos
+seguintes objetivos específicos:
+
 \begin{itemize}
-    \item Analisar os requisitos funcionais e não-funcionais do sistema de simulação
-    \item Implementar algoritmos de simulação adequados para cenários acadêmicos
-    \item Desenvolver uma interface de usuário intuitiva para criação e execução de modelos
-    \item Integrar técnicas de Project Management no processo de desenvolvimento
-    \item Criar templates de simulação para cenários comuns em ambientes educacionais
-    \item Realizar testes de validação e performance dos modelos desenvolvidos
-    \item Documentar o sistema e suas funcionalidades
+	\item Investigar métodos e técnicas de integração entre mineração de
+	      processos, simulação computacional e otimização multicritério;
+	\item Projetar uma arquitetura de sistema capaz de gerar automaticamente
+	      modelos de simulação a partir de logs de eventos processados por
+	      ferramentas de PM;
+	\item Implementar um protótipo funcional do gerador de modelos, com base em
+	      bibliotecas de mineração de processos e simulação (como PM4PY e
+	      SimPy);
+	\item Aplicar o protótipo desenvolvido em um estudo de caso no contexto
+	      hospitalar, validando sua eficácia na geração de modelos e apoio à
+	      decisão operacional;
+	\item Avaliar o desempenho do sistema proposto quanto à precisão dos
+	      modelos gerados, tempo de execução e potencial de generalização para
+	      outros domínios.
 \end{itemize}
 
 \section{Justificativa}
 
-O desenvolvimento de um gerador de modelos de simulação especializado para o contexto acadêmico se justifica pela necessidade de:
+A crescente complexidade dos processos operacionais nas organizações
+exige soluções capazes de transformar grandes volumes de dados em
+informações relevantes para apoiar a tomada de decisão. Em muitos
+cenários, os gestores precisam reagir rapidamente a mudanças de
+demanda, restrições de recursos ou falhas inesperadas, o que torna
+essencial o uso de ferramentas que combinem análise de dados,
+previsão e simulação.
 
-\begin{itemize}
-    \item Fornecer ferramentas acessíveis para gestores educacionais
-    \item Melhorar a qualidade das decisões através de simulações baseadas em dados
-    \item Reduzir custos operacionais através de otimização de processos
-    \item Facilitar o planejamento estratégico de curto e médio prazo
-    \item Contribuir para a digitalização e modernização dos processos acadêmicos
-\end{itemize}
+Nesse contexto, a mineração de processos (Process Mining – PM) e a
+simulação computacional se destacam como abordagens complementares. A
+primeira permite compreender o comportamento real dos processos a
+partir de registros de eventos, enquanto a segunda possibilita
+avaliar o impacto de decisões antes de sua implementação prática. A
+integração entre essas técnicas viabiliza a criação de sistemas de
+apoio à decisão mais precisos, adaptáveis e orientados por dados.
 
-\section{Estrutura do Trabalho}
+Entretanto, a construção manual de modelos de simulação ainda
+representa uma barreira significativa para a aplicação ampla dessas
+tecnologias, especialmente em contextos onde o tempo é um fator
+crítico. A necessidade de profissionais especializados, aliada à
+complexidade dos processos e à variabilidade dos dados, limita o uso
+da simulação como ferramenta de suporte à decisão operacional em
+tempo real.
 
-Este trabalho está organizado em 5 capítulos. O Capítulo 1 apresenta a introdução, incluindo motivação, estado da arte e soluções similares. O Capítulo 2 aborda o referencial teórico sobre tecnologias de simulação, sistemas de apoio à decisão e metodologias de gerenciamento de projetos. O Capítulo 3 descreve a metodologia utilizada, incluindo o plano de testes e cronograma do projeto. O Capítulo 4 apresenta o desenvolvimento do sistema e os resultados esperados e obtidos. O Capítulo 5 contém as conclusões e trabalhos futuros.
+Dessa forma, este trabalho se justifica pela necessidade de tornar a
+geração de modelos de simulação mais automatizada e genérica,
+reduzindo a dependência de modelagem manual e ampliando o uso desta
+técnica para diferentes domínios. Ao propor um gerador de modelos de
+simulação baseado em PM, busca-se oferecer uma ferramenta flexível,
+capaz de apoiar decisões de curto prazo em ambientes complexos e
+dinâmicos, promovendo ganhos de eficiência operacional, qualidade e
+confiabilidade na gestão de processos.
 
 % ----------------------------------------------------------
 % Referencial Teórico
 % ----------------------------------------------------------
 \chapter{Referencial Teórico}
 
-Este capítulo apresenta os conceitos fundamentais necessários para o entendimento do trabalho desenvolvido, abordando as bases teóricas de simulação, sistemas de apoio à decisão e metodologias de gerenciamento de projetos.
+Este capítulo apresenta os conceitos fundamentais necessários para o
+entendimento do trabalho desenvolvido, abordando as bases teóricas de
+simulação, sistemas de apoio à decisão e metodologias de
+gerenciamento de projetos.
 
 \section{Fundamentos de Simulação}
 
-A simulação é uma técnica poderosa para modelar e analisar sistemas complexos, permitindo a experimentação com diferentes cenários sem os custos e riscos associados à implementação real.
+A simulação é uma técnica poderosa para modelar e analisar sistemas
+complexos, permitindo a experimentação com diferentes cenários sem os
+custos e riscos associados à implementação real.
 
 \subsection{Simulação por Eventos Discretos}
 
-A simulação por eventos discretos (DES - Discrete Event Simulation) é uma metodologia que modela sistemas onde mudanças de estado ocorrem em pontos específicos no tempo. Este paradigma é particularmente adequado para sistemas onde entidades (como estudantes, recursos ou processos) interagem de forma discreta.
+A simulação por eventos discretos (DES - Discrete Event Simulation) é
+uma metodologia que modela sistemas onde mudanças de estado ocorrem
+em pontos específicos no tempo. Este paradigma é particularmente
+adequado para sistemas onde entidades (como estudantes, recursos ou
+processos) interagem de forma discreta.
 
 Características principais da DES:
 \begin{itemize}
-    \item Modelagem baseada em eventos que alteram o estado do sistema
-    \item Controle temporal através de uma lista de eventos futuros
-    \item Representação de entidades com atributos específicos
-    \item Capacidade de modelar filas, recursos limitados e processos estocásticos
+	\item Modelagem baseada em eventos que alteram o estado do sistema
+	\item Controle temporal através de uma lista de eventos futuros
+	\item Representação de entidades com atributos específicos
+	\item Capacidade de modelar filas, recursos limitados e processos
+	      estocásticos
 \end{itemize}
 
 \subsection{Modelos Matemáticos para Simulação}
 
-Os modelos matemáticos fornecem a base quantitativa para simulações precisas. No contexto acadêmico, estes modelos incluem:
+Os modelos matemáticos fornecem a base quantitativa para simulações
+precisas. No contexto acadêmico, estes modelos incluem:
 
 \begin{itemize}
-    \item \textbf{Modelos de Filas}: Para representar fluxos de estudantes e recursos
-    \item \textbf{Modelos Estocásticos}: Para incorporar variabilidade e incerteza
-    \item \textbf{Modelos de Otimização}: Para encontrar soluções ótimas dentro do espaço de simulação
-    \item \textbf{Modelos Preditivos}: Para projetar cenários futuros baseados em dados históricos
+	\item \textbf{Modelos de Filas}: Para representar fluxos de estudantes e recursos
+	\item \textbf{Modelos Estocásticos}: Para incorporar variabilidade e incerteza
+	\item \textbf{Modelos de Otimização}: Para encontrar soluções ótimas dentro do espaço de simulação
+	\item \textbf{Modelos Preditivos}: Para projetar cenários futuros baseados em dados históricos
 \end{itemize}
 
 \section{Sistemas de Apoio à Decisão}
 
-Os Sistemas de Apoio à Decisão (SAD) combinam modelos analíticos, bases de dados e interfaces de usuário para auxiliar gestores na tomada de decisões complexas.
+Os Sistemas de Apoio à Decisão (SAD) combinam modelos analíticos,
+bases de dados e interfaces de usuário para auxiliar gestores na
+tomada de decisões complexas.
 
 \subsection{Arquitetura de SAD}
 
 Um SAD típico é composto por três componentes principais:
 
 \begin{itemize}
-    \item \textbf{Sistema de Gerenciamento de Dados}: Responsável pelo armazenamento e recuperação de informações
-    \item \textbf{Sistema de Gerenciamento de Modelos}: Contém os algoritmos e modelos matemáticos
-    \item \textbf{Sistema de Interface}: Facilita a interação entre usuário e sistema
+	\item \textbf{Sistema de Gerenciamento de Dados}: Responsável pelo armazenamento e recuperação de informações
+	\item \textbf{Sistema de Gerenciamento de Modelos}: Contém os algoritmos e modelos matemáticos
+	\item \textbf{Sistema de Interface}: Facilita a interação entre usuário e sistema
 \end{itemize}
 
 \subsection{Aplicações em Ambientes Educacionais}
@@ -374,60 +584,65 @@ Um SAD típico é composto por três componentes principais:
 No contexto educacional, os SAD têm sido aplicados em diversas áreas:
 
 \begin{itemize}
-    \item Planejamento de horários e alocação de recursos
-    \item Gestão orçamentária e financeira
-    \item Análise de desempenho acadêmico e predição de resultados
-    \item Otimização de processos administrativos
-    \item Suporte ao planejamento estratégico institucional
+	\item Planejamento de horários e alocação de recursos
+	\item Gestão orçamentária e financeira
+	\item Análise de desempenho acadêmico e predição de resultados
+	\item Otimização de processos administrativos
+	\item Suporte ao planejamento estratégico institucional
 \end{itemize}
 
 \section{Project Management (PM)}
 
-As metodologias de gerenciamento de projetos fornecem frameworks estruturados para planejamento, execução e controle de projetos complexos.
+As metodologias de gerenciamento de projetos fornecem frameworks
+estruturados para planejamento, execução e controle de projetos
+complexos.
 
 \subsection{Metodologias PM}
 
 \subsubsection{PMI (Project Management Institute)}
 
-O PMI define cinco grupos de processos e dez áreas de conhecimento que formam a base do gerenciamento de projetos:
+O PMI define cinco grupos de processos e dez áreas de conhecimento
+que formam a base do gerenciamento de projetos:
 
 \textbf{Grupos de Processos:}
 \begin{itemize}
-    \item Iniciação
-    \item Planejamento
-    \item Execução
-    \item Monitoramento e Controle
-    \item Encerramento
+	\item Iniciação
+	\item Planejamento
+	\item Execução
+	\item Monitoramento e Controle
+	\item Encerramento
 \end{itemize}
 
 \textbf{Áreas de Conhecimento Relevantes para este projeto:}
 \begin{itemize}
-    \item Gerenciamento de Escopo
-    \item Gerenciamento de Cronograma
-    \item Gerenciamento de Qualidade
-    \item Gerenciamento de Riscos
+	\item Gerenciamento de Escopo
+	\item Gerenciamento de Cronograma
+	\item Gerenciamento de Qualidade
+	\item Gerenciamento de Riscos
 \end{itemize}
 
 \subsubsection{Metodologias Ágeis}
 
-As metodologias ágeis complementam as práticas tradicionais de PM, oferecendo flexibilidade e adaptabilidade:
+As metodologias ágeis complementam as práticas tradicionais de PM,
+oferecendo flexibilidade e adaptabilidade:
 
 \begin{itemize}
-    \item \textbf{Scrum}: Framework para desenvolvimento iterativo
-    \item \textbf{Kanban}: Sistema visual para gerenciamento de fluxo de trabalho
-    \item \textbf{Lean}: Foco na eliminação de desperdícios e otimização de valor
+	\item \textbf{Scrum}: Framework para desenvolvimento iterativo
+	\item \textbf{Kanban}: Sistema visual para gerenciamento de fluxo de trabalho
+	\item \textbf{Lean}: Foco na eliminação de desperdícios e otimização de valor
 \end{itemize}
 
 \subsection{Aplicação de PM no Desenvolvimento de Sistemas}
 
-A aplicação de técnicas de PM no desenvolvimento de sistemas de simulação garante:
+A aplicação de técnicas de PM no desenvolvimento de sistemas de
+simulação garante:
 
 \begin{itemize}
-    \item Controle rigoroso de escopo e requisitos
-    \item Gerenciamento eficaz de cronograma e recursos
-    \item Identificação e mitigação proativa de riscos
-    \item Garantia de qualidade através de processos estruturados
-    \item Comunicação eficiente entre stakeholders
+	\item Controle rigoroso de escopo e requisitos
+	\item Gerenciamento eficaz de cronograma e recursos
+	\item Identificação e mitigação proativa de riscos
+	\item Garantia de qualidade através de processos estruturados
+	\item Comunicação eficiente entre stakeholders
 \end{itemize}
 
 \section{Tecnologias de Desenvolvimento}
@@ -436,13 +651,14 @@ A aplicação de técnicas de PM no desenvolvimento de sistemas de simulação g
 
 \subsubsection{Python}
 
-Python é amplamente utilizado em simulação devido à sua sintaxe clara e extenso ecossistema de bibliotecas:
+Python é amplamente utilizado em simulação devido à sua sintaxe clara
+e extenso ecossistema de bibliotecas:
 
 \begin{itemize}
-    \item \textbf{NumPy}: Computação numérica eficiente
-    \item \textbf{SciPy}: Algoritmos científicos e estatísticos
-    \item \textbf{SimPy}: Framework específico para simulação por eventos discretos
-    \item \textbf{Matplotlib/Plotly}: Visualização de dados e resultados
+	\item \textbf{NumPy}: Computação numérica eficiente
+	\item \textbf{SciPy}: Algoritmos científicos e estatísticos
+	\item \textbf{SimPy}: Framework específico para simulação por eventos discretos
+	\item \textbf{Matplotlib/Plotly}: Visualização de dados e resultados
 \end{itemize}
 
 \subsection{Tecnologias Web para Interface}
@@ -452,9 +668,9 @@ Python é amplamente utilizado em simulação devido à sua sintaxe clara e exte
 Para interfaces de usuário responsivas e interativas:
 
 \begin{itemize}
-    \item \textbf{React.js}: Biblioteca para construção de interfaces reativas
-    \item \textbf{TypeScript}: Superset do JavaScript com tipagem estática
-    \item \textbf{D3.js}: Biblioteca para visualizações de dados interativas
+	\item \textbf{React.js}: Biblioteca para construção de interfaces reativas
+	\item \textbf{TypeScript}: Superset do JavaScript com tipagem estática
+	\item \textbf{D3.js}: Biblioteca para visualizações de dados interativas
 \end{itemize}
 
 \subsubsection{Backend e APIs}
@@ -462,9 +678,9 @@ Para interfaces de usuário responsivas e interativas:
 Para comunicação entre interface e engine de simulação:
 
 \begin{itemize}
-    \item \textbf{Node.js}: Ambiente de execução JavaScript server-side
-    \item \textbf{Express.js}: Framework web minimalista e flexível
-    \item \textbf{REST APIs}: Arquitetura para comunicação cliente-servidor
+	\item \textbf{Node.js}: Ambiente de execução JavaScript server-side
+	\item \textbf{Express.js}: Framework web minimalista e flexível
+	\item \textbf{REST APIs}: Arquitetura para comunicação cliente-servidor
 \end{itemize}
 
 % ----------------------------------------------------------
@@ -472,128 +688,143 @@ Para comunicação entre interface e engine de simulação:
 % ----------------------------------------------------------
 \chapter{Metodologia}
 
-Este capítulo descreve a metodologia utilizada para o desenvolvimento do gerador de modelos de simulação, aplicando técnicas de Project Management para garantir a qualidade e eficiência do processo.
+Este capítulo descreve a metodologia utilizada para o desenvolvimento
+do gerador de modelos de simulação, aplicando técnicas de Project
+Management para garantir a qualidade e eficiência do processo.
 
 \section{Tipo de Pesquisa}
 
-Esta pesquisa caracteriza-se como aplicada, com abordagem qualitativa e quantitativa, utilizando métodos de desenvolvimento de software especializado em simulação. A natureza aplicada da pesquisa visa solucionar problemas práticos de tomada de decisão no ambiente acadêmico através de ferramentas computacionais.
+Esta pesquisa caracteriza-se como aplicada, com abordagem qualitativa
+e quantitativa, utilizando métodos de desenvolvimento de software
+especializado em simulação. A natureza aplicada da pesquisa visa
+solucionar problemas práticos de tomada de decisão no ambiente
+acadêmico através de ferramentas computacionais.
 
 \section{Abordagem Metodológica}
 
 O desenvolvimento seguiu uma metodologia híbrida que combina:
 
 \begin{itemize}
-    \item \textbf{Práticas de Project Management}: Baseadas no PMI para controle de escopo, cronograma e qualidade
-    \item \textbf{Desenvolvimento Ágil}: Iterações curtas com feedback contínuo
-    \item \textbf{Metodologia de Simulação}: Validação e verificação rigorosa dos modelos desenvolvidos
+	\item \textbf{Práticas de Project Management}: Baseadas no PMI para controle de escopo, cronograma e qualidade
+	\item \textbf{Desenvolvimento Ágil}: Iterações curtas com feedback contínuo
+	\item \textbf{Metodologia de Simulação}: Validação e verificação rigorosa dos modelos desenvolvidos
 \end{itemize}
 
 \section{Procedimentos Metodológicos}
 
-O desenvolvimento seguiu uma abordagem estruturada em fases bem definidas:
+O desenvolvimento seguiu uma abordagem estruturada em fases bem
+definidas:
 
 \begin{enumerate}
-    \item \textbf{Análise de Requisitos Específicos para Simulação}
-    \begin{itemize}
-        \item Levantamento de cenários acadêmicos a serem modelados
-        \item Definição de parâmetros e variáveis de entrada
-        \item Especificação de métricas de saída e relatórios
-    \end{itemize}
-    
-    \item \textbf{Design da Arquitetura do Sistema}
-    \begin{itemize}
-        \item Separação entre engine de simulação e interface de usuário
-        \item Definição de APIs para comunicação entre componentes
-        \item Estruturação do banco de dados para armazenamento de modelos
-    \end{itemize}
-    
-    \item \textbf{Desenvolvimento do Engine de Simulação}
-    \begin{itemize}
-        \item Implementação dos algoritmos de simulação discreta
-        \item Desenvolvimento dos modelos matemáticos base
-        \item Criação do sistema de geração de relatórios
-    \end{itemize}
-    
-    \item \textbf{Desenvolvimento da Interface de Usuário}
-    \begin{itemize}
-        \item Interface drag-and-drop para criação de modelos
-        \item Componentes de visualização de resultados
-        \item Sistema de templates para cenários comuns
-    \end{itemize}
-    
-    \item \textbf{Integração e Testes Especializados}
-    \begin{itemize}
-        \item Testes de precisão dos algoritmos de simulação
-        \item Validação com cenários conhecidos
-        \item Testes de performance e escalabilidade
-    \end{itemize}
-    
-    \item \textbf{Validação e Documentação}
-    \begin{itemize}
-        \item Testes com usuários finais
-        \item Comparação com ferramentas existentes
-        \item Documentação técnica e de usuário
-    \end{itemize}
+	\item \textbf{Análise de Requisitos Específicos para Simulação}
+	      \begin{itemize}
+		      \item Levantamento de cenários acadêmicos a serem modelados
+		      \item Definição de parâmetros e variáveis de entrada
+		      \item Especificação de métricas de saída e relatórios
+	      \end{itemize}
+
+	\item \textbf{Design da Arquitetura do Sistema}
+	      \begin{itemize}
+		      \item Separação entre engine de simulação e interface de usuário
+		      \item Definição de APIs para comunicação entre componentes
+		      \item Estruturação do banco de dados para armazenamento de modelos
+	      \end{itemize}
+
+	\item \textbf{Desenvolvimento do Engine de Simulação}
+	      \begin{itemize}
+		      \item Implementação dos algoritmos de simulação discreta
+		      \item Desenvolvimento dos modelos matemáticos base
+		      \item Criação do sistema de geração de relatórios
+	      \end{itemize}
+
+	\item \textbf{Desenvolvimento da Interface de Usuário}
+	      \begin{itemize}
+		      \item Interface drag-and-drop para criação de modelos
+		      \item Componentes de visualização de resultados
+		      \item Sistema de templates para cenários comuns
+	      \end{itemize}
+
+	\item \textbf{Integração e Testes Especializados}
+	      \begin{itemize}
+		      \item Testes de precisão dos algoritmos de simulação
+		      \item Validação com cenários conhecidos
+		      \item Testes de performance e escalabilidade
+	      \end{itemize}
+
+	\item \textbf{Validação e Documentação}
+	      \begin{itemize}
+		      \item Testes com usuários finais
+		      \item Comparação com ferramentas existentes
+		      \item Documentação técnica e de usuário
+	      \end{itemize}
 \end{enumerate}
 
 \section{Ferramentas Utilizadas}
 
-Para o desenvolvimento do sistema, foram utilizadas as seguintes tecnologias:
+Para o desenvolvimento do sistema, foram utilizadas as seguintes
+tecnologias:
 
 \begin{itemize}
-    \item \textbf{Frontend}: React.js, TypeScript, Material-UI
-    \item \textbf{Backend}: Node.js, Express.js, PostgreSQL
-    \item \textbf{Simulação}: Python com bibliotecas NumPy, SciPy e SimPy
-    \item \textbf{Visualização}: D3.js, Chart.js
-    \item \textbf{Ferramentas}: Git, Docker, Jest (testes), PyTest (testes Python)
+	\item \textbf{Frontend}: React.js, TypeScript, Material-UI
+	\item \textbf{Backend}: Node.js, Express.js, PostgreSQL
+	\item \textbf{Simulação}: Python com bibliotecas NumPy, SciPy e SimPy
+	\item \textbf{Visualização}: D3.js, Chart.js
+	\item \textbf{Ferramentas}: Git, Docker, Jest (testes), PyTest (testes Python)
 \end{itemize}
 
 \section{Plano de Testes}
 
-O plano de testes foi estruturado para garantir a qualidade e confiabilidade do sistema de simulação desenvolvido. Os testes foram organizados em diferentes categorias para cobrir todos os aspectos críticos do sistema.
+O plano de testes foi estruturado para garantir a qualidade e
+confiabilidade do sistema de simulação desenvolvido. Os testes foram
+organizados em diferentes categorias para cobrir todos os aspectos
+críticos do sistema.
 
 \subsection{Testes Unitários}
 
-Os testes unitários focam na validação de componentes individuais do sistema:
+Os testes unitários focam na validação de componentes individuais do
+sistema:
 
 \begin{itemize}
-    \item \textbf{Algoritmos de Simulação}: Validação dos cálculos matemáticos e lógica de simulação
-    \item \textbf{Funções de Entrada de Dados}: Verificação da validação e processamento de dados de entrada
-    \item \textbf{Módulos de Geração de Relatórios}: Teste da corretude dos relatórios gerados
-    \item \textbf{Componentes de Interface}: Validação do comportamento individual dos componentes UI
+	\item \textbf{Algoritmos de Simulação}: Validação dos cálculos matemáticos e lógica de simulação
+	\item \textbf{Funções de Entrada de Dados}: Verificação da validação e processamento de dados de entrada
+	\item \textbf{Módulos de Geração de Relatórios}: Teste da corretude dos relatórios gerados
+	\item \textbf{Componentes de Interface}: Validação do comportamento individual dos componentes UI
 \end{itemize}
 
 \subsection{Testes de Integração}
 
-Os testes de integração verificam a comunicação entre diferentes módulos:
+Os testes de integração verificam a comunicação entre diferentes
+módulos:
 
 \begin{itemize}
-    \item \textbf{Frontend-Backend}: Comunicação via API REST
-    \item \textbf{Backend-Engine de Simulação}: Integração entre a API e os algoritmos de simulação
-    \item \textbf{Sistema de Persistência}: Integração com banco de dados
-    \item \textbf{Módulos de Visualização}: Integração entre dados simulados e componentes gráficos
+	\item \textbf{Frontend-Backend}: Comunicação via API REST
+	\item \textbf{Backend-Engine de Simulação}: Integração entre a API e os algoritmos de simulação
+	\item \textbf{Sistema de Persistência}: Integração com banco de dados
+	\item \textbf{Módulos de Visualização}: Integração entre dados simulados e componentes gráficos
 \end{itemize}
 
 \subsection{Testes de Performance}
 
-Os testes de performance avaliam o desempenho do sistema sob diferentes cargas:
+Os testes de performance avaliam o desempenho do sistema sob
+diferentes cargas:
 
 \begin{itemize}
-    \item \textbf{Tempo de Execução}: Medição do tempo necessário para executar simulações de diferentes complexidades
-    \item \textbf{Uso de Memória}: Monitoramento do consumo de memória durante simulações extensas
-    \item \textbf{Escalabilidade}: Teste com múltiplas simulações simultâneas
-    \item \textbf{Responsividade da Interface}: Tempo de resposta da interface durante operações intensivas
+	\item \textbf{Tempo de Execução}: Medição do tempo necessário para executar simulações de diferentes complexidades
+	\item \textbf{Uso de Memória}: Monitoramento do consumo de memória durante simulações extensas
+	\item \textbf{Escalabilidade}: Teste com múltiplas simulações simultâneas
+	\item \textbf{Responsividade da Interface}: Tempo de resposta da interface durante operações intensivas
 \end{itemize}
 
 \subsection{Testes de Validação}
 
-Os testes de validação verificam se os resultados das simulações são consistentes e corretos:
+Os testes de validação verificam se os resultados das simulações são
+consistentes e corretos:
 
 \begin{itemize}
-    \item \textbf{Validação Matemática}: Comparação com cálculos manuais para cenários simples
-    \item \textbf{Benchmarking}: Comparação com ferramentas de simulação estabelecidas
-    \item \textbf{Testes de Cenários Extremos}: Validação do comportamento em condições limite
-    \item \textbf{Reprodutibilidade}: Verificação de que simulações com mesmos parâmetros produzem resultados consistentes
+	\item \textbf{Validação Matemática}: Comparação com cálculos manuais para cenários simples
+	\item \textbf{Benchmarking}: Comparação com ferramentas de simulação estabelecidas
+	\item \textbf{Testes de Cenários Extremos}: Validação do comportamento em condições limite
+	\item \textbf{Reprodutibilidade}: Verificação de que simulações com mesmos parâmetros produzem resultados consistentes
 \end{itemize}
 
 \subsection{Testes de Usabilidade}
@@ -601,142 +832,149 @@ Os testes de validação verificam se os resultados das simulações são consis
 Os testes de usabilidade avaliam a experiência do usuário:
 
 \begin{itemize}
-    \item \textbf{Facilidade de Uso}: Avaliação da curva de aprendizado para novos usuários
-    \item \textbf{Intuitividade da Interface}: Teste da clareza e organização dos elementos da interface
-    \item \textbf{Acessibilidade}: Verificação de conformidade com padrões de acessibilidade
-    \item \textbf{Documentação}: Avaliação da qualidade e completude da documentação do usuário
+	\item \textbf{Facilidade de Uso}: Avaliação da curva de aprendizado para novos usuários
+	\item \textbf{Intuitividade da Interface}: Teste da clareza e organização dos elementos da interface
+	\item \textbf{Acessibilidade}: Verificação de conformidade com padrões de acessibilidade
+	\item \textbf{Documentação}: Avaliação da qualidade e completude da documentação do usuário
 \end{itemize}
 
 \subsection{Critérios de Aceitação}
 
-Para cada categoria de teste, foram definidos critérios específicos de aceitação:
+Para cada categoria de teste, foram definidos critérios específicos
+de aceitação:
 
 \begin{itemize}
-    \item Taxa de cobertura de código superior a 85\%
-    \item Tempo de resposta inferior a 3 segundos para simulações básicas
-    \item Precisão dos resultados com margem de erro inferior a 1\%
-    \item Interface responsiva em dispositivos com resolução mínima de 1024x768
-    \item Compatibilidade com navegadores modernos (Chrome, Firefox, Safari, Edge)
+	\item Taxa de cobertura de código superior a 85\%
+	\item Tempo de resposta inferior a 3 segundos para simulações básicas
+	\item Precisão dos resultados com margem de erro inferior a 1\%
+	\item Interface responsiva em dispositivos com resolução mínima de 1024x768
+	\item Compatibilidade com navegadores modernos (Chrome, Firefox, Safari,
+	      Edge)
 \end{itemize}
 
 \section{Cronograma}
 
-O desenvolvimento do projeto foi planejado seguindo as melhores práticas de gerenciamento de projetos, com divisão clara das atividades e marcos de entrega bem definidos.
+O desenvolvimento do projeto foi planejado seguindo as melhores
+práticas de gerenciamento de projetos, com divisão clara das
+atividades e marcos de entrega bem definidos.
 
 \subsection{Fases do Projeto}
 
-O projeto foi dividido em 6 fases principais, cada uma com objetivos específicos e entregáveis definidos:
+O projeto foi dividido em 6 fases principais, cada uma com objetivos
+específicos e entregáveis definidos:
 
 \subsubsection{Fase 1: Análise e Planejamento (4 semanas)}
 \begin{itemize}
-    \item Levantamento detalhado de requisitos
-    \item Análise de ferramentas e tecnologias
-    \item Definição da arquitetura do sistema
-    \item Elaboração do plano de projeto detalhado
-    \item \textbf{Entregável}: Documento de Requisitos e Especificação Técnica
+	\item Levantamento detalhado de requisitos
+	\item Análise de ferramentas e tecnologias
+	\item Definição da arquitetura do sistema
+	\item Elaboração do plano de projeto detalhado
+	\item \textbf{Entregável}: Documento de Requisitos e Especificação Técnica
 \end{itemize}
 
 \subsubsection{Fase 2: Desenvolvimento do Core de Simulação (6 semanas)}
 \begin{itemize}
-    \item Implementação dos algoritmos básicos de simulação
-    \item Desenvolvimento do motor de cálculo
-    \item Criação dos modelos matemáticos base
-    \item Testes unitários dos componentes core
-    \item \textbf{Entregável}: Engine de Simulação Funcional
+	\item Implementação dos algoritmos básicos de simulação
+	\item Desenvolvimento do motor de cálculo
+	\item Criação dos modelos matemáticos base
+	\item Testes unitários dos componentes core
+	\item \textbf{Entregável}: Engine de Simulação Funcional
 \end{itemize}
 
 \subsubsection{Fase 3: Desenvolvimento da Interface (4 semanas)}
 \begin{itemize}
-    \item Design e implementação da interface de usuário
-    \item Desenvolvimento dos componentes de visualização
-    \item Integração com o engine de simulação
-    \item Testes de interface e usabilidade inicial
-    \item \textbf{Entregável}: Interface de Usuário Completa
+	\item Design e implementação da interface de usuário
+	\item Desenvolvimento dos componentes de visualização
+	\item Integração com o engine de simulação
+	\item Testes de interface e usabilidade inicial
+	\item \textbf{Entregável}: Interface de Usuário Completa
 \end{itemize}
 
 \subsubsection{Fase 4: Integração e Testes (3 semanas)}
 \begin{itemize}
-    \item Integração completa dos módulos
-    \item Execução de testes de integração
-    \item Testes de performance e escalabilidade
-    \item Correção de bugs e otimizações
-    \item \textbf{Entregável}: Sistema Integrado e Testado
+	\item Integração completa dos módulos
+	\item Execução de testes de integração
+	\item Testes de performance e escalabilidade
+	\item Correção de bugs e otimizações
+	\item \textbf{Entregável}: Sistema Integrado e Testado
 \end{itemize}
 
 \subsubsection{Fase 5: Validação e Refinamento (3 semanas)}
 \begin{itemize}
-    \item Testes de validação com cenários reais
-    \item Refinamento baseado em feedback
-    \item Otimização de performance
-    \item Preparação da documentação final
-    \item \textbf{Entregável}: Sistema Validado e Otimizado
+	\item Testes de validação com cenários reais
+	\item Refinamento baseado em feedback
+	\item Otimização de performance
+	\item Preparação da documentação final
+	\item \textbf{Entregável}: Sistema Validado e Otimizado
 \end{itemize}
 
 \subsubsection{Fase 6: Documentação e Entrega (2 semanas)}
 \begin{itemize}
-    \item Finalização da documentação técnica
-    \item Preparação dos manuais de usuário
-    \item Elaboração do relatório final
-    \item Preparação da apresentação
-    \item \textbf{Entregável}: Projeto Completo Documentado
+	\item Finalização da documentação técnica
+	\item Preparação dos manuais de usuário
+	\item Elaboração do relatório final
+	\item Preparação da apresentação
+	\item \textbf{Entregável}: Projeto Completo Documentado
 \end{itemize}
 
 \subsection{Cronograma Detalhado}
 
 \begin{table}[h]
-\centering
-\caption{Cronograma de Execução do Projeto}
-\begin{tabular}{|l|c|c|c|}
-\hline
-\textbf{Fase} & \textbf{Duração} & \textbf{Início} & \textbf{Término} \\
-\hline
-Análise e Planejamento & 4 semanas & Semana 1 & Semana 4 \\
-\hline
-Desenvolvimento Core & 6 semanas & Semana 5 & Semana 10 \\
-\hline
-Desenvolvimento Interface & 4 semanas & Semana 11 & Semana 14 \\
-\hline
-Integração e Testes & 3 semanas & Semana 15 & Semana 17 \\
-\hline
-Validação e Refinamento & 3 semanas & Semana 18 & Semana 20 \\
-\hline
-Documentação e Entrega & 2 semanas & Semana 21 & Semana 22 \\
-\hline
-\textbf{Total} & \textbf{22 semanas} & \textbf{-} & \textbf{-} \\
-\hline
-\end{tabular}
-\label{tab:cronograma}
+	\centering
+	\caption{Cronograma de Execução do Projeto}
+	\begin{tabular}{|l|c|c|c|}
+		\hline
+		\textbf{Fase}             & \textbf{Duração}    & \textbf{Início} & \textbf{Término} \\
+		\hline
+		Análise e Planejamento    & 4 semanas           & Semana 1        & Semana 4         \\
+		\hline
+		Desenvolvimento Core      & 6 semanas           & Semana 5        & Semana 10        \\
+		\hline
+		Desenvolvimento Interface & 4 semanas           & Semana 11       & Semana 14        \\
+		\hline
+		Integração e Testes       & 3 semanas           & Semana 15       & Semana 17        \\
+		\hline
+		Validação e Refinamento   & 3 semanas           & Semana 18       & Semana 20        \\
+		\hline
+		Documentação e Entrega    & 2 semanas           & Semana 21       & Semana 22        \\
+		\hline
+		\textbf{Total}            & \textbf{22 semanas} & \textbf{-}      & \textbf{-}       \\
+		\hline
+	\end{tabular}
+	\label{tab:cronograma}
 \end{table}
 
 \subsection{Marcos Críticos}
 
-Os seguintes marcos foram identificados como críticos para o sucesso do projeto:
+Os seguintes marcos foram identificados como críticos para o sucesso
+do projeto:
 
 \begin{itemize}
-    \item \textbf{Marco 1}: Aprovação da arquitetura do sistema (Semana 4)
-    \item \textbf{Marco 2}: Engine de simulação operacional (Semana 10)
-    \item \textbf{Marco 3}: Interface integrada funcionando (Semana 14)
-    \item \textbf{Marco 4}: Sistema completo testado (Semana 17)
-    \item \textbf{Marco 5}: Validação final aprovada (Semana 20)
+	\item \textbf{Marco 1}: Aprovação da arquitetura do sistema (Semana 4)
+	\item \textbf{Marco 2}: Engine de simulação operacional (Semana 10)
+	\item \textbf{Marco 3}: Interface integrada funcionando (Semana 14)
+	\item \textbf{Marco 4}: Sistema completo testado (Semana 17)
+	\item \textbf{Marco 5}: Validação final aprovada (Semana 20)
 \end{itemize}
 
 \subsection{Gestão de Riscos}
 
-Foram identificados os principais riscos do projeto e suas respectivas estratégias de mitigação:
+Foram identificados os principais riscos do projeto e suas
+respectivas estratégias de mitigação:
 
 \begin{itemize}
-    \item \textbf{Risco Técnico}: Complexidade dos algoritmos de simulação
-    \begin{itemize}
-        \item \textit{Mitigação}: Prototipagem inicial e validação incremental
-    \end{itemize}
-    \item \textbf{Risco de Cronograma}: Atrasos no desenvolvimento
-    \begin{itemize}
-        \item \textit{Mitigação}: Buffer de tempo em fases críticas e desenvolvimento paralelo quando possível
-    \end{itemize}
-    \item \textbf{Risco de Qualidade}: Performance inadequada do sistema
-    \begin{itemize}
-        \item \textit{Mitigação}: Testes de performance desde as fases iniciais
-    \end{itemize}
+	\item \textbf{Risco Técnico}: Complexidade dos algoritmos de simulação
+	      \begin{itemize}
+		      \item \textit{Mitigação}: Prototipagem inicial e validação incremental
+	      \end{itemize}
+	\item \textbf{Risco de Cronograma}: Atrasos no desenvolvimento
+	      \begin{itemize}
+		      \item \textit{Mitigação}: Buffer de tempo em fases críticas e desenvolvimento paralelo quando possível
+	      \end{itemize}
+	\item \textbf{Risco de Qualidade}: Performance inadequada do sistema
+	      \begin{itemize}
+		      \item \textit{Mitigação}: Testes de performance desde as fases iniciais
+	      \end{itemize}
 \end{itemize}
 
 % ----------------------------------------------------------
@@ -744,21 +982,25 @@ Foram identificados os principais riscos do projeto e suas respectivas estratég
 % ----------------------------------------------------------
 \chapter{Desenvolvimento}
 
-Este capítulo apresenta o desenvolvimento do gerador de modelos de simulação, detalhando a arquitetura, implementação dos componentes principais e o processo de validação do sistema.
+Este capítulo apresenta o desenvolvimento do gerador de modelos de
+simulação, detalhando a arquitetura, implementação dos componentes
+principais e o processo de validação do sistema.
 
 \section{Arquitetura do Sistema}
 
-O sistema foi desenvolvido seguindo uma arquitetura modular que separa claramente as responsabilidades entre os diferentes componentes:
+O sistema foi desenvolvido seguindo uma arquitetura modular que
+separa claramente as responsabilidades entre os diferentes
+componentes:
 
 \subsection{Visão Geral da Arquitetura}
 
 A arquitetura é composta por quatro camadas principais:
 
 \begin{itemize}
-    \item \textbf{Camada de Apresentação}: Interface web responsiva desenvolvida em React.js
-    \item \textbf{Camada de API}: Serviços RESTful desenvolvidos em Node.js/Express.js
-    \item \textbf{Camada de Simulação}: Engine de simulação implementado em Python
-    \item \textbf{Camada de Dados}: Banco de dados PostgreSQL para persistência de modelos e resultados
+	\item \textbf{Camada de Apresentação}: Interface web responsiva desenvolvida em React.js
+	\item \textbf{Camada de API}: Serviços RESTful desenvolvidos em Node.js/Express.js
+	\item \textbf{Camada de Simulação}: Engine de simulação implementado em Python
+	\item \textbf{Camada de Dados}: Banco de dados PostgreSQL para persistência de modelos e resultados
 \end{itemize}
 
 \subsection{Componentes do Engine de Simulação}
@@ -766,25 +1008,28 @@ A arquitetura é composta por quatro camadas principais:
 O engine de simulação é o núcleo do sistema, responsável por:
 
 \begin{itemize}
-    \item \textbf{Parser de Modelos}: Interpreta modelos criados na interface visual
-    \item \textbf{Simulador DES}: Executa simulações por eventos discretos
-    \item \textbf{Gerador de Relatórios}: Produz análises estatísticas e visualizações
-    \item \textbf{Validador}: Verifica consistência e validade dos modelos
+	\item \textbf{Parser de Modelos}: Interpreta modelos criados na interface visual
+	\item \textbf{Simulador DES}: Executa simulações por eventos discretos
+	\item \textbf{Gerador de Relatórios}: Produz análises estatísticas e visualizações
+	\item \textbf{Validador}: Verifica consistência e validade dos modelos
 \end{itemize}
 
 \section{Implementação do Engine de Simulação}
 
-O engine de simulação foi implementado utilizando Python e bibliotecas especializadas, garantindo performance e precisão nos cálculos.
+O engine de simulação foi implementado utilizando Python e
+bibliotecas especializadas, garantindo performance e precisão nos
+cálculos.
 
 \subsection{Algoritmos de Simulação}
 
-Foram implementados algoritmos específicos para simulação por eventos discretos:
+Foram implementados algoritmos específicos para simulação por eventos
+discretos:
 
 \begin{itemize}
-    \item Gerenciamento de lista de eventos futuros (FEL - Future Event List)
-    \item Controle de tempo de simulação e avanço temporal
-    \item Geração de números aleatórios com diferentes distribuições
-    \item Cálculo de estatísticas durante a execução
+	\item Gerenciamento de lista de eventos futuros (FEL - Future Event List)
+	\item Controle de tempo de simulação e avanço temporal
+	\item Geração de números aleatórios com diferentes distribuições
+	\item Cálculo de estatísticas durante a execução
 \end{itemize}
 
 \subsection{Modelos Matemáticos}
@@ -792,45 +1037,48 @@ Foram implementados algoritmos específicos para simulação por eventos discret
 O sistema suporta diversos tipos de modelos matemáticos:
 
 \begin{itemize}
-    \item Modelos de filas (M/M/1, M/M/c, M/G/1)
-    \item Modelos de inventário e estoque
-    \item Modelos de fluxo de processos acadêmicos
-    \item Modelos de alocação de recursos
+	\item Modelos de filas (M/M/1, M/M/c, M/G/1)
+	\item Modelos de inventário e estoque
+	\item Modelos de fluxo de processos acadêmicos
+	\item Modelos de alocação de recursos
 \end{itemize}
 
 \section{Implementação da Interface de Usuário}
 
-A interface foi desenvolvida priorizando usabilidade e intuitividade, permitindo que usuários não técnicos criem modelos de simulação complexos.
+A interface foi desenvolvida priorizando usabilidade e intuitividade,
+permitindo que usuários não técnicos criem modelos de simulação
+complexos.
 
 \subsection{Componentes Principais}
 
 \begin{itemize}
-    \item \textbf{Editor Visual}: Interface drag-and-drop para construção de modelos
-    \item \textbf{Painel de Configuração}: Formulários para definição de parâmetros
-    \item \textbf{Dashboard de Resultados}: Visualizações interativas dos resultados
-    \item \textbf{Gerenciador de Templates}: Biblioteca de modelos pré-configurados
+	\item \textbf{Editor Visual}: Interface drag-and-drop para construção de modelos
+	\item \textbf{Painel de Configuração}: Formulários para definição de parâmetros
+	\item \textbf{Dashboard de Resultados}: Visualizações interativas dos resultados
+	\item \textbf{Gerenciador de Templates}: Biblioteca de modelos pré-configurados
 \end{itemize}
 
 \subsection{Tecnologias Utilizadas}
 
 \begin{itemize}
-    \item React.js com hooks para gerenciamento de estado
-    \item D3.js para visualizações de dados interativas
-    \item Material-UI para componentes de interface consistentes
-    \item WebSocket para comunicação em tempo real com o engine
+	\item React.js com hooks para gerenciamento de estado
+	\item D3.js para visualizações de dados interativas
+	\item Material-UI para componentes de interface consistentes
+	\item WebSocket para comunicação em tempo real com o engine
 \end{itemize}
 
 \section{Integração e Comunicação}
 
-A integração entre os componentes foi implementada através de APIs RESTful e comunicação assíncrona:
+A integração entre os componentes foi implementada através de APIs
+RESTful e comunicação assíncrona:
 
 \subsection{API de Simulação}
 
 \begin{itemize}
-    \item Endpoints para criação e edição de modelos
-    \item Serviços de execução de simulações
-    \item APIs de recuperação de resultados e relatórios
-    \item Sistema de autenticação e autorização
+	\item Endpoints para criação e edição de modelos
+	\item Serviços de execução de simulações
+	\item APIs de recuperação de resultados e relatórios
+	\item Sistema de autenticação e autorização
 \end{itemize}
 
 \subsection{Comunicação Assíncrona}
@@ -838,79 +1086,85 @@ A integração entre os componentes foi implementada através de APIs RESTful e 
 Para simulações de longa duração, foi implementado um sistema de:
 
 \begin{itemize}
-    \item Filas de execução para gerenciar múltiplas simulações
-    \item Notificações em tempo real sobre status de execução
-    \item Sistema de cache para resultados frequentemente acessados
+	\item Filas de execução para gerenciar múltiplas simulações
+	\item Notificações em tempo real sobre status de execução
+	\item Sistema de cache para resultados frequentemente acessados
 \end{itemize}
 
 \section{Testes e Validação}
 
-O processo de testes foi estruturado seguindo o plano estabelecido na metodologia, com foco especial na validação dos algoritmos de simulação.
+O processo de testes foi estruturado seguindo o plano estabelecido na
+metodologia, com foco especial na validação dos algoritmos de
+simulação.
 
 \section{Resultados Esperados e Obtidos}
 
-Esta seção apresenta uma análise comparativa entre os resultados esperados no início do projeto e os resultados efetivamente obtidos durante o desenvolvimento e validação do sistema.
+Esta seção apresenta uma análise comparativa entre os resultados
+esperados no início do projeto e os resultados efetivamente obtidos
+durante o desenvolvimento e validação do sistema.
 
 \subsection{Resultados Esperados}
 
-No início do projeto, foram estabelecidos os seguintes resultados esperados:
+No início do projeto, foram estabelecidos os seguintes resultados
+esperados:
 
 \subsubsection{Funcionalidades do Sistema}
 \begin{itemize}
-    \item Sistema capaz de gerar modelos de simulação personalizáveis
-    \item Interface intuitiva para usuários não técnicos
-    \item Tempo de resposta inferior a 3 segundos para simulações básicas
-    \item Suporte a múltiplos cenários simultâneos
-    \item Geração automática de relatórios e visualizações
-    \item Integração com dados externos via APIs
+	\item Sistema capaz de gerar modelos de simulação personalizáveis
+	\item Interface intuitiva para usuários não técnicos
+	\item Tempo de resposta inferior a 3 segundos para simulações básicas
+	\item Suporte a múltiplos cenários simultâneos
+	\item Geração automática de relatórios e visualizações
+	\item Integração com dados externos via APIs
 \end{itemize}
 
 \subsubsection{Performance e Qualidade}
 \begin{itemize}
-    \item Cobertura de testes superior a 85\%
-    \item Precisão dos cálculos com margem de erro inferior a 1\%
-    \item Capacidade de processar até 1000 entidades simultâneas
-    \item Interface responsiva em dispositivos diversos
-    \item Compatibilidade cross-browser
+	\item Cobertura de testes superior a 85\%
+	\item Precisão dos cálculos com margem de erro inferior a 1\%
+	\item Capacidade de processar até 1000 entidades simultâneas
+	\item Interface responsiva em dispositivos diversos
+	\item Compatibilidade cross-browser
 \end{itemize}
 
 \subsubsection{Impacto e Aplicabilidade}
 \begin{itemize}
-    \item Redução de 50\% no tempo necessário para criar modelos de simulação
-    \item Facilidade de uso que permita adoção por gestores não técnicos
-    \item Templates pré-configurados para cenários acadêmicos comuns
-    \item Documentação completa e tutoriais interativos
+	\item Redução de 50\% no tempo necessário para criar modelos de simulação
+	\item Facilidade de uso que permita adoção por gestores não técnicos
+	\item Templates pré-configurados para cenários acadêmicos comuns
+	\item Documentação completa e tutoriais interativos
 \end{itemize}
 
 \subsection{Resultados Obtidos}
 
-Os resultados efetivamente alcançados durante o desenvolvimento foram:
+Os resultados efetivamente alcançados durante o desenvolvimento
+foram:
 
 \subsubsection{Funcionalidades Implementadas}
 \begin{itemize}
-    \item \textbf{Sistema de geração de modelos}: Implementado com sucesso, permitindo criação de modelos através de interface drag-and-drop
-    \item \textbf{Interface intuitiva}: Desenvolvida utilizando princípios de UX/UI modernos com feedback positivo nos testes de usabilidade
-    \item \textbf{Performance de resposta}: Alcançado tempo médio de 2.1 segundos para simulações básicas (superando a meta de 3 segundos)
-    \item \textbf{Múltiplos cenários}: Implementado suporte para até 5 simulações simultâneas
-    \item \textbf{Relatórios automáticos}: Sistema completo de geração de relatórios em PDF e visualizações interativas
-    \item \textbf{Integração com APIs}: Implementação parcial - suporte a APIs REST básicas, integração avançada planejada para versões futuras
+	\item \textbf{Sistema de geração de modelos}: Implementado com sucesso, permitindo criação de modelos através de interface drag-and-drop
+	\item \textbf{Interface intuitiva}: Desenvolvida utilizando princípios de UX/UI modernos com feedback positivo nos testes de usabilidade
+	\item \textbf{Performance de resposta}: Alcançado tempo médio de 2.1 segundos para simulações básicas (superando a meta de 3 segundos)
+	\item \textbf{Múltiplos cenários}: Implementado suporte para até 5 simulações simultâneas
+	\item \textbf{Relatórios automáticos}: Sistema completo de geração de relatórios em PDF e visualizações interativas
+	\item \textbf{Integração com APIs}: Implementação parcial - suporte a APIs REST básicas, integração avançada planejada para versões futuras
 \end{itemize}
 
 \subsubsection{Métricas de Performance}
 \begin{itemize}
-    \item \textbf{Cobertura de testes}: 89\% (superando a meta de 85\%)
-    \item \textbf{Precisão dos cálculos}: Margem de erro de 0.3\% (superando a meta de 1\%)
-    \item \textbf{Capacidade de processamento}: Sistema testado com até 1500 entidades simultâneas (superando a meta de 1000)
-    \item \textbf{Responsividade}: Interface totalmente responsiva testada em dispositivos de 320px a 2560px
-    \item \textbf{Compatibilidade}: Funcional em Chrome, Firefox, Safari e Edge (versões atuais)
+	\item \textbf{Cobertura de testes}: 89\% (superando a meta de 85\%)
+	\item \textbf{Precisão dos cálculos}: Margem de erro de 0.3\% (superando a meta de 1\%)
+	\item \textbf{Capacidade de processamento}: Sistema testado com até 1500 entidades simultâneas (superando a meta de 1000)
+	\item \textbf{Responsividade}: Interface totalmente responsiva testada em dispositivos de 320px a 2560px
+	\item \textbf{Compatibilidade}: Funcional em Chrome, Firefox, Safari e Edge (versões atuais)
 \end{itemize}
 
 \subsubsection{Impacto Medido}
 \begin{itemize}
-    \item \textbf{Redução de tempo}: Testes com usuários demonstraram redução média de 65\% no tempo de criação de modelos (superando a meta de 50\%)
-    \item \textbf{Facilidade de uso}: Score de usabilidade SUS de 78 pontos (considerado "Bom" na escala padrão)
-    \item \textbf{Templates}: 12 templates implementados cobrindo os cenários mais comuns identificados na pesquisa
-    \item \textbf{Documentação}: Documentação técnica completa e 8 tutoriais interativos desenvolvidos
+	\item \textbf{Redução de tempo}: Testes com usuários demonstraram redução média de 65\% no tempo de criação de modelos (superando a meta de 50\%)
+	\item \textbf{Facilidade de uso}: Score de usabilidade SUS de 78 pontos (considerado "Bom" na escala padrão)
+	\item \textbf{Templates}: 12 templates implementados cobrindo os cenários mais comuns identificados na pesquisa
+	\item \textbf{Documentação}: Documentação técnica completa e 8 tutoriais interativos desenvolvidos
 \end{itemize}
 
 \subsection{Análise Comparativa}
@@ -919,162 +1173,201 @@ Os resultados efetivamente alcançados durante o desenvolvimento foram:
 Alguns aspectos do projeto superaram as expectativas iniciais:
 
 \begin{itemize}
-    \item \textbf{Performance}: O sistema demonstrou performance superior ao esperado, tanto em tempo de resposta quanto em capacidade de processamento
-    \item \textbf{Precisão}: A margem de erro obtida foi significativamente menor que a esperada
-    \item \textbf{Eficiência}: A redução no tempo de criação de modelos foi 15 pontos percentuais acima da meta
+	\item \textbf{Performance}: O sistema demonstrou performance superior ao esperado, tanto em tempo de resposta quanto em capacidade de processamento
+	\item \textbf{Precisão}: A margem de erro obtida foi significativamente menor que a esperada
+	\item \textbf{Eficiência}: A redução no tempo de criação de modelos foi 15 pontos percentuais acima da meta
 \end{itemize}
 
 \subsubsection{Desafios Encontrados}
 Durante o desenvolvimento, alguns desafios impactaram os resultados:
 
 \begin{itemize}
-    \item \textbf{Integração com APIs}: A complexidade da integração com sistemas externos diversos foi maior que o antecipado, resultando em implementação parcial
-    \item \textbf{Otimização de memória}: Simulações muito complexas inicialmente apresentaram consumo elevado de memória, exigindo otimizações adicionais
-    \item \textbf{Validação matemática}: Alguns algoritmos específicos demandaram mais tempo de validação que o previsto
+	\item \textbf{Integração com APIs}: A complexidade da integração com sistemas externos diversos foi maior que o antecipado, resultando em implementação parcial
+	\item \textbf{Otimização de memória}: Simulações muito complexas inicialmente apresentaram consumo elevado de memória, exigindo otimizações adicionais
+	\item \textbf{Validação matemática}: Alguns algoritmos específicos demandaram mais tempo de validação que o previsto
 \end{itemize}
 
 \subsubsection{Funcionalidades Adicionais}
-Algumas funcionalidades não previstas inicialmente foram implementadas:
+Algumas funcionalidades não previstas inicialmente foram
+implementadas:
 
 \begin{itemize}
-    \item Sistema de versionamento de modelos
-    \item Funcionalidade de colaboração em tempo real
-    \item Exportação de modelos em múltiplos formatos
-    \item Dashboard de monitoramento de performance do sistema
+	\item Sistema de versionamento de modelos
+	\item Funcionalidade de colaboração em tempo real
+	\item Exportação de modelos em múltiplos formatos
+	\item Dashboard de monitoramento de performance do sistema
 \end{itemize}
 
 \subsection{Validação dos Resultados}
 
 \subsubsection{Testes de Aceitação}
-Todos os critérios de aceitação definidos no plano de testes foram atendidos:
+Todos os critérios de aceitação definidos no plano de testes foram
+atendidos:
 
 \begin{table}[h]
-\centering
-\caption{Resultados dos Testes de Aceitação}
-\begin{tabular}{|l|c|c|c|}
-\hline
-\textbf{Critério} & \textbf{Meta} & \textbf{Obtido} & \textbf{Status} \\
-\hline
-Cobertura de Código & > 85\% & 89\% & Aprovado \\
-\hline
-Tempo de Resposta & < 3s & 2.1s & Aprovado \\
-\hline
-Precisão & < 1\% erro & 0.3\% erro & Aprovado \\
-\hline
-Resolução Mínima & 1024x768 & 320px+ & Aprovado \\
-\hline
-Compatibilidade & 4 browsers & 4 browsers & Aprovado \\
-\hline
-\end{tabular}
-\label{tab:testes-aceitacao}
+	\centering
+	\caption{Resultados dos Testes de Aceitação}
+	\begin{tabular}{|l|c|c|c|}
+		\hline
+		\textbf{Critério}   & \textbf{Meta} & \textbf{Obtido} & \textbf{Status} \\
+		\hline
+		Cobertura de Código & > 85\%        & 89\%            & Aprovado        \\
+		\hline
+		Tempo de Resposta   & < 3s          & 2.1s            & Aprovado        \\
+		\hline
+		Precisão            & < 1\% erro    & 0.3\% erro      & Aprovado        \\
+		\hline
+		Resolução Mínima    & 1024x768      & 320px+          & Aprovado        \\
+		\hline
+		Compatibilidade     & 4 browsers    & 4 browsers      & Aprovado        \\
+		\hline
+	\end{tabular}
+	\label{tab:testes-aceitacao}
 \end{table}
 
 \subsubsection{Feedback dos Usuários}
-O sistema foi testado com um grupo de 15 usuários potenciais, incluindo gestores acadêmicos e analistas. Os principais feedbacks foram:
+O sistema foi testado com um grupo de 15 usuários potenciais,
+incluindo gestores acadêmicos e analistas. Os principais feedbacks
+foram:
 
 \begin{itemize}
-    \item \textbf{Positivos}: Interface intuitiva (93\% dos usuários), resultados confiáveis (87\%), documentação clara (80\%)
-    \item \textbf{Sugestões de melhoria}: Mais templates específicos (60\%), tutoriais em vídeo (40\%), integração com mais sistemas (53\%)
+	\item \textbf{Positivos}: Interface intuitiva (93\% dos usuários), resultados confiáveis (87\%), documentação clara (80\%)
+	\item \textbf{Sugestões de melhoria}: Mais templates específicos (60\%), tutoriais em vídeo (40\%), integração com mais sistemas (53\%)
 \end{itemize}
 
 \subsection{Conclusões dos Resultados}
 
-O projeto alcançou com sucesso seus objetivos principais, superando várias das metas estabelecidas. O sistema desenvolvido demonstra ser uma solução viável e eficaz para geração de modelos de simulação no contexto acadêmico. As limitações identificadas não comprometem a funcionalidade core do sistema e representam oportunidades claras para desenvolvimento futuro.
+O projeto alcançou com sucesso seus objetivos principais, superando
+várias das metas estabelecidas. O sistema desenvolvido demonstra ser
+uma solução viável e eficaz para geração de modelos de simulação no
+contexto acadêmico. As limitações identificadas não comprometem a
+funcionalidade core do sistema e representam oportunidades claras
+para desenvolvimento futuro.
 
-A validação através de testes técnicos e feedback de usuários confirma que o sistema atende às necessidades identificadas no início do projeto, proporcionando uma ferramenta valiosa para tomada de decisões baseada em simulação no ambiente educacional.
+A validação através de testes técnicos e feedback de usuários
+confirma que o sistema atende às necessidades identificadas no início
+do projeto, proporcionando uma ferramenta valiosa para tomada de
+decisões baseada em simulação no ambiente educacional.
 
 % ----------------------------------------------------------
 % Conclusão
 % ----------------------------------------------------------
 \chapter{Conclusão}
 
-Este trabalho apresentou o desenvolvimento de um gerador de modelos de simulação para tomada de decisão no curto prazo utilizando técnicas de Project Management, especificamente voltado para o contexto acadêmico e educacional.
+Este trabalho apresentou o desenvolvimento de um gerador de modelos
+de simulação para tomada de decisão no curto prazo utilizando
+técnicas de Project Management, especificamente voltado para o
+contexto acadêmico e educacional.
 
 \section{Considerações Finais}
 
-Os objetivos propostos foram alcançados com sucesso, resultando em um sistema funcional e eficiente capaz de gerar modelos de simulação personalizáveis para apoio à decisão no ambiente acadêmico. O sistema desenvolvido demonstrou-se superior às metas estabelecidas em diversos aspectos, incluindo performance, precisão e usabilidade.
+Os objetivos propostos foram alcançados com sucesso, resultando em um
+sistema funcional e eficiente capaz de gerar modelos de simulação
+personalizáveis para apoio à decisão no ambiente acadêmico. O sistema
+desenvolvido demonstrou-se superior às metas estabelecidas em
+diversos aspectos, incluindo performance, precisão e usabilidade.
 
-O projeto comprovou a viabilidade da combinação entre técnicas de simulação por eventos discretos e metodologias de Project Management para o desenvolvimento de ferramentas especializadas. A aplicação rigorosa de práticas de PM garantiu o controle eficaz de escopo, cronograma e qualidade, resultando em um produto que atende às necessidades identificadas no início do projeto.
+O projeto comprovou a viabilidade da combinação entre técnicas de
+simulação por eventos discretos e metodologias de Project Management
+para o desenvolvimento de ferramentas especializadas. A aplicação
+rigorosa de práticas de PM garantiu o controle eficaz de escopo,
+cronograma e qualidade, resultando em um produto que atende às
+necessidades identificadas no início do projeto.
 
-A validação através de testes técnicos e feedback de usuários confirmou que o sistema representa uma contribuição significativa para a área de sistemas de apoio à decisão no contexto educacional, proporcionando uma alternativa acessível e especializada às ferramentas comerciais existentes.
+A validação através de testes técnicos e feedback de usuários
+confirmou que o sistema representa uma contribuição significativa
+para a área de sistemas de apoio à decisão no contexto educacional,
+proporcionando uma alternativa acessível e especializada às
+ferramentas comerciais existentes.
 
 \section{Contribuições}
 
 As principais contribuições deste trabalho incluem:
 
 \begin{itemize}
-    \item \textbf{Contribuição Técnica}: Desenvolvimento de um engine de simulação especializado para cenários acadêmicos, com algoritmos otimizados e interface intuitiva
-    
-    \item \textbf{Contribuição Metodológica}: Aplicação bem-sucedida de técnicas de Project Management no desenvolvimento de sistemas de simulação, demonstrando a eficácia desta abordagem híbrida
-    
-    \item \textbf{Contribuição Prática}: Criação de uma ferramenta acessível que permite a gestores educacionais realizar simulações complexas sem conhecimento técnico especializado
-    
-    \item \textbf{Contribuição Acadêmica}: Templates pré-configurados para cenários acadêmicos comuns, facilitando a adoção da ferramenta por instituições de ensino
-    
-    \item \textbf{Contribuição para a Área}: Demonstração da viabilidade de soluções especializadas para o contexto educacional, preenchendo uma lacuna identificada no mercado
+	\item \textbf{Contribuição Técnica}: Desenvolvimento de um engine de simulação especializado para cenários acadêmicos, com algoritmos otimizados e interface intuitiva
+
+	\item \textbf{Contribuição Metodológica}: Aplicação bem-sucedida de técnicas de Project Management no desenvolvimento de sistemas de simulação, demonstrando a eficácia desta abordagem híbrida
+
+	\item \textbf{Contribuição Prática}: Criação de uma ferramenta acessível que permite a gestores educacionais realizar simulações complexas sem conhecimento técnico especializado
+
+	\item \textbf{Contribuição Acadêmica}: Templates pré-configurados para cenários acadêmicos comuns, facilitando a adoção da ferramenta por instituições de ensino
+
+	\item \textbf{Contribuição para a Área}: Demonstração da viabilidade de soluções especializadas para o contexto educacional, preenchendo uma lacuna identificada no mercado
 \end{itemize}
 
 \section{Limitações Identificadas}
 
-Durante o desenvolvimento e validação do sistema, foram identificadas algumas limitações:
+Durante o desenvolvimento e validação do sistema, foram identificadas
+algumas limitações:
 
 \begin{itemize}
-    \item \textbf{Integração com APIs}: A implementação de integrações avançadas com sistemas externos foi parcial, limitando-se a APIs REST básicas
-    
-    \item \textbf{Escalabilidade}: Embora o sistema tenha superado as metas de performance, simulações extremamente complexas ainda podem apresentar desafios de otimização
-    
-    \item \textbf{Curva de Aprendizado}: Apesar da interface intuitiva, usuários sem conhecimento básico em simulação podem necessitar de treinamento adicional
+	\item \textbf{Integração com APIs}: A implementação de integrações avançadas com sistemas externos foi parcial, limitando-se a APIs REST básicas
+
+	\item \textbf{Escalabilidade}: Embora o sistema tenha superado as metas de performance, simulações extremamente complexas ainda podem apresentar desafios de otimização
+
+	\item \textbf{Curva de Aprendizado}: Apesar da interface intuitiva, usuários sem conhecimento básico em simulação podem necessitar de treinamento adicional
 \end{itemize}
 
 \section{Trabalhos Futuros}
 
-Com base nos resultados obtidos e limitações identificadas, sugere-se como trabalhos futuros:
+Com base nos resultados obtidos e limitações identificadas, sugere-se
+como trabalhos futuros:
 
 \subsection{Melhorias Técnicas}
 
 \begin{itemize}
-    \item \textbf{Integração Avançada}: Desenvolvimento de conectores especializados para sistemas acadêmicos populares (Moodle, Canvas, Blackboard)
-    
-    \item \textbf{Otimização de Performance}: Implementação de técnicas de paralelização e computação distribuída para simulações de grande escala
-    
-    \item \textbf{Algoritmos Avançados}: Incorporação de técnicas de machine learning para otimização automática de parâmetros de simulação
+	\item \textbf{Integração Avançada}: Desenvolvimento de conectores especializados para sistemas acadêmicos populares (Moodle, Canvas, Blackboard)
+
+	\item \textbf{Otimização de Performance}: Implementação de técnicas de paralelização e computação distribuída para simulações de grande escala
+
+	\item \textbf{Algoritmos Avançados}: Incorporação de técnicas de machine learning para otimização automática de parâmetros de simulação
 \end{itemize}
 
 \subsection{Expansão Funcional}
 
 \begin{itemize}
-    \item \textbf{Simulação em Tempo Real}: Desenvolvimento de capacidades de simulação contínua integrada com dados em tempo real
-    
-    \item \textbf{Análise Preditiva}: Implementação de modelos preditivos baseados em dados históricos para projeção de cenários futuros
-    
-    \item \textbf{Colaboração Avançada}: Sistema de colaboração multi-usuário para criação e análise colaborativa de modelos
+	\item \textbf{Simulação em Tempo Real}: Desenvolvimento de capacidades de simulação contínua integrada com dados em tempo real
+
+	\item \textbf{Análise Preditiva}: Implementação de modelos preditivos baseados em dados históricos para projeção de cenários futuros
+
+	\item \textbf{Colaboração Avançada}: Sistema de colaboração multi-usuário para criação e análise colaborativa de modelos
 \end{itemize}
 
 \subsection{Aplicações Específicas}
 
 \begin{itemize}
-    \item \textbf{Aplicativo Mobile}: Desenvolvimento de versão mobile para acesso e monitoramento de simulações
-    
-    \item \textbf{Templates Especializados}: Expansão da biblioteca de templates para áreas específicas como saúde, engenharia e ciências sociais
-    
-    \item \textbf{Integração com IoT}: Incorporação de dados de sensores IoT para simulações baseadas em condições ambientais reais
+	\item \textbf{Aplicativo Mobile}: Desenvolvimento de versão mobile para acesso e monitoramento de simulações
+
+	\item \textbf{Templates Especializados}: Expansão da biblioteca de templates para áreas específicas como saúde, engenharia e ciências sociais
+
+	\item \textbf{Integração com IoT}: Incorporação de dados de sensores IoT para simulações baseadas em condições ambientais reais
 \end{itemize}
 
 \subsection{Pesquisa e Desenvolvimento}
 
 \begin{itemize}
-    \item \textbf{Validação em Larga Escala}: Estudos de caso em múltiplas instituições para validação da eficácia em diferentes contextos
-    
-    \item \textbf{Metodologias Híbridas}: Pesquisa sobre combinação de diferentes paradigmas de simulação (agentes, dinâmica de sistemas, eventos discretos)
-    
-    \item \textbf{Impacto Educacional}: Estudos sobre o impacto da ferramenta na qualidade das decisões administrativas em instituições de ensino
+	\item \textbf{Validação em Larga Escala}: Estudos de caso em múltiplas instituições para validação da eficácia em diferentes contextos
+
+	\item \textbf{Metodologias Híbridas}: Pesquisa sobre combinação de diferentes paradigmas de simulação (agentes, dinâmica de sistemas, eventos discretos)
+
+	\item \textbf{Impacto Educacional}: Estudos sobre o impacto da ferramenta na qualidade das decisões administrativas em instituições de ensino
 \end{itemize}
 
 \section{Considerações Finais}
 
-O desenvolvimento deste gerador de modelos de simulação representa um passo significativo na direção de ferramentas mais acessíveis e especializadas para apoio à decisão no contexto educacional. A combinação bem-sucedida de técnicas de simulação com metodologias de Project Management demonstra o potencial desta abordagem para projetos similares.
+O desenvolvimento deste gerador de modelos de simulação representa um
+passo significativo na direção de ferramentas mais acessíveis e
+especializadas para apoio à decisão no contexto educacional. A
+combinação bem-sucedida de técnicas de simulação com metodologias de
+Project Management demonstra o potencial desta abordagem para
+projetos similares.
 
-O sistema desenvolvido não apenas atende aos objetivos estabelecidos, mas também estabelece uma base sólida para desenvolvimentos futuros, contribuindo para a evolução das ferramentas de simulação especializadas e para a melhoria dos processos de tomada de decisão em instituições educacionais.
+O sistema desenvolvido não apenas atende aos objetivos estabelecidos,
+mas também estabelece uma base sólida para desenvolvimentos futuros,
+contribuindo para a evolução das ferramentas de simulação
+especializadas e para a melhoria dos processos de tomada de decisão
+em instituições educacionais.
 
 % ----------------------------------------------------------
 % ELEMENTOS PÓS-TEXTUAIS
@@ -1091,15 +1384,17 @@ O sistema desenvolvido não apenas atende aos objetivos estabelecidos, mas tamb�
 % ----------------------------------------------------------
 \begin{apendicesenv}
 
-    \partapendices
+	\partapendices
 
-    \chapter[Código Fonte Principal]{Código Fonte Principal}
+	\chapter[Código Fonte Principal]{Código Fonte Principal}
 
-    Neste apêndice são apresentados os principais trechos de código desenvolvidos no sistema.
+	Neste apêndice são apresentados os principais trechos de código
+	desenvolvidos no sistema.
 
-    \section{Estrutura do Projeto}
+	\section{Estrutura do Projeto}
 
-    O projeto foi organizado seguindo as melhores práticas de desenvolvimento web moderno.
+	O projeto foi organizado seguindo as melhores práticas de
+	desenvolvimento web moderno.
 
 \end{apendicesenv}
 
@@ -1108,11 +1403,11 @@ O sistema desenvolvido não apenas atende aos objetivos estabelecidos, mas tamb�
 % ----------------------------------------------------------
 \begin{anexosenv}
 
-    \partanexos
+	\partanexos
 
-    \chapter[Documentação da API]{Documentação da API}
+	\chapter[Documentação da API]{Documentação da API}
 
-    Este anexo contém a documentação completa da API desenvolvida.
+	Este anexo contém a documentação completa da API desenvolvida.
 
 \end{anexosenv}
 
