@@ -5,11 +5,34 @@
 \providecommand{\abntbstabout}[1]{}
 \abntbstabout{v-1.9.7 }
 
+\bibitem[Brzychczy, {\.Z}uber e Aalst 2024]{brzychczy2024pm4lmp}
+\abntrefinfo{Brzychczy, {\.Z}uber e Aalst}{BRZYCHCZY; {\.Z}UBER; AALST}{2024}
+{BRZYCHCZY, E.; {\.Z}UBER, A.; AALST, W. van~der. Process mining of mining processes: Analyzing longwall coal excavation using event data.
+\emph{IEEE Transactions on Systems, Man, and Cybernetics: Systems}, v.~54, n.~5, p. 2723--2739, 2024.}
+
 \bibitem[Ferronato 2022]{ferronato2022}
 \abntrefinfo{Ferronato}{FERRONATO}{2022}
 {FERRONATO, J.~J.
 \emph{PM4SOS: Um Framework para suporte à tomada de decisão operacional}.
 Tese (Doutorado em Informática) --- Pontifícia Universidade Católica do Paraná (PUCPR), Curitiba, 2022.
 Dispon{\'\i}vel em: \url{https://www.ppgia.pucpr.br/pt/arquivos/doutorado/teses/2022/Tese\_Jair\_Jose\_Ferronato.pdf}. Acesso em: 6 out. 2025.}
+
+\bibitem[Joe et al. 2018]{joe2018projectmining}
+\abntrefinfo{Joe et al.}{JOE et al.}{2018}
+{JOE, J. et al. Process mining for project management. In:  ST. FRANCIS INSTITUTE OF TECHNOLOGY. \emph{Proceedings of the International Conference on Computer Engineering}. Mumbai, India, 2018.}
+
+\bibitem[Maru{\c{s}}ter e Beest 2009]{maruster2009redesigning}
+\abntrefinfo{Maru{\c{s}}ter e Beest}{MARU{\c{S}}TER; BEEST}{2009}
+{MARU{\c{S}}TER, L.; BEEST, N.~R. van. Redesigning business processes: A methodology based on simulation and process mining techniques.
+\emph{Knowledge and Information Systems}, v.~21, n.~3, p. 267--297, 2009.}
+
+\bibitem[Meng et al. 2024]{meng2024enhancing}
+\abntrefinfo{Meng et al.}{MENG et al.}{2024}
+{MENG, S. et al. Enhancing mine groundwater system prediction: Full-process simulation of mining-induced spatio-temporal variations in hydraulic conductivities via modularized modeling.
+\emph{International Journal of Mining Science and Technology}, v.~34, p. 1625--1642, 2024.}
+
+\bibitem[Wuennenberg, Wegerich e Fottner 2023]{wuennenberg2023internal}
+\abntrefinfo{Wuennenberg, Wegerich e Fottner}{WUENNENBERG; WEGERICH; FOTTNER}{2023}
+{WUENNENBERG, M.; WEGERICH, B.; FOTTNER, J. Towards data management and data science for internal logistics systems using process mining and discrete-event simulation. In:  ELSEVIER B.V. \emph{Procedia CIRP}. [S.l.], 2023. v.~120, p. 852--857.}
 
 \end{thebibliography}

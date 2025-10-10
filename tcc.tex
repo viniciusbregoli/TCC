@@ -235,221 +235,407 @@
 
 Em organizações modernas, a complexidade operacional e o dinamismo
 dos processos exigem decisões cada vez mais rápidas e embasadas em
-dados. Setores como saúde, manufatura, logística e serviços
-compartilham desafios semelhantes: alocação eficiente de recursos,
-detecção de gargalos, redução de custos e melhoria contínua de
-desempenho. Em todos esses contextos, as decisões de curto prazo —
-aquelas que precisam ser tomadas em horas ou dias — têm impacto
-direto na produtividade e na qualidade do serviço prestado.
+dados. Setores como saúde, manufatura, logística, mineração e
+serviços compartilham desafios semelhantes: alocação eficiente de
+recursos, detecção de gargalos, redução de custos e melhoria contínua
+de desempenho. Em todos esses contextos, as decisões de curto prazo —
+aquelas que precisam ser tomadas em horizontes de horas ou dias —
+exercem impacto direto na produtividade, na utilização de recursos e
+na qualidade do serviço prestado.
 
-Apesar do avanço dos sistemas de informação e do grande volume de
-dados disponíveis, a transformação desses dados em conhecimento útil
-para a tomada de decisão ainda depende, em grande parte, de análise
-manual e da experiência de gestores e especialistas. Esse processo,
-além de demorado, está sujeito a erros humanos e vieses cognitivos,
-dificultando a reação rápida diante de mudanças operacionais.
+Apesar da ampla digitalização de processos e do grande volume de
+dados coletados em sistemas corporativos, a conversão dessas
+informações em conhecimento útil para a tomada de decisão ainda
+depende, em grande parte, da análise manual e da experiência de
+gestores e especialistas. Esse processo, além de demorado, está
+sujeito a vieses cognitivos e erros humanos, o que limita a
+capacidade das organizações de reagir rapidamente a mudanças
+operacionais.
 
-A mineração de processos (Process Mining – PM) surge como uma
-abordagem capaz de extrair, a partir de logs de eventos, informações
-estruturadas sobre o comportamento real dos processos. Essa técnica
-permite descobrir modelos de processos, analisar desvios e
-identificar gargalos com base em dados reais de execução. No entanto,
-por si só, a mineração de processos não oferece mecanismos preditivos
-para antecipar cenários futuros ou testar alternativas operacionais.
+A mineração de processos (\textit{Process Mining} – PM) surge como
+uma abordagem capaz de extrair, a partir de logs de eventos,
+informações estruturadas sobre o comportamento real dos processos.
+Essa técnica permite descobrir modelos de processo, identificar
+gargalos e analisar conformidade com base em dados reais de execução.
+Trabalhos recentes demonstram seu potencial em contextos industriais
+complexos, como sistemas logísticos internos
+\cite{wuennenberg2023internal} e processos de mineração subterrânea
+\cite{brzychczy2024pm4lmp}, nos quais a análise de eventos de
+sensores e sistemas de controle tem permitido identificar padrões de
+desempenho e oportunidades de otimização.
 
-Por outro lado, a simulação computacional é amplamente utilizada para
-avaliar o impacto de decisões antes de sua aplicação prática. Modelos
-de simulação permitem experimentar diferentes cenários, mensurar
-indicadores de desempenho e prever resultados. Contudo, a construção
-manual desses modelos é uma tarefa complexa, que exige tempo,
-conhecimento técnico e compreensão detalhada do processo — fatores
-que limitam sua aplicação em situações que demandam respostas
-rápidas.
+Entretanto, a mineração de processos, por si só, fornece uma visão
+descritiva do comportamento passado, não sendo suficiente para
+antecipar cenários futuros ou testar alternativas operacionais. Nesse
+sentido, a integração com a simulação computacional oferece uma
+perspectiva complementar, permitindo representar dinamicamente o
+sistema e avaliar o impacto de diferentes estratégias antes de sua
+aplicação real \cite{maruster2009redesigning}. Modelos de simulação
+baseados em dados de execução viabilizam a previsão de tempos de
+espera, taxas de ocupação e desempenho global do processo,
+contribuindo para decisões mais assertivas.
 
-Dessa forma, o problema central abordado neste trabalho consiste em
-como automatizar a criação de modelos de simulação baseados em dados
-reais, extraídos por mineração de processos, para apoiar a tomada de
-decisão operacional em curto prazo.
+Ainda assim, a construção manual de modelos de simulação é uma tarefa
+intensiva, que exige conhecimento técnico detalhado sobre o processo
+e considerável esforço de modelagem — fatores que inviabilizam seu
+uso em situações que demandam resposta rápida. Pesquisas recentes têm
+buscado reduzir essa lacuna, utilizando mineração de processos para
+automatizar a geração de modelos de simulação, como proposto por
+\cite{ferronato2022} no framework PM4SOS. Essa abordagem demonstrou
+ser eficaz para o suporte operacional em centros cirúrgicos,
+combinando mineração de logs, simulação e otimização multicritério.
+De forma semelhante, estudos na área de logística e engenharia de
+minas têm evidenciado os benefícios de abordagens híbridas entre
+mineração de dados e simulação discreta, com o objetivo de otimizar
+fluxos físicos e prever anomalias operacionais
+\cite{meng2024enhancing}.
 
-Embora a tese de \cite{ferronato2022} tenha proposto o framework
-PM4SOS para o contexto hospitalar, voltado ao agendamento cirúrgico,
-a aplicação desse conceito pode ser expandida para outros domínios,
-mantendo a mesma lógica de integração entre mineração de processos,
-simulação e otimização. Este trabalho propõe, portanto, generalizar a
-abordagem, tornando o gerador de modelos aplicável a qualquer
-ambiente que possua processos registrados em sistemas de informação,
-tendo o setor hospitalar como estudo de caso para validação prática.
+Neste contexto, o presente trabalho propõe o desenvolvimento de um
+\textbf{gerador de modelos de simulação para tomada de decisão no
+	curto prazo}, fundamentado na integração entre \textit{Process
+	Mining} e \textit{Simulação de Eventos Discretos}. O objetivo é
+automatizar a criação de modelos a partir de dados reais de execução,
+reduzindo o esforço cognitivo do analista e possibilitando a análise
+preditiva de cenários com base em evidências empíricas. Este projeto
+busca generalizar o conceito, tornando o gerador aplicável a
+diferentes domínios organizacionais que disponham de registros de
+eventos estruturados, utilizando o setor hospitalar como estudo de
+caso para validação prática.
 
-A pesquisa busca preencher lacunas existentes na literatura e na
-prática organizacional, especialmente no que diz respeito à
-integração automatizada entre dados históricos e modelos de
-simulação, reduzindo o esforço cognitivo do tomador de decisão e
-possibilitando análises preditivas em tempo reduzido.
+Com essa proposta, pretende-se preencher lacunas identificadas na
+literatura e na prática organizacional, especialmente no que diz
+respeito à integração automatizada entre dados históricos e modelos
+de simulação. A pesquisa almeja demonstrar que a combinação de
+mineração de processos, modelagem automatizada e simulação orientada
+por dados constitui uma ferramenta eficaz para apoiar a
+\textbf{tomada de decisão operacional de curto prazo}, promovendo
+análises rápidas, reprodutíveis e sustentadas por dados reais.
 
 \section{Contexto e Problema}
 
-Em organizações modernas, a complexidade operacional e o dinamismo
-dos processos exigem decisões cada vez mais rápidas e embasadas em
-dados. Setores como saúde, manufatura, logística e serviços
-compartilham desafios semelhantes: alocação eficiente de recursos,
-detecção de gargalos, redução de custos e melhoria contínua de
-desempenho. Em todos esses contextos, as decisões de curto prazo —
-aquelas que precisam ser tomadas em horas ou dias — têm impacto
-direto na produtividade e na qualidade do serviço prestado.
+A crescente complexidade dos ambientes organizacionais e o dinamismo
+dos processos produtivos exigem das instituições uma capacidade
+contínua de adaptação e resposta rápida a mudanças operacionais.
+Setores como saúde, manufatura, logística, mineração e serviços
+compartilham desafios recorrentes: alocar recursos de forma
+eficiente, detectar gargalos, reduzir custos e promover a melhoria
+contínua de desempenho. Em todos esses contextos, as decisões de
+curto prazo — aquelas que precisam ser tomadas em intervalos de horas
+ou dias — exercem influência direta sobre a produtividade, a
+eficiência operacional e a qualidade do serviço prestado.
 
-Apesar do avanço dos sistemas de informação e do grande volume de
-dados disponíveis, a transformação desses dados em conhecimento útil
-para a tomada de decisão ainda depende, em grande parte, de análise
-manual e da experiência de gestores e especialistas. Esse processo,
-além de demorado, está sujeito a erros humanos e vieses cognitivos,
-dificultando a reação rápida diante de mudanças operacionais.
+Com a intensificação da digitalização e a adoção de sistemas de
+informação integrados, grandes volumes de dados passaram a ser
+gerados em tempo real. Contudo, a transformação desses dados em
+conhecimento útil para apoiar decisões ainda depende, em grande
+medida, da experiência humana e de análises manuais. Esse processo é
+sujeito a vieses cognitivos e à limitação do tempo de resposta, o que
+reduz a capacidade organizacional de reagir a variações de demanda,
+atrasos ou falhas no fluxo produtivo.
 
-A mineração de processos surge como uma abordagem capaz de extrair, a
-partir de logs de eventos, informações estruturadas sobre o
-comportamento real dos processos. Essa técnica permite descobrir
-modelos de processos, analisar desvios e identificar gargalos com
-base em dados reais de execução. No entanto, por si só, a mineração
-de processos não oferece mecanismos preditivos para antecipar
-cenários futuros ou testar alternativas operacionais.
+Nesse cenário, a \textit{mineração de processos} (\textit{Process
+	Mining} – PM) tem se consolidado como uma abordagem poderosa para
+extrair, a partir de logs de eventos, informações estruturadas sobre
+o comportamento real dos processos. A técnica permite descobrir
+modelos de processo, identificar desvios de conformidade e mensurar
+indicadores de desempenho com base em dados reais de execução.
+Aplicações recentes demonstram seu potencial em domínios industriais
+complexos, como sistemas logísticos internos
+\cite{wuennenberg2023internal} e processos de mineração subterrânea
+\cite{brzychczy2024pm4lmp}, nos quais a análise de dados sensoriais e
+transacionais tem contribuído para o diagnóstico e a otimização de
+operações.
 
-Por outro lado, a simulação computacional é amplamente utilizada para
-avaliar o impacto de decisões antes de sua aplicação prática. Modelos
-de simulação permitem experimentar diferentes cenários, mensurar
-indicadores de desempenho e prever resultados. Contudo, a construção
-manual desses modelos é uma tarefa complexa, que exige tempo,
-conhecimento técnico e compreensão detalhada do processo — fatores
-que limitam sua aplicação em situações que demandam respostas
-rápidas.
+Apesar disso, a mineração de processos oferece predominantemente uma
+visão descritiva e diagnóstica — concentrada no passado e no presente
+das operações. Por não possuir mecanismos preditivos, ela é limitada
+quando se busca antecipar cenários futuros, testar alternativas
+operacionais ou estimar o impacto de decisões sob diferentes
+condições de carga ou recursos.
 
-Dessa forma, o problema central abordado neste trabalho consiste em
-como automatizar a criação de modelos de simulação baseados em dados
-reais, extraídos por mineração de processos, para apoiar a tomada de
-decisão operacional em curto prazo.
+Por outro lado, a \textit{simulação de eventos discretos}
+(\textit{Discrete-Event Simulation} – DES) é amplamente utilizada
+como ferramenta preditiva e experimental, permitindo avaliar o
+comportamento de sistemas sob múltiplos cenários e medir o impacto de
+alterações no fluxo de processos, políticas de recursos ou parâmetros
+operacionais. A integração entre simulação e mineração de processos
+tem sido explorada em diversas pesquisas, com destaque para
+\cite{maruster2009redesigning}, que propõe um método de redesenho de
+processos baseado em modelos descobertos via PM e simulados em
+ferramentas de Petri Nets. De forma semelhante, estudos mais recentes
+demonstram a aplicação conjunta dessas técnicas em sistemas de
+logística e manufatura, utilizando simulação como meio de validar
+hipóteses e otimizar o desempenho global
+\cite{wuennenberg2023internal, meng2024enhancing}.
 
-Embora a tese de Ferronato (2022) tenha proposto o framework PM4SOS
-para o contexto hospitalar, voltado ao agendamento cirúrgico, a
-aplicação desse conceito pode ser expandida para outros domínios,
-mantendo a mesma lógica de integração entre mineração de processos,
-simulação e otimização. Este trabalho propõe, portanto, generalizar a
-abordagem, tornando o gerador de modelos aplicável a qualquer
-ambiente que possua processos registrados em sistemas de informação,
-tendo o setor hospitalar como estudo de caso para validação prática.
+Entretanto, a construção manual de modelos de simulação ainda é um
+processo intensivo, que requer tempo, conhecimento técnico
+especializado e compreensão detalhada dos fluxos operacionais. Essa
+complexidade torna inviável o uso da simulação como instrumento
+cotidiano de apoio à decisão, especialmente em contextos que demandam
+reações rápidas a eventos inesperados. O desafio, portanto, está em
+como automatizar a geração de modelos de simulação a partir de dados
+reais, reduzindo o esforço de modelagem e ampliando a aplicabilidade
+da técnica no suporte à decisão operacional de curto prazo.
 
-A pesquisa busca preencher lacunas existentes na literatura e na
-prática organizacional, especialmente no que diz respeito à
-integração automatizada entre dados históricos e modelos de
-simulação, reduzindo o esforço cognitivo do tomador de decisão e
-possibilitando análises preditivas em tempo reduzido.
+Trabalhos como o de \cite{ferronato2022} propuseram soluções
+integradas baseadas em \textit{Process Mining}, simulação e
+otimização multicritério, aplicadas ao contexto hospitalar para o
+agendamento de cirurgias. O framework PM4SOS demonstrou que a
+combinação dessas abordagens permite reduzir tempos de espera,
+ajustar a alocação de recursos e reagir dinamicamente a variações de
+demanda. A partir dessa base, observa-se a oportunidade de
+generalizar o conceito, tornando o mecanismo de geração automática de
+modelos aplicável a diferentes domínios — desde linhas de produção
+industriais até processos administrativos e logísticos.
+
+Dessa forma, o problema central abordado nesta pesquisa pode ser
+formulado da seguinte maneira: como automatizar a criação de modelos
+de simulação baseados em dados reais, extraídos por mineração de
+processos, de modo a apoiar a tomada de decisão operacional em curto
+prazo?.
+
+A pesquisa busca preencher lacunas identificadas na literatura e na
+prática organizacional, especialmente no que tange à integração
+automatizada entre dados históricos e modelos de simulação, reduzindo
+o esforço cognitivo do tomador de decisão e permitindo análises
+preditivas em tempo reduzido. O desenvolvimento de um gerador de
+modelos automatizado visa, portanto, aproximar o potencial analítico
+da mineração de processos da capacidade preditiva da simulação
+computacional, promovendo uma abordagem prática, escalável e
+orientada por dados para o apoio à decisão operacional.
 
 \section{Motivação}
 
-A crescente digitalização dos processos organizacionais tem gerado um
-volume significativo de dados operacionais, os quais representam uma
-fonte valiosa de informações para análise e melhoria contínua. No
-entanto, a maior parte desses dados permanece subutilizada, sendo
-empregada apenas de forma descritiva, sem oferecer suporte efetivo à
-tomada de decisão operacional em tempo hábil. Esse cenário evidencia
-a necessidade de ferramentas capazes de transformar registros
-históricos e dados em tempo real em conhecimento acionável para
-apoiar decisões rápidas e precisas.
+A transformação digital tem impulsionado a geração de grandes volumes
+de dados operacionais em praticamente todos os setores
+organizacionais. Esses dados, provenientes de sistemas corporativos,
+sensores e plataformas transacionais, representam uma fonte
+estratégica de informação sobre o comportamento real dos processos.
+No entanto, a maior parte desse potencial permanece subutilizada: os
+dados são frequentemente empregados apenas em análises descritivas,
+voltadas ao monitoramento retrospectivo, sem oferecer suporte efetivo
+à tomada de decisão em tempo hábil. Essa limitação é especialmente
+crítica em contextos de alta variabilidade, nos quais decisões de
+curto prazo precisam ser tomadas com base em evidências confiáveis e
+atualizadas.
 
-A mineração de processos se apresenta como uma tecnologia capaz de
-extrair conhecimento a partir de logs de eventos, descrevendo o
-comportamento real dos processos. Já a simulação computacional
-complementa essa análise ao permitir a avaliação de cenários
-alternativos, fornecendo uma visão preditiva e exploratória do
-sistema em estudo. Entretanto, a criação manual de modelos de
-simulação ainda representa um gargalo, exigindo alto esforço
-cognitivo e conhecimento técnico especializado.
+Nesse cenário, a \textit{mineração de processos} (\textit{Process
+	Mining} – PM) desponta como uma tecnologia promissora para a extração
+de conhecimento a partir de logs de eventos, permitindo compreender,
+auditar e aprimorar processos com base em dados reais. A PM tem sido
+aplicada com sucesso em domínios industriais complexos, como
+logística interna, manufatura e mineração
+\cite{wuennenberg2023internal, brzychczy2024pm4lmp}, oferecendo
+diagnósticos precisos sobre gargalos, desvios e desempenho
+operacional. No entanto, sua natureza essencialmente descritiva ainda
+limita seu uso como instrumento de previsão ou de apoio dinâmico à
+decisão.
 
-A motivação principal deste trabalho reside na necessidade de
-automatizar a geração de modelos de simulação utilizando informações
-obtidas por meio da mineração de processos. Essa automatização tem
-potencial para reduzir significativamente o tempo e o esforço
-necessários para construção de modelos analíticos, além de ampliar o
+Por outro lado, a \textit{simulação de eventos discretos}
+(\textit{Discrete-Event Simulation} – DES) é amplamente reconhecida
+como uma ferramenta analítica capaz de explorar cenários alternativos
+e estimar o impacto de decisões antes de sua implementação. A
+combinação entre mineração de processos e simulação tem se mostrado
+particularmente poderosa, pois permite unir a observação empírica dos
+dados à experimentação virtual dos processos
+\cite{maruster2009redesigning}. Entretanto, a etapa de construção de
+modelos de simulação ainda representa um obstáculo significativo,
+demandando esforço cognitivo elevado e conhecimento técnico
+especializado em modelagem e parametrização de sistemas.
+
+A motivação central deste trabalho surge, portanto, da necessidade de
+automatizar a geração de modelos de simulação a partir de informações
+extraídas por mineração de processos. Essa automatização tem
+potencial para reduzir drasticamente o tempo e o esforço envolvidos
+na criação de modelos analíticos, ao mesmo tempo em que democratiza o
 acesso de gestores e analistas a ferramentas de apoio à decisão em
-ambientes de alta complexidade.
+ambientes complexos e dinâmicos. Além disso, possibilita o uso de
+dados históricos e em tempo real como base para análises preditivas e
+prescritivas, elevando o nível de maturidade analítica das
+organizações.
 
-Este trabalho propõe criar um gerador de modelos de simulação de
-forma generalizável a diferentes contextos organizacionais, mantendo
-o ambiente hospitalar apenas como estudo de caso para validação
-experimental.
+Inspirado em iniciativas como o framework PM4SOS proposto por
+\cite{ferronato2022}, que integrou mineração de processos, simulação
+e otimização multicritério para o agendamento cirúrgico, o presente
+trabalho busca expandir esse conceito para diferentes domínios
+organizacionais. A proposta é criar um \textbf{gerador de modelos de
+	simulação} com capacidade generalizável, aplicável a qualquer
+processo que possua logs de eventos estruturados, mantendo o ambiente
+hospitalar apenas como estudo de caso para validação experimental.
 
 Ao promover a integração entre mineração de processos, simulação e
-otimização multicritério, este estudo busca contribuir para o avanço
-das práticas de gestão operacional baseada em dados, oferecendo uma
-alternativa viável e automatizada para apoio à decisão no curto
-prazo.
-
+otimização, esta pesquisa visa contribuir para o avanço das práticas
+de gestão operacional baseada em dados. Acredita-se que o
+desenvolvimento de uma ferramenta automatizada, capaz de gerar
+modelos de simulação em tempo reduzido, possa fortalecer o suporte à
+decisão no curto prazo, ampliando a eficiência, a agilidade e a
+capacidade de adaptação das organizações a ambientes cada vez mais
+dinâmicos e complexos.
 \section{Estado da Arte}
 
-O estado atual das tecnologias de simulação e modelagem para tomada
-de decisão apresenta diversas abordagens e metodologias. No contexto
-acadêmico, as principais áreas de pesquisa incluem:
+Esta seção sintetiza os principais avanços nas áreas de
+\textit{Process Mining} (PM), \textit{Simulação de Eventos Discretos}
+(DES) e sua integração, destacando aplicações em domínios complexos
+(logística interna, manufatura, mineração e saúde) e, por fim,
+delineando as lacunas que motivam a presente pesquisa.
 
-\subsection{Modelos de Simulação Discreta}
+\subsection{Mineração de Processos}
 
-Os modelos de simulação por eventos discretos têm sido amplamente
-utilizados para modelar processos complexos em ambientes
-educacionais. Estes modelos permitem a representação de sistemas
-dinâmicos onde mudanças de estado ocorrem em pontos específicos no
-tempo.
+A mineração de processos consolida-se como abordagem para extrair, a
+partir de logs de eventos, o comportamento real dos processos,
+contemplando tarefas de \textit{descoberta} (derivação de modelos),
+\textit{conformidade} (comparação de logs com modelos de referência)
+e \textit{aprimoramento} (análise de desempenho e gargalos). Em
+ambientes industriais, a PM tem avançado no uso de dados
+transacionais e de sensores para diagnosticar desvios e medir
+indicadores operacionais \cite{wuennenberg2023internal,
+	brzychczy2024pm4lmp}. Um desafio recorrente em cenários físicos (ex.:
+mineração subterrânea) é a preparação do \textit{event log}:
+identificação de \textit{case ID}, abstração de eventos de baixo
+nível e tratamento de ruído; para isso, têm-se proposto estratégias
+de abstração supervisionadas e não supervisionadas, além de
+heurísticas específicas para correlação de eventos
+\cite{brzychczy2024pm4lmp}. Em domínios administrativos e de P\&D, a
+PM também tem sido explorada para gerir projetos, com o uso de
+algoritmos como o \textit{Heuristics Miner} para descobrir fluxos e
+dependências \cite{joe2018projectmining}.
 
-\subsection{Sistemas de Apoio à Decisão (SAD)}
+\subsection{Simulação de Eventos Discretos}
 
-Os Sistemas de Apoio à Decisão combinam modelos analíticos, técnicas
-de simulação e interfaces de usuário para auxiliar gestores na tomada
-de decisões complexas. No contexto educacional, estes sistemas têm
-sido aplicados em áreas como:
+A DES é uma técnica consolidada para previsão e análise
+\textit{what-if}, permitindo estimar efeitos de políticas
+operacionais (alocação de recursos, regras de priorização) antes de
+sua implementação. Em gestão de operações, a simulação suporta a
+avaliação de throughput, tempos de espera, utilização e
+confiabilidade. Em sistemas físico-cibernéticos (ex.: logística e
+mineração), combinar dados de operação com simulação tem se mostrado
+essencial para entender efeitos de variabilidade e restrições de
+recursos \cite{wuennenberg2023internal, meng2024enhancing}.
 
+\subsection{Integração PM--DES}
+
+A literatura propõe a integração entre PM e DES de forma a: (i)
+descobrir modelos a partir de dados reais; (ii) parametrizar e
+simular cenários no \textit{As-Is} e \textit{To-Be}; e (iii) comparar
+ganhos de desempenho \cite{maruster2009redesigning}. Esse fluxo
+permite que modelos descobertos via PM sejam transformados em modelos
+simuláveis (e.g., Petri nets/CPN) para avaliar alternativas de
+redesenho e impacto em indicadores. Mais recentemente, frameworks em
+logística interna descrevem um \textit{pipeline} end-to-end que parte
+do sistema real, gera dados sintéticos por DES quando necessário,
+transforma saídas de simulação em \textit{event logs} e realiza
+descoberta/conformidade para suportar a otimização iterativa
+\cite{wuennenberg2023internal}. Em mineração, a integração de dados
+sensoriais, PM e simulação tem sido aplicada para explicar ciclos
+operacionais, localizar gargalos e fundamentar ações de melhoria,
+inclusive com técnicas de abstração de eventos e análise comparativa
+\cite{brzychczy2024pm4lmp}. Em paralelo, abordagens de simulação
+modular têm ampliado a capacidade preditiva em fenômenos acoplados
+(mecânico--hidráulicos), ilustrando a necessidade de arquiteturas de
+acoplamento explícito e troca de dados entre módulos
+\cite{meng2024enhancing}.
+
+\subsection{Aplicações em domínios complexos}
+
+Trabalhos recentes mostram metodologias que combinam PM e DES para
+diagnosticar gargalos, avaliar conformidade e otimizar parâmetros
+locais e globais de sistemas de fluxo de materiais, com iterações
+guiadas por KPIs (tempo de atravessamento, utilização, throughput)
+\cite{wuennenberg2023internal}. Além disso, ressalta-se a geração de
+\textit{event logs} a partir de saídas de simulação para fechar o
+ciclo de descoberta/conformidade e acelerar o aprendizado sobre o
+sistema.
+
+A PM tem sido empregada também para modelar processos como o ciclo de
+corte em \textit{longwall}, enfrentando problemas de granularidade,
+ruído e case correlation; soluções combinam heurísticas e
+aprendizagem (supervisionada e não supervisionada) para identificação
+de atividades e instâncias, habilitando descoberta e análise de
+desempenho com dados de sensores \cite{brzychczy2024pm4lmp}. Em
+paralelo, simulações acopladas (mecânica--escoamento) têm ampliado a
+previsão de efeitos operacionais e riscos, reforçando o papel de
+modelos preditivos conectados a dados reais \cite{meng2024enhancing}.
+
+No contexto hospitalar, o PM4SOS integra PM, simulação e otimização
+multicritério para suporte operacional (e.g., agendamento cirúrgico)
+\cite{ferronato2022}. Em gestão de projetos, a PM tem servido à
+descoberta de fluxos e análise de desempenho, com foco em
+dependências, variações e papéis organizacionais
+\cite{joe2018projectmining}.
+
+\subsection{Lacunas e oportunidades}
+
+Apesar do progresso, persistem lacunas relevantes:
 \begin{itemize}
-	\item Planejamento de horários e alocação de salas
-	\item Gestão de recursos humanos
-	\item Análise de desempenho acadêmico
-	\item Otimização orçamentária
+	\item Muitas abordagens dependem de etapas manuais (abstração de eventos,
+	      mapeamento semântico de atividades, parametrização de tempos e
+	      recursos) para viabilizar a simulação; faltam ferramentas que
+	      automatizem a transformação de \textit{event logs} em modelos
+	      simuláveis com parametrização consistente e reprodutível
+	\item Soluções existentes são, em geral, específicas de domínio
+	      (hospitalar, logística, mineração), com limitações de portabilidade
+	      de \textit{mapeamentos} e estruturas de dados
+	\item A correlação de eventos, a abstração de sinais contínuos e a ainda
+	      demandam estratégias robustas e padronizadas para produção de
+	      \textit{event logs} adequados à simulação.
+	\item Há carência de pipelines que fechem o ciclo (dados $\rightarrow$ PM
+	      $\rightarrow$ geração automática de modelo $\rightarrow$ DES
+	      $\rightarrow$ recomendações/otimização) com tempos de processamento
+	      compatíveis com decisões operacionais de curto prazo.
 \end{itemize}
 
-\subsection{Técnicas de Project Management}
-
-As metodologias de gerenciamento de projetos, como PMI (Project
-Management Institute) e PRINCE2, fornecem frameworks estruturados
-para planejamento, execução e controle de projetos. A aplicação
-dessas técnicas no desenvolvimento de sistemas de simulação garante
-maior eficiência e qualidade no processo de desenvolvimento.
+Essas lacunas motivam o desenvolvimento de um \textit{gerador de
+	modelos de simulação} orientado por PM, com escopo generalizável e
+foco em decisões de curto prazo, reduzindo intervenções manuais,
+padronizando a parametrização e aproximando diagnóstico descritivo de
+validação preditiva.
 
 \section{Soluções Similares}
 
-Uma análise das soluções existentes no mercado revela diferentes
-abordagens para problemas similares:
+Diversas pesquisas têm buscado integrar \textit{Process Mining} (PM)
+e \textit{Simulação de Eventos Discretos} (DES) como forma de
+aprimorar a compreensão e a predição do comportamento dos processos
+reais. Entretanto, a maioria das soluções existentes mantém um alto
+grau de dependência de intervenção manual, especialmente nas etapas
+de modelagem, parametrização e calibração.
 
-\subsection{Sistemas Comerciais}
+Entre as iniciativas mais influentes, destaca-se a metodologia
+proposta por \cite{maruster2009redesigning}, que combina mineração de
+processos e simulação para o redesenho organizacional. O método parte
+de logs reais para gerar modelos \textit{As-Is}, simulá-los e
+compará-los com versões otimizadas \textit{To-Be}, permitindo estimar
+ganhos de desempenho. Apesar de pioneiro, o processo de conversão dos
+modelos minerados em modelos simuláveis requer ajustes manuais e
+conhecimento técnico em modelagem formal (como redes de Petri
+coloridas).
 
-\begin{itemize}
-	\item \textbf{Arena Simulation Software}: Ferramenta robusta para modelagem e simulação de processos, amplamente utilizada na indústria
-	\item \textbf{AnyLogic}: Plataforma de simulação multimethod que combina diferentes paradigmas de modelagem
-	\item \textbf{MATLAB Simulink}: Ambiente de simulação para sistemas dinâmicos com forte base matemática
-\end{itemize}
+No contexto hospitalar, o framework PM4SOS, desenvolvido por
+\cite{ferronato2022}, integra mineração de processos, simulação e
+otimização multicritério para o agendamento cirúrgico. Essa abordagem
+automatiza parcialmente a geração de modelos e utiliza indicadores de
+eficiência para suportar decisões em tempo reduzido. Contudo, sua
+aplicação ainda é restrita ao domínio da saúde, carecendo de
+generalização para outros tipos de processos.
 
-\subsection{Soluções Acadêmicas}
+Na área industrial, trabalhos como \cite{wuennenberg2023internal}
+propõem pipelines que unem simulação e mineração de processos em
+sistemas logísticos internos. Esses modelos exploram o uso de
+simulação para geração de dados sintéticos, que são posteriormente
+minerados para verificação de conformidade e detecção de gargalos. Em
+paralelo, pesquisas em mineração subterrânea
+\cite{brzychczy2024pm4lmp} e simulação modular
+\cite{meng2024enhancing} também avançam na integração entre dados de
+sensores, abstração de eventos e análise preditiva, embora com foco
+em contextos físicos específicos.
 
-\begin{itemize}
-	\item \textbf{NetLogo}: Ambiente de modelagem baseado em agentes, popular em pesquisas acadêmicas
-	\item \textbf{R e Python}: Linguagens de programação com extensas bibliotecas para simulação e análise estatística
-	\item \textbf{Gephi}: Ferramenta de visualização e análise de redes complexas
-\end{itemize}
-
-\subsection{Limitações das Soluções Existentes}
-
-Apesar da variedade de ferramentas disponíveis, observa-se algumas
-limitações:
-
-\begin{itemize}
-	\item Falta de especialização para o contexto acadêmico específico
-	\item Complexidade excessiva para usuários não técnicos
-	\item Custos elevados de licenciamento
-	\item Dificuldade de integração com sistemas acadêmicos existentes
-	\item Ausência de templates específicos para cenários educacionais
-\end{itemize}
+Em síntese, as soluções atuais demonstram o potencial da integração
+entre PM e DES, mas permanecem limitadas quanto à automação de ponta
+a ponta e à adaptabilidade entre diferentes domínios. O presente
+trabalho propõe evoluir essas abordagens por meio de um gerador de
+modelos de simulação automatizado e generalizável, reduzindo o
+esforço técnico necessário e ampliando o alcance da análise preditiva
+em processos de decisão operacional de curto prazo.
 
 \section{Objetivos}
 
