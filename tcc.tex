@@ -671,38 +671,58 @@ seguintes objetivos específicos:
 
 \section{Justificativa}
 
-A crescente complexidade dos processos operacionais nas organizações
-exige soluções capazes de transformar grandes volumes de dados em
-informações relevantes para apoiar a tomada de decisão. Em muitos
-cenários, os gestores precisam reagir rapidamente a mudanças de
-demanda, restrições de recursos ou falhas inesperadas, o que torna
-essencial o uso de ferramentas que combinem análise de dados,
-previsão e simulação.
+A crescente disponibilidade de dados operacionais e o avanço das
+tecnologias analíticas têm impulsionado o desenvolvimento de soluções
+voltadas à gestão baseada em evidências. No entanto, a transformação
+desses dados em modelos preditivos e prescritivos ainda depende, em
+grande parte, de atividades manuais de análise e modelagem, o que
+limita sua aplicabilidade em contextos que demandam decisões rápidas
+e precisas. Nesse cenário, a integração entre \textit{mineração de
+	processos} (PM) e \textit{simulação de eventos discretos} (DES) surge
+como uma abordagem promissora para reduzir a distância entre o
+conhecimento descritivo e a previsão operacional.
 
-Nesse contexto, a mineração de processos (Process Mining – PM) e a
-simulação computacional se destacam como abordagens complementares. A
-primeira permite compreender o comportamento real dos processos a
-partir de registros de eventos, enquanto a segunda possibilita
-avaliar o impacto de decisões antes de sua implementação prática. A
-integração entre essas técnicas viabiliza a criação de sistemas de
-apoio à decisão mais precisos, adaptáveis e orientados por dados.
+Do ponto de vista \textbf{científico}, a pesquisa se justifica pela
+necessidade de ampliar o corpo de conhecimento existente sobre a
+integração entre PM e DES, especialmente no que se refere à automação
+das etapas de modelagem e parametrização. Trabalhos anteriores, como
+os de \cite{maruster2009redesigning} e
+\cite{wuennenberg2023internal}, demonstraram o potencial dessa
+integração para diagnóstico e otimização de processos, mas ainda
+requerem intervenções manuais para gerar modelos simuláveis. Assim, o
+presente estudo contribui para o avanço teórico ao propor um método
+automatizado que amplia a reprodutibilidade e a aplicabilidade da
+simulação orientada por dados reais.
 
-Entretanto, a construção manual de modelos de simulação ainda
-representa uma barreira significativa para a aplicação ampla dessas
-tecnologias, especialmente em contextos onde o tempo é um fator
-crítico. A necessidade de profissionais especializados, aliada à
-complexidade dos processos e à variabilidade dos dados, limita o uso
-da simulação como ferramenta de suporte à decisão operacional em
-tempo real.
+Sob a perspectiva \textbf{tecnológica}, a proposta apresenta
+relevância por desenvolver um \textbf{gerador automatizado de modelos
+	de simulação}, capaz de transformar \textit{event logs} em modelos
+DES de forma padronizada e escalável. Essa automação representa um
+avanço em relação a abordagens anteriores, como o PM4SOS
+\cite{ferronato2022}, que, embora integre PM e simulação, mantém
+dependência de ajustes manuais e é restrito a um domínio específico
+(o hospitalar). A ferramenta proposta busca ser generalizável e
+adaptável, permitindo sua aplicação em diferentes setores — como
+logística, manufatura e mineração — sem perda de precisão analítica.
 
-Dessa forma, este trabalho se justifica pela necessidade de tornar a
-geração de modelos de simulação mais automatizada e genérica,
-reduzindo a dependência de modelagem manual e ampliando o uso desta
-técnica para diferentes domínios. Ao propor um gerador de modelos de
-simulação baseado em PM, busca-se oferecer uma ferramenta flexível,
-capaz de apoiar decisões de curto prazo em ambientes complexos e
-dinâmicos, promovendo ganhos de eficiência operacional, qualidade e
-confiabilidade na gestão de processos.
+Por fim, do ponto de vista \textbf{prático}, o trabalho se justifica
+pela crescente necessidade de apoiar decisões operacionais de curto
+prazo em ambientes complexos e dinâmicos. Organizações modernas
+demandam respostas rápidas a variações de demanda, falhas
+operacionais e restrições de recursos, e a geração automatizada de
+modelos de simulação oferece uma alternativa eficiente para análise
+de cenários em tempo reduzido. A validação do gerador no contexto
+hospitalar reforça sua aplicabilidade real, demonstrando o potencial
+de transferência tecnológica da solução para outros domínios.
+
+Dessa forma, o presente trabalho se justifica por unir relevância
+teórica, tecnológica e prática, propondo uma abordagem inovadora e
+generalizável para a automatização da geração de modelos de simulação
+baseados em mineração de processos. Espera-se, com isso, contribuir
+para a consolidação de um novo paradigma de \textit{Process Mining}
+aplicado à tomada de decisão operacional orientada por dados,
+fortalecendo a integração entre análise descritiva, simulação
+preditiva e otimização de desempenho em tempo hábil.
 
 % ----------------------------------------------------------
 % Referencial Teórico
