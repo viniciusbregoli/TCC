@@ -5,6 +5,18 @@
 \providecommand{\abntbstabout}[1]{}
 \abntbstabout{v-1.9.7 }
 
+\bibitem[Aalst 2016]{aalst2016process}
+\abntrefinfo{Aalst}{AALST}{2016}
+{AALST, W. M.~P. van~der. \emph{Process Mining: Data Science in Action}. 2nd. ed. Berlin: Springer, 2016.}
+
+\bibitem[Aalst et al. 2012]{manifesto2011}
+\abntrefinfo{Aalst et al.}{AALST et al.}{2012}
+{AALST, W. M.~P. van~der et al. Process mining manifesto. In:  \emph{Business Process Management Workshops (BPM 2011)}. [S.l.]: Springer, 2012.  (Lecture Notes in Business Information Processing, v.~99), p. 169--194.}
+
+\bibitem[Augusto et al. 2016]{augusto2016evaluation}
+\abntrefinfo{Augusto et al.}{AUGUSTO et al.}{2016}
+{AUGUSTO, V. et al. Evaluation of discovered clinical pathways using process mining and joint agent-based discrete-event simulation. In:  IEEE. \emph{Proceedings of the Winter Simulation Conference (WSC)}. Washington, DC, USA, 2016. p. 2135--2146.}
+
 \bibitem[Brzychczy, {\.Z}uber e Aalst 2024]{brzychczy2024pm4lmp}
 \abntrefinfo{Brzychczy, {\.Z}uber e Aalst}{BRZYCHCZY; {\.Z}UBER; AALST}{2024}
 {BRZYCHCZY, E.; {\.Z}UBER, A.; AALST, W. van~der. Process mining of mining processes: Analyzing longwall coal excavation using event data.
@@ -17,19 +29,58 @@
 Tese (Doutorado em Informática) --- Pontifícia Universidade Católica do Paraná (PUCPR), Curitiba, 2022.
 Dispon{\'\i}vel em: \url{https://www.ppgia.pucpr.br/pt/arquivos/doutorado/teses/2022/Tese\_Jair\_Jose\_Ferronato.pdf}. Acesso em: 6 out. 2025.}
 
+\bibitem[Ferronato e Scalabrin 2021]{ferronato2021pm2sim}
+\abntrefinfo{Ferronato e Scalabrin}{FERRONATO; SCALABRIN}{2021}
+{FERRONATO, J.~J.; SCALABRIN, E.~E. Pm2sim: The automated creation of a simulation model from process mining. In:  \emph{Proceedings of the IEEE International Conference on Systems, Man, and Cybernetics (SMC)}. Melbourne, Australia: IEEE, 2021.}
+
+\bibitem[{IEEE Computational Intelligence Society} 2010]{ieeexes2010}
+\abntrefinfo{{IEEE Computational Intelligence Society}}{{IEEE Computational Intelligence Society}}{2010}
+{{IEEE Computational Intelligence Society}. \emph{IEEE Standard for eXtensible Event Stream (XES) for Achieving Interoperability in Event Logs and Event Streams}. 2010. IEEE Standard 1849-2016.
+Disponível em: \url{http://www.xes-standard.org}.}
+
 \bibitem[Joe et al. 2018]{joe2018projectmining}
 \abntrefinfo{Joe et al.}{JOE et al.}{2018}
 {JOE, J. et al. Process mining for project management. In:  ST. FRANCIS INSTITUTE OF TECHNOLOGY. \emph{Proceedings of the International Conference on Computer Engineering}. Mumbai, India, 2018.}
 
+\bibitem[Kherbouche, Laga e Masse 2020]{betterlogs2020}
+\abntrefinfo{Kherbouche, Laga e Masse}{KHERBOUCHE; LAGA; MASSE}{2020}
+{KHERBOUCHE, M.~O.; LAGA, N.; MASSE, P.-A. Towards a better assessment of event logs quality. In:  \emph{Proceedings of the IEEE International Conference on Systems, Man, and Cybernetics (SMC)}. Toronto, Canada: IEEE, 2020. p. 2235--2242.}
+
+\bibitem[Leemans, Fahland e Aalst 2013]{leemans2013discovering}
+\abntrefinfo{Leemans, Fahland e Aalst}{LEEMANS; FAHLAND; AALST}{2013}
+{LEEMANS, S. J.~J.; FAHLAND, D.; AALST, W. M.~P. van~der. Discovering block-structured process models from event logs containing infrequent behaviour. In:  \emph{Proceedings of the 11th International Conference on Business Process Management}. [S.l.]: Springer, 2013.  (Lecture Notes in Computer Science, v.~8094), p. 66--78.}
+
+\bibitem[Liu 2015]{liu2015integrating}
+\abntrefinfo{Liu}{LIU}{2015}
+{LIU, S.~T.
+\emph{Integrating Process Mining with Discrete-Event Simulation Modeling}.
+Disserta\c{c}\~{a}o (Master of Science Thesis) --- Brigham Young University, Provo, UT, 2015.
+Dispon{\'\i}vel em: \url{https://scholarsarchive.byu.edu/etd/5735}.}
+
 \bibitem[Maru{\c{s}}ter e Beest 2009]{maruster2009redesigning}
 \abntrefinfo{Maru{\c{s}}ter e Beest}{MARU{\c{S}}TER; BEEST}{2009}
-{MARU{\c{S}}TER, L.; BEEST, N.~R. van. Redesigning business processes: A methodology based on simulation and process mining techniques.
+{MARU{\c{S}}TER, L.; BEEST, N. R. T.~P. van. Redesigning business processes: A methodology based on simulation and process mining techniques.
 \emph{Knowledge and Information Systems}, v.~21, n.~3, p. 267--297, 2009.}
 
 \bibitem[Meng et al. 2024]{meng2024enhancing}
 \abntrefinfo{Meng et al.}{MENG et al.}{2024}
 {MENG, S. et al. Enhancing mine groundwater system prediction: Full-process simulation of mining-induced spatio-temporal variations in hydraulic conductivities via modularized modeling.
 \emph{International Journal of Mining Science and Technology}, v.~34, p. 1625--1642, 2024.}
+
+\bibitem[Peterson 1981]{peterson1981petri}
+\abntrefinfo{Peterson}{PETERSON}{1981}
+{PETERSON, J.~L. \emph{Petri Net Theory and the Modeling of Systems}. Englewood Cliffs, NJ: Prentice-Hall, 1981.}
+
+\bibitem[Souza, Vaccaro e Lima 2020]{souza2020ore}
+\abntrefinfo{Souza, Vaccaro e Lima}{SOUZA; VACCARO; LIMA}{2020}
+{SOUZA, T.; VACCARO, G. L.~R.; LIMA, R.~M. Operating room effectiveness: A lean health-care performance indicator.
+\emph{International Journal of Lean Six Sigma}, ahead-of-print, 2020.}
+
+\bibitem[Stroparo, Bichinho e Protil 2004]{protil2004taxa}
+\abntrefinfo{Stroparo, Bichinho e Protil}{STROPARO; BICHINHO; PROTIL}{2004}
+{STROPARO, J.~R.; BICHINHO, G.~L.; PROTIL, R.~M. Estudo da taxa de ocupação do centro cirúrgico através da modelagem e simulação de sistemas.
+\emph{Anais do Congresso Brasileiro de Informática em Saúde}, PUCPR, Curitiba, 2004.
+Disponível em: \url{https://www.researchgate.net/publication/228848883}.}
 
 \bibitem[Wuennenberg, Wegerich e Fottner 2023]{wuennenberg2023internal}
 \abntrefinfo{Wuennenberg, Wegerich e Fottner}{WUENNENBERG; WEGERICH; FOTTNER}{2023}

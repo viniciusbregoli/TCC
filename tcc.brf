@@ -1,38 +1,81 @@
-\backcite {wuennenberg2023internal}{{9}{1}{chapter.1}}
-\backcite {brzychczy2024pm4lmp}{{9}{1}{chapter.1}}
-\backcite {maruster2009redesigning}{{9}{1}{chapter.1}}
-\backcite {ferronato2022}{{9}{1}{chapter.1}}
-\backcite {meng2024enhancing}{{10}{1}{chapter.1}}
-\backcite {wuennenberg2023internal}{{11}{1.1}{section.1.1}}
-\backcite {brzychczy2024pm4lmp}{{11}{1.1}{section.1.1}}
-\backcite {maruster2009redesigning}{{11}{1.1}{section.1.1}}
-\backcite {wuennenberg2023internal, meng2024enhancing}{{11}{1.1}{section.1.1}}
-\backcite {wuennenberg2023internal, meng2024enhancing}{{11}{1.1}{section.1.1}}
-\backcite {ferronato2022}{{11}{1.1}{section.1.1}}
-\backcite {wuennenberg2023internal, brzychczy2024pm4lmp}{{12}{1.2}{section.1.2}}
-\backcite {wuennenberg2023internal, brzychczy2024pm4lmp}{{12}{1.2}{section.1.2}}
-\backcite {maruster2009redesigning}{{12}{1.2}{section.1.2}}
-\backcite {ferronato2022}{{13}{1.2}{section.1.2}}
-\backcite {wuennenberg2023internal, brzychczy2024pm4lmp}{{13}{1.3.1}{subsection.1.3.1}}
-\backcite {wuennenberg2023internal, brzychczy2024pm4lmp}{{13}{1.3.1}{subsection.1.3.1}}
-\backcite {brzychczy2024pm4lmp}{{13}{1.3.1}{subsection.1.3.1}}
-\backcite {joe2018projectmining}{{13}{1.3.1}{subsection.1.3.1}}
-\backcite {wuennenberg2023internal, meng2024enhancing}{{14}{1.3.2}{subsection.1.3.2}}
-\backcite {wuennenberg2023internal, meng2024enhancing}{{14}{1.3.2}{subsection.1.3.2}}
-\backcite {maruster2009redesigning}{{14}{1.3.3}{subsection.1.3.3}}
-\backcite {wuennenberg2023internal}{{14}{1.3.3}{subsection.1.3.3}}
-\backcite {brzychczy2024pm4lmp}{{14}{1.3.3}{subsection.1.3.3}}
-\backcite {meng2024enhancing}{{14}{1.3.3}{subsection.1.3.3}}
-\backcite {wuennenberg2023internal}{{14}{1.3.4}{subsection.1.3.4}}
-\backcite {brzychczy2024pm4lmp}{{14}{1.3.4}{subsection.1.3.4}}
-\backcite {meng2024enhancing}{{15}{1.3.4}{subsection.1.3.4}}
-\backcite {ferronato2022}{{15}{1.3.4}{subsection.1.3.4}}
-\backcite {joe2018projectmining}{{15}{1.3.4}{subsection.1.3.4}}
-\backcite {maruster2009redesigning}{{15}{1.4}{section.1.4}}
-\backcite {ferronato2022}{{16}{1.4}{section.1.4}}
-\backcite {wuennenberg2023internal}{{16}{1.4}{section.1.4}}
-\backcite {brzychczy2024pm4lmp}{{16}{1.4}{section.1.4}}
-\backcite {meng2024enhancing}{{16}{1.4}{section.1.4}}
-\backcite {maruster2009redesigning}{{17}{1.6}{section.1.6}}
-\backcite {wuennenberg2023internal}{{17}{1.6}{section.1.6}}
-\backcite {ferronato2022}{{17}{1.6}{section.1.6}}
+\backcite {wuennenberg2023internal}{{10}{1}{chapter.1}}
+\backcite {brzychczy2024pm4lmp}{{10}{1}{chapter.1}}
+\backcite {maruster2009redesigning}{{10}{1}{chapter.1}}
+\backcite {ferronato2022}{{10}{1}{chapter.1}}
+\backcite {meng2024enhancing}{{11}{1}{chapter.1}}
+\backcite {wuennenberg2023internal}{{12}{1.1}{section.1.1}}
+\backcite {brzychczy2024pm4lmp}{{12}{1.1}{section.1.1}}
+\backcite {maruster2009redesigning}{{12}{1.1}{section.1.1}}
+\backcite {wuennenberg2023internal, meng2024enhancing}{{12}{1.1}{section.1.1}}
+\backcite {wuennenberg2023internal, meng2024enhancing}{{12}{1.1}{section.1.1}}
+\backcite {ferronato2022}{{12}{1.1}{section.1.1}}
+\backcite {wuennenberg2023internal, brzychczy2024pm4lmp}{{13}{1.2}{section.1.2}}
+\backcite {wuennenberg2023internal, brzychczy2024pm4lmp}{{13}{1.2}{section.1.2}}
+\backcite {maruster2009redesigning}{{13}{1.2}{section.1.2}}
+\backcite {ferronato2022}{{14}{1.2}{section.1.2}}
+\backcite {wuennenberg2023internal, brzychczy2024pm4lmp}{{14}{1.3.1}{subsection.1.3.1}}
+\backcite {wuennenberg2023internal, brzychczy2024pm4lmp}{{14}{1.3.1}{subsection.1.3.1}}
+\backcite {brzychczy2024pm4lmp}{{14}{1.3.1}{subsection.1.3.1}}
+\backcite {joe2018projectmining}{{14}{1.3.1}{subsection.1.3.1}}
+\backcite {wuennenberg2023internal, meng2024enhancing}{{15}{1.3.2}{subsection.1.3.2}}
+\backcite {wuennenberg2023internal, meng2024enhancing}{{15}{1.3.2}{subsection.1.3.2}}
+\backcite {maruster2009redesigning}{{15}{1.3.3}{subsection.1.3.3}}
+\backcite {wuennenberg2023internal}{{15}{1.3.3}{subsection.1.3.3}}
+\backcite {brzychczy2024pm4lmp}{{15}{1.3.3}{subsection.1.3.3}}
+\backcite {meng2024enhancing}{{15}{1.3.3}{subsection.1.3.3}}
+\backcite {wuennenberg2023internal}{{15}{1.3.4}{subsection.1.3.4}}
+\backcite {brzychczy2024pm4lmp}{{15}{1.3.4}{subsection.1.3.4}}
+\backcite {meng2024enhancing}{{16}{1.3.4}{subsection.1.3.4}}
+\backcite {ferronato2022}{{16}{1.3.4}{subsection.1.3.4}}
+\backcite {joe2018projectmining}{{16}{1.3.4}{subsection.1.3.4}}
+\backcite {maruster2009redesigning}{{16}{1.4}{section.1.4}}
+\backcite {ferronato2022}{{17}{1.4}{section.1.4}}
+\backcite {wuennenberg2023internal}{{17}{1.4}{section.1.4}}
+\backcite {brzychczy2024pm4lmp}{{17}{1.4}{section.1.4}}
+\backcite {meng2024enhancing}{{17}{1.4}{section.1.4}}
+\backcite {maruster2009redesigning}{{18}{1.6}{section.1.6}}
+\backcite {wuennenberg2023internal}{{18}{1.6}{section.1.6}}
+\backcite {ferronato2022}{{18}{1.6}{section.1.6}}
+\backcite {aalst2016process}{{20}{2.1}{section.2.1}}
+\backcite {maruster2009redesigning}{{20}{2.1}{section.2.1}}
+\backcite {aalst2016process}{{20}{2.1}{section.2.1}}
+\backcite {aalst2016process}{{21}{2.1}{Item.3}}
+\backcite {betterlogs2020}{{21}{2.1}{Item.3}}
+\backcite {leemans2013discovering}{{21}{2.1}{Item.3}}
+\backcite {ferronato2021pm2sim}{{21}{2.1}{Item.3}}
+\backcite {ieeexes2010}{{21}{2.1}{Item.3}}
+\backcite {leemans2013discovering}{{22}{2.2}{section.2.2}}
+\backcite {ferronato2021pm2sim}{{22}{2.2}{section.2.2}}
+\backcite {peterson1981petri}{{22}{2.3}{section.2.3}}
+\backcite {peterson1981petri}{{23}{2.3}{section.2.3}}
+\backcite {aalst2016process}{{23}{2.3}{section.2.3}}
+\backcite {leemans2013discovering}{{23}{2.3}{section.2.3}}
+\backcite {ferronato2021pm2sim}{{24}{2.3}{figure.2.1}}
+\backcite {liu2015integrating}{{25}{2.4}{section.2.4}}
+\backcite {liu2015integrating}{{25}{2.4}{section.2.4}}
+\backcite {ferronato2021pm2sim}{{25}{2.4}{section.2.4}}
+\backcite {wuennenberg2023internal}{{25}{2.4}{section.2.4}}
+\backcite {aalst2016process}{{26}{2.5}{section.2.5}}
+\backcite {ferronato2021pm2sim}{{26}{2.5}{section.2.5}}
+\backcite {liu2015integrating}{{26}{2.5}{section.2.5}}
+\backcite {leemans2013discovering}{{26}{2.5}{section.2.5}}
+\backcite {aalst2016process}{{27}{2.6}{section.2.6}}
+\backcite {manifesto2011}{{27}{2.6}{section.2.6}}
+\backcite {manifesto2011}{{27}{2.6}{section.2.6}}
+\backcite {liu2015integrating}{{28}{2.6}{section.2.6}}
+\backcite {betterlogs2020}{{28}{2.6}{section.2.6}}
+\backcite {aalst2016process}{{28}{2.7}{section.2.7}}
+\backcite {ferronato2021pm2sim}{{29}{2.7}{section.2.7}}
+\backcite {augusto2016evaluation}{{29}{2.7}{section.2.7}}
+\backcite {protil2004taxa}{{29}{2.7}{section.2.7}}
+\backcite {betterlogs2020}{{29}{2.7}{section.2.7}}
+\backcite {souza2020ore}{{30}{2.8}{section.2.8}}
+\backcite {souza2020ore}{{30}{2.8}{section.2.8}}
+\backcite {protil2004taxa}{{30}{2.8}{section.2.8}}
+\backcite {ferronato2021pm2sim}{{30}{2.8}{section.2.8}}
+\backcite {ieeexes2010}{{31}{2.9}{section.2.9}}
+\backcite {ieeexes2010}{{34}{3.2.3}{subsection.3.2.3}}
+\backcite {aalst2016process}{{35}{3.3.2.4}{subsubsection.3.3.2.4}}
+\backcite {leemans2013discovering}{{36}{3.3.3.1}{subsubsection.3.3.3.1}}
+\backcite {aalst2016process}{{38}{3.3.7}{subsection.3.3.7}}
+\backcite {peterson1981petri}{{41}{3.4.5}{subsection.3.4.5}}
