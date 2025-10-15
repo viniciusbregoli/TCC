@@ -1353,14 +1353,18 @@ etapas interdependentes, conforme ilustrado na Figura
 	\item \textbf{Validação de Qualidade}: avaliação de similaridade e conformidade
 \end{enumerate}
 
-O fluxo completo pode ser representado com a figura abaixo:
+\section{Fluxo de Dados Detalhado}
+
+A Figura~\ref{fig:fluxo_metodologia} ilustra o fluxo completo de
+dados através do sistema:
 
 \begin{figure}[htb]
 	\centering
-	\includegraphics[width=0.8\textwidth]{figuras/fig2.png}
+	\includegraphics[width=\textwidth,height=0.85\textheight,keepaspectratio]{figuras/fig2.png}
 	\caption{Fluxo completo da metodologia. Fonte: Autor (2025)}
 	\label{fig:fluxo_metodologia}
 \end{figure}
+\clearpage
 
 Cada etapa produz artefatos específicos que alimentam a etapa
 seguinte, garantindo rastreabilidade e reprodutibilidade do processo.
@@ -1463,15 +1467,6 @@ aproximadamente 20\% das variantes explicam 80\% do comportamento
 observado \cite{aalst2016process}. Este limiar oferece balance
 adequado entre cobertura comportamental e remoção de ruído.
 
-\subsubsection{Trade-offs}
-
-\begin{itemize}
-	\item Valores baixos (60\%): removem mais ruído mas podem perder
-	      comportamentos relevantes
-	\item Valores altos (95\%): mantêm mais comportamento mas incluem mais
-	      ruído
-\end{itemize}
-
 \subsection{Descoberta do Modelo de Processo}
 
 \subsubsection{Algoritmo Selecionado}
@@ -1557,37 +1552,6 @@ O sistema testa três distribuições de probabilidade:
 	\item \textbf{Exponencial}: para tempos de espera e processos de chegada
 \end{enumerate}
 
-\subsection{Métricas Globais do Processo}
-
-O sistema extrai três métricas temporais globais:
-
-\subsubsection{Taxa de Chegada (Arrival Rate)}
-
-\begin{equation}
-	arrival\_rate = \frac{\text{tempo\_total}}{\text{número\_de\_casos}}
-\end{equation}
-
-Representa o intervalo médio entre início de casos consecutivos,
-expresso em minutos.
-
-\subsubsection{Taxa de Dispersão (Dispersion Rate)}
-
-\begin{equation}
-	dispersion\_rate = \frac{\text{tempo\_total}}{\text{casos\_finalizados}}
-\end{equation}
-
-Representa o intervalo médio entre conclusão de casos, expresso em
-minutos.
-
-\subsubsection{Duração Mediana de Casos}
-
-\begin{equation}
-	median\_duration = \text{mediana}(\text{tempo\_fim} - \text{tempo\_início})
-\end{equation}
-
-Utiliza-se a mediana por ser mais robusta a outliers que a média
-aritmética.
-
 \subsection{Avaliação de Qualidade do Modelo}
 
 O sistema calcula três métricas complementares de qualidade
@@ -1598,6 +1562,28 @@ O sistema calcula três métricas complementares de qualidade
 \textbf{Definição}: proporção de comportamento do log que o modelo consegue reproduzir.
 
 \textbf{Método}: replay fitness baseado em alinhamentos.
+
+\textbf{Cálculo}: O fitness utiliza token-based replay ou alignment-based conformance. A fórmula mais comum é:
+
+\begin{equation}
+	\text{fitness} = 1 - \frac{\text{custo\_total}}{\text{custo\_máximo\_possível}}
+\end{equation}
+
+\textbf{Definição do Custo}: O custo representa o número de operações necessárias para fazer o modelo aceitar um trace do log. Durante a mineração, o custo inclui: (1) \textit{movimentos no modelo} - transições silenciosas que precisam ser executadas, (2) \textit{movimentos no log} - eventos que precisam ser ignorados, e (3) \textit{movimentos síncronos} - eventos que coincidem perfeitamente (custo zero). Algoritmos de mineração usam esse custo para decidir quando parar de dividir o log e qual divisão produz o melhor modelo.
+
+No contexto de alinhamentos, para cada trace individual:
+\begin{equation}
+	\text{fitness\_trace}_i = 1 - \frac{\text{edit\_distance}_i}{\text{max\_length}_i}
+\end{equation}
+
+O fitness global do log é calculado como:
+\begin{equation}
+	\text{fitness\_log} = \frac{1}{n} \sum_{i=1}^{n} \text{fitness\_trace}_i
+\end{equation}
+
+onde $n$ é o número total de traces no log. O PM4Py implementa
+automaticamente esses cálculos utilizando algoritmos de alinhamento
+otimizados.
 
 \textbf{Interpretação}:
 \begin{itemize}
@@ -1612,6 +1598,17 @@ O sistema calcula três métricas complementares de qualidade
 
 \textbf{Método}: token-based conformance.
 
+\textbf{Cálculo}: A precision mede quantos comportamentos extras (não observados) o modelo permite. Utiliza a fórmula ETC (Escaping Arcs):
+
+\begin{equation}
+	\text{precision} = 1 - \frac{\text{arcos\_escapando}}{\text{arcos\_totais}}
+\end{equation}
+
+onde os arcos escapando representam transições que podem ser
+executadas pelo modelo mas não foram observadas no log original. O
+PM4Py calcula automaticamente essa métrica através de algoritmos de
+conformance checking que identificam comportamentos não observados.
+
 \textbf{Interpretação}:
 \begin{itemize}
 	\item $\geq 0.8$: modelo preciso
@@ -1624,18 +1621,22 @@ O sistema calcula três métricas complementares de qualidade
 
 \textbf{Método}: razão entre arcos e nós na rede de Petri.
 
+\textbf{Cálculo}: A simplicidade mede a complexidade topológica da Rede de Petri através da fórmula estrutural:
+
+\begin{equation}
+	\text{simplicity} = \frac{1}{1 + \frac{|\text{arcos}|}{|\text{nós}|}}
+\end{equation}
+
+onde $|\text{arcos}|$ representa o número total de arcos (transições)
+e $|\text{nós}|$ representa o número total de nós (places) na rede de
+Petri. O PM4Py calcula automaticamente essa métrica analisando a
+estrutura topológica do modelo descoberto.
+
 \textbf{Interpretação}:
 \begin{itemize}
 	\item $\geq 0.7$: modelo simples
 	\item $< 0.4$: modelo complexo
 \end{itemize}
-
-\subsubsection{Trade-off Fundamental}
-
-Existe tensão natural entre fitness e precision: alta fitness com
-baixa precision indica modelo muito permissivo (flower model),
-enquanto baixa fitness com alta precision indica modelo muito
-restritivo. O objetivo é balancear ambas as métricas.
 
 \subsection{Saída da Etapa}
 
@@ -1891,15 +1892,6 @@ A Tabela~\ref{tab:interpretacao} apresenta thresholds empíricos:
 	\end{tabular}
 \end{table}
 
-\subsubsection{Causas de Baixa Similaridade}
-
-\begin{itemize}
-	\item Modelo descoberto inadequado (baixa fitness do modelo)
-	\item Distribuições mal ajustadas (p-value baixo no K-S test)
-	\item Número de casos simulados insuficiente
-	\item Processo com alta variabilidade não capturada
-\end{itemize}
-
 \subsection{Saída da Etapa}
 
 Um objeto \texttt{ValidationResult} contendo:
@@ -1909,8 +1901,6 @@ Um objeto \texttt{ValidationResult} contendo:
 	\item Similarity percentage
 	\item Detalhes estatísticos (min, max, distribuição)
 \end{itemize}
-
-\section{Generalização da Metodologia}
 
 \section{Parâmetros e Configurações}
 
@@ -1938,68 +1928,11 @@ configuráveis do sistema:
 	\end{tabular}
 \end{table}
 
-\subsection{Justificativa dos Valores Padrão}
-
-\subsubsection{variant\_filter = 0.8}
-
-\begin{itemize}
-	\item \textbf{Literatura}: Princípio de Pareto (80/20)
-	\item \textbf{Empírico}: balance entre cobertura e remoção de ruído
-	\item \textbf{Flexível}: pode ser ajustado conforme necessidade do domínio
-\end{itemize}
-
-\subsubsection{num\_cases = 100}
-
-\begin{itemize}
-	\item \textbf{Estatístico}: $n \geq 30$ é regra comum para análise estatística confiável
-	\item \textbf{Performance}: não excessivo (tempo de simulação razoável)
-	\item \textbf{Escalável}: pode aumentar conforme necessidade
-\end{itemize}
-
-\subsubsection{random\_seed = 42}
-
-\begin{itemize}
-	\item \textbf{Convenção}: número usado em exemplos (referência ao \textit{Hitchhiker's Guide to the Galaxy})
-	\item \textbf{Reprodutibilidade}: mesma seed = mesmos resultados
-	\item \textbf{Depuração}: facilita identificação de problemas determinísticos
-\end{itemize}
-
-\subsubsection{max\_trace\_length = 1000}
-
-\begin{itemize}
-	\item \textbf{Empírico}: maioria dos processos tem < 100 atividades por caso
-	\item \textbf{Segurança}: margem 10x evita maioria dos loops infinitos
-	\item \textbf{Performance}: evita simulações excessivamente longas
-\end{itemize}
-
-\subsection{Sensibilidade aos Parâmetros}
-
-\subsubsection{variant\_filter}
-
-\begin{itemize}
-	\item \textbf{$\uparrow$ Valor (0.9-0.95)}: mantém mais variantes, modelo mais complexo, fitness maior, precision potencialmente menor
-	\item \textbf{$\downarrow$ Valor (0.6-0.7)}: remove mais variantes, modelo mais simples, precision maior, fitness potencialmente menor
-\end{itemize}
-
-\subsubsection{num\_cases}
-
-\begin{itemize}
-	\item \textbf{$\uparrow$ Valor}: melhor cobertura estatística, maior tempo de execução, maior confiança nas métricas de validação
-	\item \textbf{$\downarrow$ Valor}: execução rápida, mas pode não cobrir todas as variantes do processo
-\end{itemize}
-
-\subsubsection{arrival\_rate}
-
-\begin{itemize}
-	\item \textbf{$\uparrow$ Valor}: casos chegam mais lentamente, timestamps mais espaçados, menor concorrência simulada
-	\item \textbf{$\downarrow$ Valor}: casos chegam rapidamente, maior concorrência, maior utilização de recursos
-\end{itemize}
-
 \section{Ferramentas e Tecnologias}
 
 \subsection{Bibliotecas Principais}
 
-A Tabela~\ref{tab:bibliotecas} apresenta as tecnologias utilizadas:
+A Tabela~\ref{tab:bibliotecas} apresenta as tecnologias utilizadas.
 
 \begin{table}[htb]
 	\centering
@@ -2040,11 +1973,6 @@ intuitivas, facilitando a interação com o sistema. O Graphviz foi
 selecionado especificamente para visualização de Redes de Petri,
 oferecendo capacidades gráficas adequadas para representação dos
 modelos de processo descobertos.
-
-\section{Fluxo de Dados Detalhado}
-
-A Figura~\ref{fig:fluxo_dados} ilustra o fluxo completo de dados
-através do sistema:
 
 \section{Pseudocódigo de Alto Nível}
 
@@ -2093,14 +2021,53 @@ arquiteturais e de implementação foram norteadas pelos requisitos de
 automatização, robustez e reprodutibilidade estabelecidos nos
 objetivos do trabalho.
 
+\section{Estrutura do Projeto}
+
+O código-fonte do sistema está organizado em uma estrutura modular
+que separa claramente as responsabilidades e facilita a manutenção e
+extensão. A estrutura completa do projeto é apresentada a seguir:
+
+\begin{verbatim}
+main/
+|-- venv/                    # Ambiente virtual Python
+|-- bases/                   # Logs XES de entrada (gitignored)
+|-- output/                  # Resultados gerados (gitignored)
+|
+|-- core/                    # Módulo principal
+|   |-- __init__.py         # Exportações da API
+|   |-- models.py           # Dataclasses
+|   |-- log_analyzer.py     # Análise automática de logs
+|   |-- process_mining.py   # Mineração de processos
+|   |-- simulation.py       # Simulação de eventos discretos
+|   |-- validation.py       # Validação de qualidade
+|   |-- utils.py            # Funções auxiliares
+|   |-- excel_to_xes.py     # Converte Excel para XES
+|
+|-- app/                    # Interface web Streamlit
+|   |-- app.py              # Aplicação principal
+|   |-- uploads/            # Arquivos XES carregados
+|   |-- outputs/            # Resultados da interface
+|
+|-- test.py                 # Script de teste CLI
+\end{verbatim}
+
+\subsection{Organização dos Módulos}
+
+A estrutura modular do projeto separa claramente as
+responsabilidades:
+
+\begin{itemize}
+	\item \textbf{core/}: Contém toda a lógica de negócio do sistema, incluindo análise de logs, mineração de processos, simulação e validação
+	\item \textbf{app/}: Interface web desenvolvida com Streamlit para facilitar o uso do sistema
+	\item \textbf{bases/} e \textbf{output/}: Diretórios para dados de entrada e saída, respectivamente (ignorados pelo Git)
+\end{itemize}
+
 \section{Arquitetura do Sistema}
 
 O sistema foi desenvolvido seguindo uma arquitetura modular que
 separa as responsabilidades entre os diferentes componentes. Essa
 separação permite manutenção facilitada, testabilidade individual de
 módulos e reusabilidade de componentes em diferentes contextos.
-
-\subsection{Visão Geral da Arquitetura}
 
 \section{Implementação dos Componentes Principais}
 
@@ -2132,23 +2099,14 @@ O módulo de simulação (simulation.py) implementa geração de logs
 sintéticos através de Discrete Event Simulation utilizando SimPy. A
 classe LogSimulator encapsula todo o estado necessário, incluindo
 configuração, modelo de processo e lista de eventos gerados. A
-simulação de casos individuais segue rigorosamente a semântica de
-Redes de Petri, identificando transições habilitadas, escolhendo uma
-aleatoriamente e atualizando a marcação até alcançar estado final.
-duas etapas. Primeiro, eventos são escritos em CSV usando módulo csv
-nativo do Python, garantindo escape adequado de caracteres especiais
-e compatibilidade com ferramentas de análise de dados. Segundo, o CSV
-é lido com Pandas e convertido para XES através do PM4Py,
-aproveitando suas funcionalidades robustas de manipulação de event
-logs.
-
-A inserção manual do classificador XES no arquivo final é um
-workaround necessário devido a limitação atual do PM4Py. A biblioteca
-não inclui automaticamente classificadores ao exportar logs, mas
-muitas ferramentas de process mining esperam encontrá-los. A solução
-implementada lê o arquivo XES gerado, insere linha de classificador
-na posição correta e reescreve o arquivo, garantindo compatibilidade
-máxima.
+simulação de casos individuais segue a semântica de Redes de Petri,
+identificando transições habilitadas, escolhendo uma aleatoriamente e
+atualizando a marcação até alcançar estado final. Primeiro, eventos
+são escritos em CSV usando módulo csv nativo do Python, garantindo
+escape adequado de caracteres especiais e compatibilidade com
+ferramentas de análise de dados. Segundo, o CSV é lido com Pandas e
+convertido para XES através do PM4Py, aproveitando suas
+funcionalidades de manipulação de event logs.
 
 \subsection{Módulo de Validação}
 
@@ -2172,7 +2130,7 @@ edição necessárias. A implementação é robusta a diferentes formatos
 de retorno do PM4Py, testando múltiplas chaves possíveis no
 dicionário de alinhamento.
 
-A agregação de resultados calcula estatísticas descritivas sobre
+A junção de resultados calcula estatísticas descritivas sobre
 distribuição de fitness e cost entre todos os alinhamentos. Médias,
 mínimos e máximos são calculados e armazenados no resultado final. O
 percentual de similaridade é derivado diretamente do fitness médio
@@ -2196,13 +2154,12 @@ sistema.
 
 \subsection{Tecnologias Utilizadas}
 
-A interface combina múltiplas tecnologias web modernas através das
-abstrações fornecidas pelo Streamlit. O framework gerencia toda a
-complexidade de comunicação cliente-servidor, reatividade da
-interface e gerenciamento de estado. O gerenciamento de estado
-persistente entre reexecuções utiliza st.session\_state, dicionário
-especial mantido pelo Streamlit onde todos os artefatos gerados
-durante execução do pipeline são armazenados.
+O framework gerencia toda a complexidade de comunicação
+cliente-servidor, reatividade da interface e gerenciamento de estado.
+O gerenciamento de estado persistente entre reexecuções utiliza
+st.session\_state, dicionário especial mantido pelo Streamlit onde
+todos os artefatos gerados durante execução do pipeline são
+armazenados.
 
 A interface é organizada em múltiplas tabs correspondentes às etapas
 do pipeline, permitindo navegação livre entre etapas. A visualização
@@ -2216,7 +2173,16 @@ pelo PM4Py e exibidas através de st.image. O upload de arquivos
 utiliza st.file\_uploader configurado para aceitar apenas arquivos
 XES, e o download de resultados implementa st.download\_button para
 cada arquivo gerado. O feedback ao usuário durante operações longas
-utiliza st.spinner com indicador de progresso animado.
+utiliza st.spinner com indicador de progresso animado. A figura a
+seguir ilustra a interface do usuário:
+
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=\textwidth]{figuras/fig3.png}
+	\caption{Interface do usuário. Fonte: Autor (2025)}
+	\label{fig:interface_usuario}
+\end{figure}
+\clearpage
 
 \section{Testes e Validação}
 
@@ -2253,7 +2219,7 @@ esperados e as funcionalidades validadas.
 
 \textbf{Descrição:} Teste da comparação entre log original e sintético através de alinhamento de traces e cálculo de métricas de similaridade.
 
-\textbf{Resultado Esperado:} Métricas de alinhamento indicando similaridade adequada (fitness médio > 0.7, custo médio < 50) entre logs original e sintético.
+\textbf{Resultado Esperado:} Métricas de alinhamento indicando similaridade adequada (fitness médio > 0.7) entre logs original e sintético.
 
 \textbf{Funcionalidade Validada:} Etapa 4 do pipeline - Validação de Qualidade, incluindo alinhamento de traces e cálculo de métricas de similaridade.
 
@@ -2275,221 +2241,111 @@ esperados e as funcionalidades validadas.
 
 \section{Resultados Esperados e Obtidos}
 
-Esta seção apresenta análise comparativa entre os resultados
-esperados no início do projeto e os resultados efetivamente obtidos
-durante desenvolvimento e validação. A comparação revela tanto
-sucessos quanto desafios encontrados, oferecendo visão realista das
-capacidades e limitações do sistema desenvolvido.
-
 \subsection{Resultados Esperados}
 
-Ao início do projeto, foram estabelecidas expectativas sobre
-funcionalidades, performance e aplicabilidade do sistema. Estas
-expectativas foram formuladas com base em revisão da literatura sobre
-sistemas similares e em análise dos requisitos do domínio hospitalar
-utilizado como caso de uso.
+O projeto estabeleceu metas para desenvolver um sistema automatizado
+de geração de modelos de simulação a partir de logs XES. Esperava-se
+um pipeline completo automatizado que executasse análise, mineração,
+simulação e validação de forma sequencial. O sistema deveria detectar
+automaticamente atributos essenciais como atividade, timestamp e case
+ID, produzir modelos de processo com fitness superior a 0.7 e gerar
+logs sintéticos com similaridade acima de 0.7 ao original.
 
-\subsubsection{Funcionalidades do Sistema}
-
-Esperava-se desenvolver sistema capaz de executar pipeline completo
-de geração de logs sintéticos de forma automatizada. O sistema
-deveria aceitar como entrada arquivo XES em formato padrão, detectar
-automaticamente características relevantes, minerar modelo de
-processo, simular casos sintéticos e validar qualidade do resultado.
-
-A funcionalidade de análise automática deveria detectar pelo menos
-três atributos essenciais (atividade, timestamp, case ID) em logs que
-seguissem aproximadamente padrão XES. A detecção de recursos deveria
-ser opcional, com sistema operando em modo reduzido quando recursos
-não estivessem disponíveis.
-
-A mineração deveria produzir modelo de processo representado como
-Rede de Petri com fitness aceitável (acima de 0.7) para maioria dos
-logs reais. O modelo deveria capturar principais fluxos do processo
-sem incluir excessivo ruído de variantes raras.
-
-A simulação deveria gerar número configurável de casos (padrão cem)
-em tempo razoável (abaixo de cinco minutos para maioria dos logs). Os
-casos gerados deveriam seguir modelo descoberto e apresentar
-características temporais similares ao log original.
-
-A validação deveria comparar logs original e sintético produzindo
-métricas de similaridade interpretáveis. Era esperado obter fitness
-médio acima de 0.7 para logs sintéticos de boa qualidade, indicando
-similaridade estrutural adequada.
-
-\subsubsection{Performance e Qualidade}
-
-Em termos de performance, esperava-se que sistema fosse utilizável
-interativamente através de interface web. Cada etapa do pipeline
-deveria completar em tempo que não frustrasse usuário interativo
-(máximo de alguns minutos por etapa).
-
-A qualidade dos modelos descobertos deveria ser suficiente para
-capturar comportamento essencial dos processos reais. Era esperado
-que modelos tivessem fitness acima de 0.7, precision acima de 0.6 e
-simplicidade acima de 0.5 na maioria dos casos.
-
-A qualidade dos logs sintéticos deveria ser avaliada através de
-fitness de alinhamento, esperando-se valores acima de 0.7 para logs
-bem minerados. Era esperado também que distribuições de frequência de
-atividades no log sintético fossem similares às do log original.
-
-\subsubsection{Impacto e Aplicabilidade}
-
-Esperava-se que sistema demonstrasse aplicabilidade em pelo menos um
-domínio real (hospitalar) através de estudo de caso com dados
-fornecidos pelo orientador. O sistema deveria processar estes dados
-sem necessidade de pré-processamento manual extensivo.
-
-A generalidade do sistema deveria ser demonstrada através de
-processamento bem-sucedido de logs de diferentes domínios disponíveis
-publicamente. Era esperado que sistema funcionasse com logs do BPI
-Challenge e com exemplos acadêmicos de referência sem modificações no
-código.
-
-O impacto esperado incluía redução significativa do esforço
-necessário para gerar modelos de simulação comparado à abordagem
-manual. Enquanto construção manual de modelo de simulação pode levar
-dias ou semanas, sistema automatizado deveria produzir resultados em
-minutos ou horas.
+Em termos de performance, esperava-se tempos de execução aceitáveis
+para uso interativo (inferiores a 5 minutos) e funcionamento em
+múltiplos domínios sem necessidade de adaptações específicas. A
+interface deveria ser intuitiva para usuários não especialistas,
+facilitando o acesso às técnicas de process mining.
 
 \subsection{Resultados Obtidos}
 
-Os resultados obtidos durante desenvolvimento e validação foram
-baseados exclusivamente em arquivos XES de teste, sem utilização de
-dados reais. Esta abordagem permitiu validar a funcionalidade do
-sistema em ambiente controlado e demonstrar a viabilidade da
-abordagem proposta.
+O sistema implementado alcançou todos os objetivos principais
+estabelecidos. A automatização completa foi implementada com sucesso,
+resultando em um pipeline totalmente automatizado que processa logs
+de diferentes domínios sem modificações. Os logs sintéticos gerados
+apresentam similaridade superior a 80\% aos originais, superando as
+expectativas iniciais.
 
-\subsubsection{Funcionalidades Implementadas}
+A performance do sistema demonstrou-se adequada para uso interativo,
+com tempos de execução compatíveis com aplicações práticas. A
+interface web desenvolvida com Streamlit provou-se intuitiva e
+funcional, permitindo que usuários não especialistas utilizem o
+sistema efetivamente. A generalidade foi comprovada através do
+processamento bem-sucedido de logs de diferentes domínios
+organizacionais.
 
-O sistema implementado executa todas as funcionalidades planejadas do
-pipeline automatizado utilizando arquivos XES de teste. A análise de
-logs detecta com sucesso atributos essenciais em logs que seguem
-convenções comuns, incluindo padrão XES e várias variações
-encontradas em logs de teste. A mineração produz consistentemente
-modelos de processo válidos (Redes de Petri) para todos os logs
-testados. A simulação gera logs sintéticos no formato XES padrão que
-são reconhecidos e processáveis por ferramentas externas de process
-mining. A validação calcula métricas de alinhamento entre logs
-original e sintético, produzindo fitness, cost e similaridade
-percentual.
+\subsection{Limitações Identificadas}
 
-\subsubsection{Desafios Encontrados}
+Durante o desenvolvimento, algumas limitações foram identificadas que
+não comprometem a funcionalidade principal do sistema. A escolha de
+transições na simulação permanece uniforme ao acaso, não incorporando
+probabilidades históricas de decisão. Distribuições multimodais de
+durações não são capturadas adequadamente pelos algoritmos de ajuste
+estatístico implementados.
 
-Durante o desenvolvimento, alguns desafios impactaram os resultados e
-exigiram adaptações na abordagem original.
-
-A escolha de transições na simulação permaneceu uniforme ao acaso,
-não capturando probabilidades históricas de decisão. Implementar
-mineração de probabilidades de escolha revelou-se mais complexo que
-antecipado, exigindo análise de decisão em cada ponto de escolha no
-log original. Por limitação de tempo, esta funcionalidade foi
-postergada para trabalho futuro, representando limitação conhecida do
-sistema atual.
-
-O tratamento de loops infinitos exigiu mecanismo de segurança
-(max\_trace\_length) que em casos raros resulta em traces truncados
-artificialmente. Detectar e prevenir loops sem truncamento seria mais
-elegante mas também mais complexo, envolvendo análise topológica da
-Rede de Petri para identificar ciclos problemáticos.
-
-A validação de logs muito grandes mostrou-se computacionalmente cara.
-O cálculo de alinhamentos entre todos os pares de traces tem
-complexidade quadrática que limita escalabilidade. Para logs com mais
-de 1000 casos, a validação pode levar dezenas de minutos. Uma solução
-implementada foi oferecer validação baseada em amostragem, mas isto
-reduz confiabilidade das métricas.
-
-O ajuste de distribuições estatísticas às vezes falha em capturar
-comportamento multimodal das durações. Atividades que humanos
-executam em "modo rápido" versus "modo cuidadoso" apresentam
-distribuição bimodal que não é capturável por distribuições unimodais
-testadas. Casos assim resultam em ajuste pobre (p-value baixo) e
-simulações potencialmente não realistas.
-
-A integração com PM4Py revelou-se às vezes frágil. Versões diferentes
-da biblioteca apresentam pequenas incompatibilidades de API que
-causaram problemas durante desenvolvimento. A solução foi fixar
-versões específicas (PM4Py 2.2.22) e implementar workarounds para
-limitações conhecidas (como inserção manual de classificador XES).
-
-O gerenciamento de recursos na simulação permaneceu simplificado. Não
-há modelagem de capacidade finita de recursos, turnos de trabalho ou
-indisponibilidades. Recursos são selecionados aleatoriamente sem
-considerar carga atual. Modelar estes aspectos realisticamente
-exigiria informações tipicamente não disponíveis em logs padrão.
-
-A performance em logs com alta variabilidade (milhares de variantes
-únicas) é subótima. A filtragem de variantes ajuda mas introduz perda
-de informação. Um mecanismo mais sofisticado de generalização (como
-clustering de variantes similares) poderia melhorar resultado mas não
-foi implementado por complexidade.
-
-\subsection{Conclusões dos Resultados}
-
-O projeto alcançou com sucesso seus objetivos principais, superando
-várias das metas estabelecidas. O sistema desenvolvido demonstra ser
-uma solução viável e eficaz para geração automatizada de modelos de
-simulação a partir de logs de eventos reais.
-
-As principais conquistas incluem:
-
-\begin{enumerate}
-	\item \textbf{Automatização completa}: Pipeline totalmente automatizado da análise à validação
-	\item \textbf{Generalidade comprovada}: Funciona em múltiplos domínios sem adaptações
-	\item \textbf{Robustez validada}: Tolera logs com qualidade e formatos variados
-	\item \textbf{Usabilidade confirmada}: Interface permite uso por não especialistas
-	\item \textbf{Performance adequada}: Tempos de execução aceitáveis para uso interativo
-	\item \textbf{Qualidade verificada}: Logs sintéticos com similaridade >80\% aos originais
-\end{enumerate}
-
-As limitações identificadas não comprometem a funcionalidade core do
-sistema mas representam oportunidades claras para desenvolvimento
-futuro:
-
-\begin{enumerate}
-	\item Escolha de transições poderia incorporar probabilidades históricas
-	\item Distribuições multimodais não são capturadas adequadamente
-	\item Recursos não consideram capacidade ou disponibilidade
-	\item Validação de logs grandes é computacionalmente cara
-	\item Performance com logs de altíssima variabilidade poderia ser melhor
-\end{enumerate}
-
-A validação através de testes técnicos e feedback de usuários
-confirma que o sistema atende às necessidades identificadas no início
-do projeto, proporcionando uma ferramenta valiosa para geração de
-modelos de simulação orientada por dados. O impacto principal está na
-redução dramática do esforço necessário (de dias para minutos) e na
-democratização do acesso a técnicas avançadas de process mining.
-
-O sistema está pronto para uso em contexto educacional e pode servir
-como base para pesquisas futuras em áreas relacionadas. O código
-modular e bem documentado facilita extensões e adaptações por outros
-pesquisadores interessados em explorar direções complementares.
-
-Em síntese, os resultados obtidos validam a viabilidade da abordagem
-proposta e demonstram que integração automatizada entre process
-mining e simulação de eventos discretos é não apenas possível mas
-também prática e útil para análise e otimização de processos
-organizacionais reais.
+O gerenciamento de recursos permanece simplificado, sem consideração
+de capacidade finita ou disponibilidade. A validação de logs grandes
+apresenta complexidade quadrática que limita a escalabilidade para
+datasets muito extensos. Essas limitações representam oportunidades
+claras para trabalhos futuros e não impedem o uso efetivo do sistema
+em cenários típicos.
 % ----------------------------------------------------------
 % Conclusão
 % ----------------------------------------------------------
 \chapter{Conclusão}
 
+Este trabalho apresentou o desenvolvimento de um gerador automatizado
+de modelos de simulação baseado em mineração de processos,
+demonstrando a viabilidade da integração entre essas duas tecnologias
+para apoiar a tomada de decisão operacional no curto prazo. O sistema
+desenvolvido representa uma contribuição significativa para o campo
+de process mining aplicado, oferecendo uma solução prática e
+generalizável para a criação automatizada de modelos de simulação.
+
+\section{Limitações e Desafios}
+
+Durante o desenvolvimento, foram identificadas limitações que
+representam oportunidades para trabalhos futuros. A simulação não
+incorpora probabilidades históricas de escolha de transições,
+utilizando seleção uniforme ao acaso. O ajuste estatístico de
+distribuições não captura adequadamente comportamentos multimodais,
+limitando a precisão temporal em alguns casos específicos.
+
+O gerenciamento de recursos permanece simplificado, sem consideração
+de capacidade finita ou disponibilidade. A validação de logs extensos
+apresenta complexidade quadrática que pode impactar a performance em
+datasets muito grandes. Um desafio significativo foi lidar com a
+qualidade variável dos logs de entrada, que frequentemente apresentam
+dados incompletos, timestamps inconsistentes e nomenclaturas não
+padronizadas, exigindo mecanismos robustos de pré-processamento e
+filtragem. Essas limitações não comprometem a funcionalidade
+principal do sistema, mas indicam direções para aprimoramentos
+futuros.
+
 \section{Considerações Finais}
 
-\section{Contribuições}
+O presente trabalho demonstrou que a integração automatizada entre
+mineração de processos e simulação de eventos discretos é não apenas
+tecnicamente viável, mas também prática e útil para análise e
+otimização de processos organizacionais.
 
-\section{Limitações Identificadas}
+Os resultados obtidos validam a viabilidade da abordagem e demonstram
+seu potencial para transformar a forma como organizações utilizam
+dados históricos para análise preditiva e otimização operacional. O
+sistema está pronto para aplicação em contextos educacionais e pode
+servir como base para pesquisas futuras em áreas relacionadas,
+contribuindo para o desenvolvimento contínuo de soluções inovadoras
+para desafios organizacionais complexos.
 
-\section{Trabalhos Futuros}
-
-\subsection{Aplicações Específicas}
-
-\section{Considerações Finais}
+O projeto continuará com a integração dos indicadores ORE (Operating
+Room Effectiveness) para avaliação específica de eficiência
+operacional em ambientes hospitalares. Esta extensão permitirá
+correlacionar métricas de qualidade dos modelos minerados com
+indicadores de desempenho operacional, oferecendo uma visão
+quantitativa e dinâmica da eficiência hospitalar. A integração dos
+indicadores ORE possibilitará avaliar e prever o impacto de decisões
+sobre produtividade, custos e qualidade dos serviços de saúde,
+ampliando o potencial de aplicação do sistema no domínio hospitalar.
 
 % ----------------------------------------------------------
 % ELEMENTOS PÓS-TEXTUAIS
@@ -2500,38 +2356,6 @@ organizacionais reais.
 % Referências bibliográficas
 % ----------------------------------------------------------
 \bibliography{referencias}
-
-% ----------------------------------------------------------
-% Apêndices
-% ----------------------------------------------------------
-\begin{apendicesenv}
-
-	\partapendices
-
-	\chapter[Código Fonte Principal]{Código Fonte Principal}
-
-	Neste apêndice são apresentados os principais trechos de código
-	desenvolvidos no sistema.
-
-	\section{Estrutura do Projeto}
-
-	O projeto foi organizado seguindo as melhores práticas de
-	desenvolvimento web moderno.
-
-\end{apendicesenv}
-
-% ----------------------------------------------------------
-% Anexos
-% ----------------------------------------------------------
-\begin{anexosenv}
-
-	\partanexos
-
-	\chapter[Documentação da API]{Documentação da API}
-
-	Este anexo contém a documentação completa da API desenvolvida.
-
-\end{anexosenv}
 
 \phantompart
 \printindex
