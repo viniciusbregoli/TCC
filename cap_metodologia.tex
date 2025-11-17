@@ -185,17 +185,68 @@ best_fit = fitter.fit(durations)
 
 \subsection{Arquitetura de Classes}
 
-A Figura~\ref{fig:class_architecture} apresenta a arquitetura detalhada
-das classes principais do sistema, incluindo seus atributos, métodos e
-relacionamentos.
+O sistema é composto por 12 classes principais organizadas em três
+grupos: (1) a classe orquestradora ProcessMiningPipeline, (2) cinco
+componentes de serviço independentes, e (3) sete classes de modelos de
+dados. A Figura~\ref{fig:class_overview} apresenta uma visão geral
+simplificada das classes e seus relacionamentos.
 
 \begin{figure}[htb]
 	\centering
-	% TODO: Inserir diagrama da arquitetura de classes (UML-style)
+	% TODO: Inserir diagrama overview da arquitetura de classes
 	% Ver arquivo FIGURAS_METODOLOGIA.md para instruções de criação
-	\includegraphics[width=\textwidth]{figuras/class_architecture.png}
-	\caption{Arquitetura de classes do Sim2Log-Core. Fonte: Autor (2025)}
-	\label{fig:class_architecture}
+	\includegraphics[width=\textwidth]{figuras/class_overview.png}
+	\caption{Visão geral da arquitetura de classes do Sim2Log-Core. Fonte: Autor (2025)}
+	\label{fig:class_overview}
+\end{figure}
+
+\subsubsection{Classe Orquestradora: ProcessMiningPipeline}
+
+A classe ProcessMiningPipeline implementa o padrão Facade, fornecendo
+uma interface unificada para todo o sistema. A
+Figura~\ref{fig:class_pipeline} detalha seus atributos e métodos.
+
+\begin{figure}[htb]
+	\centering
+	% TODO: Inserir diagrama detalhado do ProcessMiningPipeline
+	% Ver arquivo FIGURAS_METODOLOGIA.md para instruções de criação
+	\includegraphics[width=0.8\textwidth]{figuras/class_pipeline.png}
+	\caption{Classe ProcessMiningPipeline com atributos e métodos detalhados. Fonte: Autor (2025)}
+	\label{fig:class_pipeline}
+\end{figure}
+
+\subsubsection{Componentes de Serviço}
+
+Os cinco componentes principais (LogAnalyzer, ProcessMiner,
+LogSimulator, LogValidator, ORECalculator) são classes independentes,
+cada uma responsável por uma etapa específica do processamento. A
+Figura~\ref{fig:class_components} apresenta a estrutura detalhada de
+cada componente.
+
+\begin{figure}[htb]
+	\centering
+	% TODO: Inserir diagrama detalhado dos componentes
+	% Ver arquivo FIGURAS_METODOLOGIA.md para instruções de criação
+	\includegraphics[width=\textwidth]{figuras/class_components.png}
+	\caption{Classes de componentes com métodos principais e LOC. Fonte: Autor (2025)}
+	\label{fig:class_components}
+\end{figure}
+
+\subsubsection{Modelos de Dados}
+
+As sete dataclasses (LogProfile, ProcessModel, ActivityStatistics,
+SimulationConfig, SimulationResult, ValidationResult, OREMetrics)
+definem estruturas de dados fortemente tipadas que fluem entre os
+componentes. A Figura~\ref{fig:class_models} detalha a estrutura de
+cada modelo.
+
+\begin{figure}[htb]
+	\centering
+	% TODO: Inserir diagrama detalhado dos modelos de dados
+	% Ver arquivo FIGURAS_METODOLOGIA.md para instruções de criação
+	\includegraphics[width=\textwidth]{figuras/class_models.png}
+	\caption{Classes de modelos de dados com atributos principais. Fonte: Autor (2025)}
+	\label{fig:class_models}
 \end{figure}
 
 \subsection{Fluxo de Dados entre Componentes}

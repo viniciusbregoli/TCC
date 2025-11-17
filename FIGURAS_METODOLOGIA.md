@@ -1,6 +1,6 @@
 # Instruções para Criação de Figuras do Capítulo Metodologia
 
-Este documento contém instruções detalhadas para criar os 6 diagramas arquiteturais do capítulo de metodologia usando **draw.io** (app.diagrams.net) ou ferramenta similar.
+Este documento contém instruções detalhadas para criar os 9 diagramas arquiteturais do capítulo de metodologia usando **draw.io** (app.diagrams.net) ou ferramenta similar.
 
 ---
 
@@ -84,113 +84,238 @@ Este documento contém instruções detalhadas para criar os 6 diagramas arquite
 
 ---
 
-## Figura 2: Arquitetura de Classes (Class Diagram)
-
-**Arquivo**: `figuras/class_architecture.png`
-**Label LaTeX**: `fig:class_architecture`
-**Tipo**: Diagrama de classes estilo UML
+## Figura 2: Visão Geral da Arquitetura de Classes (Overview)
+**Arquivo**: `figuras/class_overview.png`
+**Label LaTeX**: `fig:class_overview`
+**Tipo**: Diagrama de classes simplificado (somente nomes e relacionamentos)
 
 ### Estrutura:
 
 ```
-┌──────────────────────────────────────┐
-│  ProcessMiningPipeline (402 LOC)    │
-├──────────────────────────────────────┤
-│ Attributes:                          │
-│ - verbose: bool                      │
-│ - daily_hours: float                 │
-│ - setup_time_minutes: float          │
-│ - analyzer: LogAnalyzer              │
-│ - miner: ProcessMiner                │
-│ - simulator: LogSimulator            │
-│ - validator: LogValidator            │
-│ - ore_calculator: ORECalculator      │
-├──────────────────────────────────────┤
-│ Methods:                             │
-│ + analyze_log(log_path) -> LogProfile│
-│ + mine_process(...) -> ProcessModel  │
-│ + simulate(...) -> SimulationResult  │
-│ + validate(...) -> ValidationResult  │
-│ + calculate_ore(...) -> OREMetrics   │
-│ + run_full_pipeline(...) -> Dict     │
-└──────────────────────────────────────┘
-         │ "uses" (4 setas para baixo)
-    ┌────┴─────┬─────┬─────┐
-    ▼          ▼     ▼     ▼
-┌─────────┐ ┌──────┐ ┌────┐ ┌──────┐
-│LogAna   │ │Proc  │ │Log │ │LogVa │
-│lyzer    │ │Miner │ │Sim │ │lidat │
-│(396LOC) │ │(459) │ │(334│ │or    │
-├─────────┤ ├──────┤ │)   │ │(118) │
-│+analyze │ │+mine │ ├────┤ ├──────┤
-│()->Log  │ │()->Pr│ │+sim│ │+vali │
-│Profile  │ │ocess │ │()->S│ │date()│
-│         │ │Model │ │imRes│ │->Val │
-│         │ │      │ │ult  │ │idRes │
-└─────────┘ └──────┘ └────┘ └──────┘
-    │"produces"│     │     │
-    └──────┬───┴─────┴─────┘
-           ▼
-┌────────────────────────────────────────┐
-│     DATA MODELS (models.py - 131 LOC)  │
-├──────────┬──────────┬──────────┬───────┤
-│LogProfile│Process   │Simulation│Valida │
-│          │Model     │Result    │tion   │
-│          │          │          │Result │
-├──────────┼──────────┼──────────┼───────┤
-│-num_tra  │-petri_net│-csv_path │-fitness│
-│ces       │-activit  │-xes_path │-cost   │
-│-num_eve  │ies       │-num_cas  │-simila │
-│nts       │-arrival_ │es_genera │rity_%  │
-│-activity │rate      │ted       │-details│
-│_frequen  │-quality_ │-timestamp│        │
-│cies      │metrics   │          │        │
-│-variants │          │          │        │
-└──────────┴──────────┴──────────┴───────┘
-           │ (2 setas para baixo)
-     ┌─────┴─────┐
-     ▼           ▼
-┌──────────┐ ┌───────────┐
-│Activity  │ │ORE        │
-│Statistics│ │Metrics    │
-├──────────┤ ├───────────┤
-│-min_dur  │ │-ore:float │
-│-max_dur  │ │-availab   │
-│-mean_dur │ │-perform   │
-│-std_dur  │ │-quality   │
-│-distribu │ │-loss_     │
-│tion:Dict │ │breakdown  │
-│-frequency│ │-cancell   │
-│-resources│ │ation_rate │
-└──────────┘ └───────────┘
+┌────────────────────────────────┐
+│  ProcessMiningPipeline         │
+│  (Facade - 402 LOC)            │
+└─────────┬──────────────────────┘
+          │ uses
+    ┌─────┼─────┬─────┬─────┐
+    ▼     ▼     ▼     ▼     ▼
+┌────────┐ ┌────┐ ┌────┐ ┌────┐ ┌────┐
+│LogAna  │ │Proc│ │Log │ │Log │ │ORE │
+│lyzer   │ │Min │ │Sim │ │Val │ │Calc│
+│(396)   │ │(459│ │(334│ │(118│ │(451│
+│        │ │)   │ │)   │ │)   │ │)   │
+└───┬────┘ └─┬──┘ └─┬──┘ └─┬──┘ └─┬──┘
+    │ prod   │ prod │ prod │ prod  │ prod
+    ▼        ▼      ▼      ▼       ▼
+┌─────┐ ┌───────┐ ┌────┐ ┌─────┐ ┌────┐
+│Log  │ │Process│ │Sim │ │Valid│ │ORE │
+│Profi│ │Model  │ │Res │ │Res  │ │Metr│
+│le   │ │       │ │    │ │     │ │ics │
+└─────┘ └───┬───┘ └────┘ └─────┘ └────┘
+            │
+      ┌─────┴──────┬──────────┐
+      ▼            ▼          ▼
+┌──────────┐ ┌──────────┐ ┌──────────┐
+│Activity  │ │Simulation│ │SimConfig │
+│Statistics│ │Result    │ │          │
+└──────────┘ └──────────┘ └──────────┘
 ```
 
 ### Instruções Draw.io:
+1. **Objetivo**: Mostrar APENAS nomes de classes e relacionamentos (sem atributos/métodos)
+2. **Layout**: Hierárquico de cima para baixo em 3 níveis
+3. **Nível 1**: ProcessMiningPipeline (retângulo grande no topo)
+4. **Nível 2**: 5 componentes em linha (retângulos médios)
+5. **Nível 3**: 7 dataclasses em duas linhas (retângulos pequenos)
+6. **Cores**:
+   - ProcessMiningPipeline: Azul escuro (#1976D2)
+   - Componentes: Azul médio (#42A5F5)
+   - Data Models: Amarelo claro (#FFF59D)
+7. **Conectores**:
+   - "uses": setas tracejadas de Pipeline → Componentes
+   - "produces": setas sólidas de Componentes → Data Models
+8. **Texto**: Apenas nome da classe + LOC em parênteses
+9. **Fontes**: Arial 11pt para nomes, 9pt para LOC
+10. **Espaçamento**: Compacto, objetivo é overview
+11. **Exportar como PNG**: Resolução mínima 1200px de largura
 
-1. **Tipo**: Use o template "UML Class Diagram" do draw.io
-2. **Layout**: Hierárquico de cima para baixo
-3. **Classes**:
-   - ProcessMiningPipeline no topo (caixa grande)
-   - 4 componentes principais no meio (LogAnalyzer, ProcessMiner, LogSimulator, LogValidator)
-   - Bloco DATA MODELS abaixo (4 classes lado a lado)
-   - ActivityStatistics e OREMetrics na base
-4. **Cores**:
-   - ProcessMiningPipeline: Azul (#BBDEFB)
-   - Componentes: Verde (#C8E6C9)
-   - Data Models: Amarelo (#FFF9C4)
-   - ActivityStatistics/OREMetrics: Laranja (#FFCCBC)
-5. **Divisões**: Cada classe dividida em 3 seções (Nome | Atributos | Métodos)
-6. **Conectores**:
-   - "uses": setas tracejadas com label "uses"
-   - "produces": setas sólidas com label "produces"
-7. **Fontes**: Courier New ou Monaco para atributos/métodos (monospace), 9-10pt
-8. **LOC**: Adicionar em parênteses no nome da classe
+---
+
+## Figura 3: Classe ProcessMiningPipeline Detalhada
+**Arquivo**: `figuras/class_pipeline.png`
+**Label LaTeX**: `fig:class_pipeline`
+**Tipo**: Diagrama de classe UML detalhado (1 classe com todos atributos/métodos)
+
+### Estrutura:
+```
+┌────────────────────────────────────────────────────┐
+│         ProcessMiningPipeline (402 LOC)            │
+├────────────────────────────────────────────────────┤
+│ ATRIBUTOS:                                         │
+│ - verbose: bool                                    │
+│ - daily_hours: float                               │
+│ - setup_time_minutes: float                        │
+│ - analyzer: LogAnalyzer                            │
+│ - miner: ProcessMiner                              │
+│ - simulator: LogSimulator                          │
+│ - validator: LogValidator                          │
+│ - ore_calculator: ORECalculator                    │
+├────────────────────────────────────────────────────┤
+│ MÉTODOS PÚBLICOS:                                  │
+│ + __init__(verbose, daily_hours, setup_time)      │
+│ + analyze_log(log_path: str) -> LogProfile        │
+│ + mine_process(log_path, variant_filter=0.8)      │
+│     -> ProcessModel                                │
+│ + simulate(model: ProcessModel, num_cases: int)   │
+│     -> SimulationResult                            │
+│ + validate(original_log, simulated_log)           │
+│     -> ValidationResult                            │
+│ + calculate_ore(log_path: str) -> OREMetrics      │
+│ + run_full_pipeline(log_path: str,                │
+│     variant_filter=0.8, num_cases=100) -> Dict    │
+│ + quick_analysis(log_path: str) -> Dict           │
+└────────────────────────────────────────────────────┘
+```
+
+### Instruções Draw.io:
+1. **Tipo**: Diagrama de classe UML tradicional
+2. **Formato**: Retângulo vertical dividido em 3 seções:
+   - Header: Nome da classe (bold, 14pt) + LOC
+   - Atributos: Lista com "- nome: tipo"
+   - Métodos: Lista com "+ nome(params) -> retorno"
+3. **Cores**:
+   - Header: Azul escuro (#1565C0) com texto branco
+   - Atributos: Azul claro (#E3F2FD)
+   - Métodos: Azul muito claro (#F5F9FF)
+4. **Fonte**:
+   - Header: Arial 14pt bold
+   - Seções "ATRIBUTOS" / "MÉTODOS": 11pt bold
+   - Conteúdo: Courier New 9pt (monospace)
+5. **Alinhamento**: Atributos e métodos alinhados à esquerda
+6. **Bordas**: 2px para o retângulo principal, 1px para divisões
+7. **Tamanho**: Altura suficiente para caber todos os métodos
+8. **Exportar como PNG**: Resolução mínima 800px de largura
+
+---
+
+## Figura 4: Classes de Componentes Detalhadas
+**Arquivo**: `figuras/class_components.png`
+**Label LaTeX**: `fig:class_components`
+**Tipo**: Diagrama com 5 classes de componentes lado a lado
+
+### Estrutura:
+```
+┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐
+│LogAnalyz │ │Process   │ │LogSimul  │ │LogValid  │ │ORECalc   │
+│er        │ │Miner     │ │ator      │ │ator      │ │ulator    │
+│(396 LOC) │ │(459 LOC) │ │(334 LOC) │ │(118 LOC) │ │(451 LOC) │
+├──────────┤ ├──────────┤ ├──────────┤ ├──────────┤ ├──────────┤
+│MÉTODOS:  │ │MÉTODOS:  │ │MÉTODOS:  │ │MÉTODOS:  │ │MÉTODOS:  │
+│+ analyze │ │+ mine_   │ │+ __init_ │ │+ validat │ │+ __init_ │
+│  (log_   │ │  process │ │  _(config│ │  e(orig, │ │  _(daily │
+│  path)   │ │  (log,   │ │  )       │ │  sim)    │ │  _hrs,   │
+│  ->Log   │ │  filter) │ │+ simulate│ │  ->Valid │ │  setup)  │
+│  Profile │ │  ->Proc  │ │  (model) │ │  ation   │ │+ calcula │
+│          │ │  Model   │ │  ->Sim   │ │  Result  │ │  te_from │
+│          │ │          │ │  Result  │ │          │ │  _log()  │
+│          │ │          │ │          │ │          │ │  ->ORE   │
+│          │ │          │ │          │ │          │ │  Metrics │
+├──────────┤ ├──────────┤ ├──────────┤ ├──────────┤ ├──────────┤
+│RETORNA:  │ │RETORNA:  │ │RETORNA:  │ │RETORNA:  │ │RETORNA:  │
+│LogProfile│ │Process   │ │Simulation│ │Validation│ │ORE       │
+│          │ │Model     │ │Result    │ │Result    │ │Metrics   │
+└──────────┘ └──────────┘ └──────────┘ └──────────┘ └──────────┘
+```
+
+### Instruções Draw.io:
+1. **Layout**: 5 retângulos lado a lado (horizontal)
+2. **Formato de cada classe**:
+   - Header: Nome + LOC
+   - Métodos principais (não todos, só os públicos principais)
+   - Footer: Tipo de retorno principal
+3. **Cores alternadas**:
+   - LogAnalyzer: Verde claro (#C8E6C9)
+   - ProcessMiner: Azul claro (#BBDEFB)
+   - LogSimulator: Amarelo claro (#FFF9C4)
+   - LogValidator: Laranja claro (#FFCCBC)
+   - ORECalculator: Roxo claro (#E1BEE7)
+4. **Tamanho**: Todos do mesmo tamanho (uniformidade)
+5. **Fonte**: Arial 10pt para nomes, Courier 9pt para métodos
+6. **Alinhamento**: Centralizar header e footer, alinhar à esquerda métodos
+7. **Bordas**: 2px para cada retângulo
+8. **Espaçamento**: 20px entre cada retângulo
 9. **Exportar como PNG**: Resolução mínima 1400px de largura
 
 ---
 
-## Figura 3: Grafo de Dependências entre Módulos
+## Figura 5: Classes de Modelos de Dados Detalhadas
+**Arquivo**: `figuras/class_models.png`
+**Label LaTeX**: `fig:class_models`
+**Tipo**: Diagrama com 7 dataclasses organizadas em grid
 
+### Estrutura:
+```
+Linha 1:
+┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐
+│LogProfile   │ │ProcessModel │ │Activity     │ │Simulation   │
+│             │ │             │ │Statistics   │ │Config       │
+├─────────────┤ ├─────────────┤ ├─────────────┤ ├─────────────┤
+│-num_traces  │ │-petri_net   │ │-min_duration│ │-num_cases   │
+│-num_events  │ │-initial_mark│ │-max_duration│ │-arrival_rate│
+│-num_unique_ │ │-final_mark  │ │-mean_dur    │ │-activity_   │
+│ activities  │ │-activities: │ │-std_dur     │ │ durations   │
+│-activity_key│ │ Dict[Act]   │ │-distribution│ │-variant_    │
+│-timestamp_  │ │-arrival_rate│ │ :Dict       │ │ filter_%    │
+│ key         │ │-median_case │ │-frequency   │ │-random_seed │
+│-case_id_key │ │ _duration   │ │-resources:  │ │-max_trace_  │
+│-resource_key│ │-quality_    │ │ List        │ │ length      │
+│-variants    │ │ metrics     │ │             │ │             │
+│-has_        │ │             │ │             │ │             │
+│ resources   │ │             │ │             │ │             │
+└─────────────┘ └─────────────┘ └─────────────┘ └─────────────┘
+
+Linha 2:
+┌─────────────┐ ┌─────────────┐ ┌─────────────┐
+│Simulation   │ │Validation   │ │OREMetrics   │
+│Result       │ │Result       │ │             │
+├─────────────┤ ├─────────────┤ ├─────────────┤
+│-csv_path    │ │-fitness     │ │-ore: float  │
+│-xes_path    │ │-cost        │ │-availability│
+│-num_cases_  │ │-similarity_ │ │-performance │
+│ generated   │ │ percentage  │ │-quality     │
+│-num_events_ │ │-details:    │ │-total_time_ │
+│ generated   │ │ Dict        │ │ available   │
+│-simulation_ │ │             │ │-total_time_ │
+│ time        │ │             │ │ scheduled   │
+│-timestamp   │ │             │ │-total_time_ │
+│             │ │             │ │ used        │
+│             │ │             │ │-loss_       │
+│             │ │             │ │ breakdown   │
+└─────────────┘ └─────────────┘ └─────────────┘
+```
+
+### Instruções Draw.io:
+1. **Layout**: Grid 2 linhas
+   - Linha 1: 4 classes (LogProfile, ProcessModel, ActivityStatistics, SimulationConfig)
+   - Linha 2: 3 classes (SimulationResult, ValidationResult, OREMetrics)
+2. **Formato de cada dataclass**:
+   - Header: Nome da classe (sem LOC para dataclasses)
+   - Body: Lista de atributos principais (- nome: tipo)
+3. **Cores** (todas suaves):
+   - Amarelo claro (#FFF9C4) para todas as dataclasses
+4. **Fonte**:
+   - Header: Arial 11pt bold
+   - Atributos: Courier 9pt
+5. **Tamanho**: Todos do mesmo tamanho vertical para uniformidade
+6. **Alinhamento**: Atributos alinhados à esquerda
+7. **Bordas**: 1px (mais leve que classes de serviço)
+8. **Espaçamento**: 15px entre classes, 30px entre linhas
+9. **Nota**: Mostrar apenas atributos principais (não todos) para manter legibilidade
+10. **Exportar como PNG**: Resolução mínima 1400px de largura
+
+---
+
+## Figura 6: Grafo de Dependências entre Módulos
 **Arquivo**: `figuras/module_dependencies.png`
 **Label LaTeX**: `fig:module_dependencies`
 **Tipo**: Diagrama de árvore de dependências
@@ -258,8 +383,7 @@ app/app.py (Interface Web)
 
 ---
 
-## Figura 4: Fluxo de Dados entre Componentes
-
+## Figura 7: Fluxo de Dados entre Componentes
 **Arquivo**: `figuras/data_flow_components.png`
 **Label LaTeX**: `fig:data_flow_components`
 **Tipo**: Diagrama de fluxo de dados (Data Flow Diagram)
@@ -372,8 +496,7 @@ app/app.py (Interface Web)
 
 ---
 
-## Figura 5: Componente ORECalculator
-
+## Figura 8: Componente ORECalculator
 **Arquivo**: `figuras/ore_component.png`
 **Label LaTeX**: `fig:ore_component`
 **Tipo**: Diagrama de componente detalhado (Component Diagram)
@@ -444,8 +567,7 @@ app/app.py (Interface Web)
 
 ---
 
-## Figura 6: Interface Web Streamlit
-
+## Figura 9: Interface Web Streamlit
 **Arquivo**: `figuras/web_interface.png`
 **Label LaTeX**: `fig:web_interface`
 **Tipo**: Mockup de interface de usuário
