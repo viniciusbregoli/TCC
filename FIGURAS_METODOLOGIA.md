@@ -85,6 +85,7 @@ Este documento contém instruções detalhadas para criar os 9 diagramas arquite
 ---
 
 ## Figura 2: Visão Geral da Arquitetura de Classes (Overview)
+
 **Arquivo**: `figuras/class_overview.png`
 **Label LaTeX**: `fig:class_overview`
 **Tipo**: Diagrama de classes simplificado (somente nomes e relacionamentos)
@@ -122,6 +123,7 @@ Este documento contém instruções detalhadas para criar os 9 diagramas arquite
 ```
 
 ### Instruções Draw.io:
+
 1. **Objetivo**: Mostrar APENAS nomes de classes e relacionamentos (sem atributos/métodos)
 2. **Layout**: Hierárquico de cima para baixo em 3 níveis
 3. **Nível 1**: ProcessMiningPipeline (retângulo grande no topo)
@@ -142,11 +144,13 @@ Este documento contém instruções detalhadas para criar os 9 diagramas arquite
 ---
 
 ## Figura 3: Classe ProcessMiningPipeline Detalhada
+
 **Arquivo**: `figuras/class_pipeline.png`
 **Label LaTeX**: `fig:class_pipeline`
 **Tipo**: Diagrama de classe UML detalhado (1 classe com todos atributos/métodos)
 
 ### Estrutura:
+
 ```
 ┌────────────────────────────────────────────────────┐
 │         ProcessMiningPipeline (402 LOC)            │
@@ -178,6 +182,7 @@ Este documento contém instruções detalhadas para criar os 9 diagramas arquite
 ```
 
 ### Instruções Draw.io:
+
 1. **Tipo**: Diagrama de classe UML tradicional
 2. **Formato**: Retângulo vertical dividido em 3 seções:
    - Header: Nome da classe (bold, 14pt) + LOC
@@ -199,11 +204,13 @@ Este documento contém instruções detalhadas para criar os 9 diagramas arquite
 ---
 
 ## Figura 4: Classes de Componentes Detalhadas
+
 **Arquivo**: `figuras/class_components.png`
 **Label LaTeX**: `fig:class_components`
 **Tipo**: Diagrama com 5 classes de componentes lado a lado
 
 ### Estrutura:
+
 ```
 ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐
 │LogAnalyz │ │Process   │ │LogSimul  │ │LogValid  │ │ORECalc   │
@@ -228,6 +235,7 @@ Este documento contém instruções detalhadas para criar os 9 diagramas arquite
 ```
 
 ### Instruções Draw.io:
+
 1. **Layout**: 5 retângulos lado a lado (horizontal)
 2. **Formato de cada classe**:
    - Header: Nome + LOC
@@ -249,11 +257,13 @@ Este documento contém instruções detalhadas para criar os 9 diagramas arquite
 ---
 
 ## Figura 5: Classes de Modelos de Dados Detalhadas
+
 **Arquivo**: `figuras/class_models.png`
 **Label LaTeX**: `fig:class_models`
 **Tipo**: Diagrama com 7 dataclasses organizadas em grid
 
 ### Estrutura:
+
 ```
 Linha 1:
 ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐
@@ -295,6 +305,7 @@ Linha 2:
 ```
 
 ### Instruções Draw.io:
+
 1. **Layout**: Grid 2 linhas
    - Linha 1: 4 classes (LogProfile, ProcessModel, ActivityStatistics, SimulationConfig)
    - Linha 2: 3 classes (SimulationResult, ValidationResult, OREMetrics)
@@ -316,6 +327,7 @@ Linha 2:
 ---
 
 ## Figura 6: Grafo de Dependências entre Módulos
+
 **Arquivo**: `figuras/module_dependencies.png`
 **Label LaTeX**: `fig:module_dependencies`
 **Tipo**: Diagrama de árvore de dependências
@@ -384,6 +396,7 @@ app/app.py (Interface Web)
 ---
 
 ## Figura 7: Fluxo de Dados entre Componentes
+
 **Arquivo**: `figuras/data_flow_components.png`
 **Label LaTeX**: `fig:data_flow_components`
 **Tipo**: Diagrama de fluxo de dados (Data Flow Diagram)
@@ -497,6 +510,7 @@ app/app.py (Interface Web)
 ---
 
 ## Figura 8: Componente ORECalculator
+
 **Arquivo**: `figuras/ore_component.png`
 **Label LaTeX**: `fig:ore_component`
 **Tipo**: Diagrama de componente detalhado (Component Diagram)
@@ -568,6 +582,7 @@ app/app.py (Interface Web)
 ---
 
 ## Figura 9: Interface Web Streamlit
+
 **Arquivo**: `figuras/web_interface.png`
 **Label LaTeX**: `fig:web_interface`
 **Tipo**: Mockup de interface de usuário

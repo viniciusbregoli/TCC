@@ -53,9 +53,9 @@
 \backcite {ferronato2021pm2sim}{{30}{2.8.2}{Item.7}}
 \backcite {ieeexes2010}{{30}{2.9}{section.2.9}}
 \backcite {gamma1994design}{{34}{3.2.2.1}{subsubsection.3.2.2.1}}
-\backcite {ieeexes2010}{{41}{3.4.4}{subsection.3.4.4}}
-\backcite {aalst2016process}{{44}{3.5.3.4}{subsubsection.3.5.3.4}}
-\backcite {leemans2013discovering}{{44}{3.5.4.1}{subsubsection.3.5.4.1}}
-\backcite {aalst2016process}{{46}{3.5.7}{subsection.3.5.7}}
-\backcite {peterson1981petri}{{50}{3.6.6}{subsection.3.6.6}}
-\backcite {souza2020ore}{{58}{3.8.4}{subsection.3.8.4}}
+\backcite {ieeexes2010}{{43}{3.4.4}{subsection.3.4.4}}
+\backcite {aalst2016process}{{46}{3.5.3.4}{subsubsection.3.5.3.4}}
+\backcite {leemans2013discovering}{{46}{3.5.4.1}{subsubsection.3.5.4.1}}
+\backcite {aalst2016process}{{48}{3.5.7}{subsection.3.5.7}}
+\backcite {peterson1981petri}{{52}{3.6.6}{subsection.3.6.6}}
+\backcite {souza2020ore}{{60}{3.8.4}{subsection.3.8.4}}
