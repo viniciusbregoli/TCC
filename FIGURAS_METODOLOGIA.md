@@ -5,11 +5,13 @@ Este documento contém instruções detalhadas para criar os 6 diagramas arquite
 ---
 
 ## Figura 1: Arquitetura em Camadas (5 Layers)
+
 **Arquivo**: `figuras/arquitetura_camadas.png`
 **Label LaTeX**: `fig:arquitetura_camadas`
 **Tipo**: Diagrama de arquitetura em camadas verticais
 
 ### Estrutura:
+
 ```
 ┌─────────────────────────────────────────┐
 │  CAMADA 1: INTERFACE DE USUÁRIO         │
@@ -65,6 +67,7 @@ Este documento contém instruções detalhadas para criar os 6 diagramas arquite
 ```
 
 ### Instruções Draw.io:
+
 1. **Canvas**: Criar canvas vertical com 5 retângulos empilhados
 2. **Cores sugeridas**:
    - Camada 1 (UI): Azul claro (#E3F2FD)
@@ -82,11 +85,13 @@ Este documento contém instruções detalhadas para criar os 6 diagramas arquite
 ---
 
 ## Figura 2: Arquitetura de Classes (Class Diagram)
+
 **Arquivo**: `figuras/class_architecture.png`
 **Label LaTeX**: `fig:class_architecture`
 **Tipo**: Diagrama de classes estilo UML
 
 ### Estrutura:
+
 ```
 ┌──────────────────────────────────────┐
 │  ProcessMiningPipeline (402 LOC)    │
@@ -161,6 +166,7 @@ Este documento contém instruções detalhadas para criar os 6 diagramas arquite
 ```
 
 ### Instruções Draw.io:
+
 1. **Tipo**: Use o template "UML Class Diagram" do draw.io
 2. **Layout**: Hierárquico de cima para baixo
 3. **Classes**:
@@ -184,11 +190,13 @@ Este documento contém instruções detalhadas para criar os 6 diagramas arquite
 ---
 
 ## Figura 3: Grafo de Dependências entre Módulos
+
 **Arquivo**: `figuras/module_dependencies.png`
 **Label LaTeX**: `fig:module_dependencies`
 **Tipo**: Diagrama de árvore de dependências
 
 ### Estrutura:
+
 ```
 pipeline.py (Orquestrador)
 ├──→ log_analyzer.py
@@ -227,6 +235,7 @@ app/app.py (Interface Web)
 ```
 
 ### Instruções Draw.io:
+
 1. **Layout**: Usar "Tree Layout" ou layout hierárquico à esquerda
 2. **Nós**:
    - Retângulos arredondados para módulos Python (.py)
@@ -250,11 +259,13 @@ app/app.py (Interface Web)
 ---
 
 ## Figura 4: Fluxo de Dados entre Componentes
+
 **Arquivo**: `figuras/data_flow_components.png`
 **Label LaTeX**: `fig:data_flow_components`
 **Tipo**: Diagrama de fluxo de dados (Data Flow Diagram)
 
 ### Estrutura:
+
 ```
 ┌─────────────────┐
 │ INPUT: log.xes  │
@@ -336,6 +347,7 @@ app/app.py (Interface Web)
 ```
 
 ### Instruções Draw.io:
+
 1. **Layout**: Vertical, fluxo de cima para baixo
 2. **Elementos**:
    - **Processos** (componentes): Retângulos arredondados
@@ -361,11 +373,13 @@ app/app.py (Interface Web)
 ---
 
 ## Figura 5: Componente ORECalculator
+
 **Arquivo**: `figuras/ore_component.png`
 **Label LaTeX**: `fig:ore_component`
 **Tipo**: Diagrama de componente detalhado (Component Diagram)
 
 ### Estrutura:
+
 ```
 ┌────────────────────────────────────────┐
 │    Componente ORECalculator            │
@@ -407,6 +421,7 @@ app/app.py (Interface Web)
 ```
 
 ### Instruções Draw.io:
+
 1. **Formato**: Retângulo grande dividido em 3 seções (ENTRADA | PROCESSAMENTO | SAÍDA)
 2. **Cores**:
    - Header (nome do componente): Azul escuro (#1565C0)
@@ -430,11 +445,13 @@ app/app.py (Interface Web)
 ---
 
 ## Figura 6: Interface Web Streamlit
+
 **Arquivo**: `figuras/web_interface.png`
 **Label LaTeX**: `fig:web_interface`
 **Tipo**: Mockup de interface de usuário
 
 ### Estrutura:
+
 ```
 ┌────────────────────────────────────────┐
 │  Streamlit Web Dashboard               │
@@ -490,6 +507,7 @@ app/app.py (Interface Web)
 ```
 
 ### Instruções Draw.io:
+
 1. **Tipo**: Wireframe/Mockup de interface web
 2. **Formato**: Retângulo principal simulando uma janela de navegador
 3. **Header**:
@@ -528,18 +546,21 @@ app/app.py (Interface Web)
 ## Dicas Gerais para Todas as Figuras
 
 ### Padronização:
+
 - **Paleta de cores consistente** entre as figuras
 - **Fontes**: Arial ou Helvetica para texto geral, Courier/Monaco para código
 - **Tamanhos de fonte**: Não usar tamanhos menores que 9pt (legibilidade)
 - **Bordas**: Consistência em espessura (2-3px para elementos principais)
 
 ### Qualidade de Exportação:
+
 - **Formato**: PNG com fundo transparente
 - **Resolução**: Mínimo 1200px na dimensão maior (para impressão em alta qualidade)
 - **DPI**: 300 DPI se exportar para impressão
 - **Compressão**: PNG com compressão otimizada
 
 ### Checklist antes de exportar:
+
 - [ ] Todos os textos estão legíveis?
 - [ ] As cores estão consistentes com outras figuras?
 - [ ] As setas estão claramente direcionadas?
@@ -548,7 +569,9 @@ app/app.py (Interface Web)
 - [ ] O diagrama cabe bem em 0.7-1.0 textwidth no LaTeX?
 
 ### Ferramentas Alternativas:
+
 Se não quiser usar draw.io, também funcionam:
+
 - **Lucidchart** (pago, mas templates prontos)
 - **PlantUML** (para diagramas UML via código)
 - **Mermaid.js** (diagramas via markdown)
@@ -566,6 +589,7 @@ Após criar cada PNG, colocar na pasta `figuras/` e o LaTeX já está configurad
 ```
 
 As figuras já estão referenciadas no texto com os labels corretos:
+
 - `\ref{fig:arquitetura_camadas}`
 - `\ref{fig:class_architecture}`
 - `\ref{fig:module_dependencies}`

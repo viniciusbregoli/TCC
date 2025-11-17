@@ -9,7 +9,7 @@ processos, simulação de eventos discretos e validação de qualidade.
 \section{Visão Geral da Abordagem Metodológica}
 
 A metodologia proposta consiste em um pipeline sequencial de quatro
-etapas interdependentes, conforme ilustrado na Figura
+etapas interdependentes, conforme ilustrado na Figura~\ref{fig:fluxo_metodologia}.
 
 \begin{enumerate}
 	\item \textbf{Análise Automática de Logs}: detecção de atributos e validação de compatibilidade
@@ -34,8 +34,6 @@ Figura~\ref{fig:arquitetura_camadas}.
 
 \begin{figure}[htb]
 	\centering
-	% TODO: Inserir diagrama da arquitetura em camadas (5 camadas)
-	% Ver arquivo FIGURAS_METODOLOGIA.md para instruções de criação
 	\includegraphics[width=0.9\textwidth]{figuras/arquitetura_camadas.png}
 	\caption{Arquitetura em camadas do Sim2Log-Core. Fonte: Autor (2025)}
 	\label{fig:arquitetura_camadas}
@@ -199,33 +197,6 @@ relacionamentos.
 	\caption{Arquitetura de classes do Sim2Log-Core. Fonte: Autor (2025)}
 	\label{fig:class_architecture}
 \end{figure}
-
-\subsection{Dependências entre Módulos}
-
-A Figura~\ref{fig:module_dependencies} ilustra o grafo de dependências
-entre os módulos do sistema:
-
-\begin{figure}[htb]
-	\centering
-	% TODO: Inserir diagrama de dependências entre módulos
-	% Ver arquivo FIGURAS_METODOLOGIA.md para instruções de criação
-	\includegraphics[width=0.8\textwidth]{figuras/module_dependencies.png}
-	\caption{Grafo de dependências entre módulos. Fonte: Autor (2025)}
-	\label{fig:module_dependencies}
-\end{figure}
-
-\textbf{Observações sobre as dependências}:
-
-\begin{itemize}
-	\item \textbf{Acoplamento unidirecional}: Dependências fluem sempre para baixo na hierarquia
-	\item \textbf{Módulo models.py como contrato}: Todos os componentes dependem apenas dos modelos de dados, não uns dos outros
-	\item \textbf{Componentes independentes}: LogAnalyzer, ProcessMiner, LogSimulator, LogValidator e ORECalculator não se conhecem mutuamente
-	\item \textbf{Pipeline como único ponto de acoplamento}: Apenas o pipeline conhece todos os componentes
-\end{itemize}
-
-Esta estrutura permite evolução independente de cada componente sem
-efeitos colaterais, facilita testes unitários isolados e permite
-substituição de implementações sem afetar o resto do sistema.
 
 \subsection{Fluxo de Dados entre Componentes}
 
@@ -1122,7 +1093,7 @@ sem necessidade de executar as etapas de mineração ou simulação.
 	\centering
 	% TODO: Inserir diagrama do componente ORECalculator
 	% Ver arquivo FIGURAS_METODOLOGIA.md para instruções de criação
-	\includegraphics[width=0.8\textwidth]{figuras/ore_component.png}
+	% \includegraphics[width=0.8\textwidth]{figuras/ore_component.png}
 	\caption{Arquitetura do componente ORECalculator. Fonte: Autor (2025)}
 	\label{fig:ore_component}
 \end{figure}
@@ -1392,7 +1363,7 @@ exploratória e validação de processos.
 	\centering
 	% TODO: Inserir diagrama da interface web Streamlit
 	% Ver arquivo FIGURAS_METODOLOGIA.md para instruções de criação
-	\includegraphics[width=0.7\textwidth]{figuras/web_interface.png}
+	% \includegraphics[width=0.7\textwidth]{figuras/web_interface.png}
 	\caption{Arquitetura da interface web Streamlit. Fonte: Autor (2025)}
 	\label{fig:web_interface}
 \end{figure}

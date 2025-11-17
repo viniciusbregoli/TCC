@@ -33,6 +33,11 @@ Dispon{\'\i}vel em: \url{https://www.ppgia.pucpr.br/pt/arquivos/doutorado/teses/
 \abntrefinfo{Ferronato e Scalabrin}{FERRONATO; SCALABRIN}{2021}
 {FERRONATO, J.~J.; SCALABRIN, E.~E. Pm2sim: The automated creation of a simulation model from process mining. In:  \emph{Proceedings of the IEEE International Conference on Systems, Man, and Cybernetics (SMC)}. Melbourne, Australia: IEEE, 2021.}
 
+\bibitem[Gamma et al. 1994]{gamma1994design}
+\abntrefinfo{Gamma et al.}{GAMMA et al.}{1994}
+{GAMMA, E. et al. \emph{Design Patterns: Elements of Reusable Object-Oriented Software}. Boston, MA: Addison-Wesley Professional, 1994.
+ISBN 0-201-63361-2.}
+
 \bibitem[{IEEE Computational Intelligence Society} 2010]{ieeexes2010}
 \abntrefinfo{{IEEE Computational Intelligence Society}}{{IEEE Computational Intelligence Society}}{2010}
 {{IEEE Computational Intelligence Society}. \emph{IEEE Standard for eXtensible Event Stream (XES) for Achieving Interoperability in Event Logs and Event Streams}. 2010. IEEE Standard 1849-2016.
