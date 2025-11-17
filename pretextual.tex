@@ -1,0 +1,76 @@
+% ---
+% RESUMOS
+% ---
+
+% Resumo em português
+\setlength{\absparsep}{18pt}
+\begin{resumo}
+
+	A tomada de decisão no curto prazo em ambientes complexos, como
+	centros cirúrgicos, exige ferramentas capazes de integrar dados
+	históricos e informações em tempo real. Nesse contexto, a mineração
+	de processos (Process Mining -- PM) e a simulação computacional
+	emergem como tecnologias para apoiar gestores na alocação eficiente
+	de recursos, detecção de desvios e previsão de cenários. Este
+	trabalho propõe o desenvolvimento de um gerador de modelos de
+	simulação baseado em PM, com foco em reduzir o esforço humano e o
+	tempo necessário para a construção de modelos. O gerador utiliza logs
+	de eventos no formato XES como fonte de dados para criar
+	automaticamente modelos de simulação, permitindo avaliar alternativas
+	de curto prazo e apoiar a tomada de decisão operacional. Como
+	resultado, foi desenvolvido um protótipo funcional que integra cinco
+	funcionalidades principais: análise automática de logs, mineração de
+	processos utilizando o algoritmo Inductive Miner, simulação de
+	eventos com geração de logs sintéticos, validação comparativa entre
+	logs originais e simulados, e cálculo de indicadores ORE (Operating
+	Room Effectiveness). O protótipo foi implementado como uma interface
+	web interativa utilizando Streamlit, e validado com dados reais de
+	agendamentos cirúrgicos de um centro cirúrgico. A ferramenta permite
+	aos gestores extrair automaticamente modelos de processo (redes de
+	Petri e árvores de processo), gerar cenários simulados para análise
+	de capacidade e desempenho, e calcular métricas de efetividade
+	operacional, contribuindo para maior eficiência, redução de custos e
+	melhor qualidade no atendimento. \vspace{\onelineskip}
+
+	\noindent
+	\textbf{Palavras-chave}: Mineração
+	de Processos, Simulação Computacional, Tomada de Decisão, Otimização,
+	Agendamento.
+\end{resumo}
+
+% Resumo em inglês
+\begin{resumo}[Abstract]
+	\begin{otherlanguage*}{english}
+		Short-term decision-making in complex environments, such as surgical centers, requires tools capable of integrating historical data and real-time information. In this context, Process Mining (PM) and computer simulation emerge as key technologies to support managers in efficient resource allocation, deviation detection, and scenario prediction. This work proposes the development of a simulation model generator based on PM, focusing on reducing human effort and the time required to build models. The generator uses event logs in XES format as a data source to automatically create simulation models, allowing the evaluation of short-term alternatives and supporting operational decision-making. As a result, a functional prototype was developed integrating five main functionalities: automatic log analysis, process mining using the Inductive Miner algorithm, event simulation with synthetic log generation, comparative validation between original and simulated logs, and calculation of ORE (Operating Room Effectiveness) indicators. The prototype was implemented as an interactive web interface using Streamlit, and validated with real surgical scheduling data from a surgical center. The tool enables managers to automatically extract process models (Petri nets and process trees), generate simulated scenarios for capacity and performance analysis, and calculate operational effectiveness metrics, contributing to greater efficiency, cost reduction, and improved service quality.
+		\vspace{\onelineskip}
+
+		\noindent
+		\textbf{Keywords}: Process Mining, Computer Simulation, Decision-Making, Optimization, Scheduling.
+	\end{otherlanguage*}
+\end{resumo}
+
+% ---
+% Lista de ilustrações
+% ---
+\pdfbookmark[0]{\listfigurename}{lof}
+\listoffigures*
+\cleardoublepage
+
+% ---
+% Lista de tabelas
+% ---
+\pdfbookmark[0]{\listtablename}{lot}
+\listoftables*
+\cleardoublepage
+
+% ---
+% Sumário
+% ---
+\pdfbookmark[0]{\contentsname}{toc}
+\tableofcontents*
+\cleardoublepage
+
+% ----------------------------------------------------------
+% ELEMENTOS TEXTUAIS
+% ----------------------------------------------------------
+\textual

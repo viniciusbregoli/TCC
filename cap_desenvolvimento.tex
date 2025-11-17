@@ -1,0 +1,284 @@
+\chapter{Desenvolvimento}
+
+Este capítulo apresenta o desenvolvimento do gerador de modelos de
+simulação, detalhando a arquitetura do sistema, a implementação dos
+componentes principais, a interface com o usuário e o processo
+completo de validação. O desenvolvimento seguiu princípios de
+modularidade, separação de responsabilidades e generalização,
+buscando criar uma solução que pudesse ser aplicada a diferentes
+domínios sem necessidade de parametrização manual. As escolhas
+arquiteturais e de implementação foram norteadas pelos requisitos de
+automatização, robustez e reprodutibilidade estabelecidos nos
+objetivos do trabalho.
+
+\section{Estrutura do Projeto}
+
+O código-fonte do sistema está organizado em uma estrutura modular
+que separa claramente as responsabilidades e facilita a manutenção e
+extensão. A estrutura completa do projeto é apresentada a seguir:
+
+\begin{verbatim}
+main/
+|-- venv/                    # Ambiente virtual Python
+|-- bases/                   # Logs XES de entrada (gitignored)
+|-- output/                  # Resultados gerados (gitignored)
+|
+|-- core/                    # Módulo principal
+|   |-- __init__.py         # Exportações da API
+|   |-- models.py           # Dataclasses
+|   |-- log_analyzer.py     # Análise automática de logs
+|   |-- process_mining.py   # Mineração de processos
+|   |-- simulation.py       # Simulação de eventos discretos
+|   |-- validation.py       # Validação de qualidade
+|   |-- utils.py            # Funções auxiliares
+|   |-- excel_to_xes.py     # Converte Excel para XES
+|
+|-- app/                    # Interface web Streamlit
+|   |-- app.py              # Aplicação principal
+|   |-- uploads/            # Arquivos XES carregados
+|   |-- outputs/            # Resultados da interface
+|
+|-- test.py                 # Script de teste CLI
+\end{verbatim}
+
+\subsection{Organização dos Módulos}
+
+A estrutura modular do projeto separa claramente as
+responsabilidades:
+
+\begin{itemize}
+	\item \textbf{core/}: Contém toda a lógica de negócio do sistema, incluindo análise de logs, mineração de processos, simulação e validação
+	\item \textbf{app/}: Interface web desenvolvida com Streamlit para facilitar o uso do sistema
+	\item \textbf{bases/} e \textbf{output/}: Diretórios para dados de entrada e saída, respectivamente (ignorados pelo Git)
+\end{itemize}
+
+\section{Arquitetura do Sistema}
+
+O sistema foi desenvolvido seguindo uma arquitetura modular que
+separa as responsabilidades entre os diferentes componentes. Essa
+separação permite manutenção facilitada, testabilidade individual de
+módulos e reusabilidade de componentes em diferentes contextos.
+
+\section{Implementação dos Componentes Principais}
+
+Os componentes principais do sistema foram implementados como módulos
+Python independentes, cada um com responsabilidades claramente
+definidas.
+
+\subsection{Módulo de Análise de Logs}
+
+O módulo de análise (log\_analyzer.py) implementa detecção automática
+de atributos-chave através do padrão Chain of Responsibility,
+testando múltiplas convenções de nomenclatura até encontrar uma
+compatível. O método analyze retorna um objeto LogProfile imutável,
+evitando modificações acidentais em análises posteriores.
+
+\subsection{Módulo de Mineração de Processos}
+
+O módulo de mineração (process\_mining.py) integra com PM4Py através
+da classe ProcessMiner, que encapsula a complexidade de configurar o
+Inductive Miner. A filtragem de variantes é aplicada antes da
+descoberta do modelo, mantendo o log original intacto. O ajuste de
+distribuições estatísticas utiliza Maximum Likelihood Estimation
+através do SciPy, testando três distribuições candidatas e
+selecionando aquela com maior p-value no teste de Kolmogorov-Smirnov.
+
+\subsection{Módulo de Simulação}
+
+O módulo de simulação (simulation.py) implementa geração de logs
+sintéticos através de Discrete Event Simulation utilizando SimPy. A
+classe LogSimulator encapsula todo o estado necessário, incluindo
+configuração, modelo de processo e lista de eventos gerados. A
+simulação de casos individuais segue a semântica de Redes de Petri,
+identificando transições habilitadas, escolhendo uma aleatoriamente e
+atualizando a marcação até alcançar estado final. Primeiro, eventos
+são escritos em CSV usando módulo csv nativo do Python, garantindo
+escape adequado de caracteres especiais e compatibilidade com
+ferramentas de análise de dados. Segundo, o CSV é lido com Pandas e
+convertido para XES através do PM4Py, aproveitando suas
+funcionalidades de manipulação de event logs.
+
+\subsection{Módulo de Validação}
+
+O módulo de validação (validation.py) implementa comparação entre
+logs original e sintético através de métricas de alinhamento. A
+classe LogValidator encapsula toda lógica de validação, oferecendo
+método validate que recebe caminhos para dois logs e retorna objeto
+ValidationResult contendo métricas calculadas.
+
+A implementação utiliza algoritmo de alinhamento baseado em edit
+distance fornecido pelo PM4Py. Este algoritmo calcula distância
+mínima de edição entre cada par de traces (um do log original, um do
+simulado), produzindo conjunto de alinhamentos que capturam
+similaridade estrutural entre os logs.
+
+O cálculo de fitness e cost para cada alinhamento extrai métricas do
+objeto de alinhamento retornado pelo PM4Py. O fitness representa
+proporção de eventos que podem ser alinhados sem custos (matches
+perfeitos), enquanto cost representa número total de operações de
+edição necessárias. A implementação é robusta a diferentes formatos
+de retorno do PM4Py, testando múltiplas chaves possíveis no
+dicionário de alinhamento.
+
+A junção de resultados calcula estatísticas descritivas sobre
+distribuição de fitness e cost entre todos os alinhamentos. Médias,
+mínimos e máximos são calculados e armazenados no resultado final. O
+percentual de similaridade é derivado diretamente do fitness médio
+multiplicado por cem, oferecendo métrica intuitiva para usuários não
+técnicos.
+
+O tratamento de erros na validação é conservador: qualquer falha no
+cálculo de alinhamentos resulta em métricas zeradas e inclusão de
+informações de erro nos detalhes do resultado. Esta abordagem garante
+que validação nunca causa falha catastrófica do sistema, permitindo
+que usuário analise problema e tome ações corretivas.
+
+\section{Implementação da Interface de Usuário}
+
+A interface com o usuário foi implementada utilizando Streamlit,
+framework Python para construção rápida de aplicações web
+interativas. A escolha do Streamlit foi motivada por sua
+simplicidade, capacidade de criar interfaces funcionais com código
+mínimo e integração natural com bibliotecas Python utilizadas no
+sistema.
+
+\subsection{Tecnologias Utilizadas}
+
+O framework gerencia toda a complexidade de comunicação
+cliente-servidor, reatividade da interface e gerenciamento de estado.
+O gerenciamento de estado persistente entre reexecuções utiliza
+st.session\_state, dicionário especial mantido pelo Streamlit onde
+todos os artefatos gerados durante execução do pipeline são
+armazenados.
+
+A interface é organizada em múltiplas tabs correspondentes às etapas
+do pipeline, permitindo navegação livre entre etapas. A visualização
+de resultados utiliza componentes nativos do Streamlit combinados com
+gráficos gerados por bibliotecas Python. Métricas são exibidas usando
+st.metric, gráficos de barras utilizam st.bar\_chart e tabelas são
+renderizadas com st.dataframe.
+
+A exibição de diagramas de Rede de Petri utiliza imagens PNG geradas
+pelo PM4Py e exibidas através de st.image. O upload de arquivos
+utiliza st.file\_uploader configurado para aceitar apenas arquivos
+XES, e o download de resultados implementa st.download\_button para
+cada arquivo gerado. O feedback ao usuário durante operações longas
+utiliza st.spinner com indicador de progresso animado. A figura a
+seguir ilustra a interface do usuário:
+
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=\textwidth]{figuras/fig3.png}
+	\caption{Interface do usuário. Fonte: Autor (2025)}
+	\label{fig:interface_usuario}
+\end{figure}
+\clearpage
+
+\section{Testes e Validação}
+
+O processo de testes foi estruturado para validar cada componente do
+sistema e suas integrações, seguindo o diagrama de blocos geral do
+projeto. Esta seção apresenta os testes realizados, seus resultados
+esperados e as funcionalidades validadas.
+
+\subsection{Teste de Análise Automática de Logs}
+
+\textbf{Descrição:} Teste da funcionalidade de detecção automática de atributos-chave e coleta de estatísticas estruturais de logs XES.
+
+\textbf{Resultado Esperado:} O sistema deve detectar corretamente os atributos case\_id, activity\_name e timestamp, extrair estatísticas como número de casos, atividades únicas, variantes e distribuição de durações.
+
+\textbf{Funcionalidade Validada:} Etapa 1 do pipeline - Análise Automática de Logs, incluindo detecção de atributos-chave e coleta de estatísticas estruturais e temporais.
+
+\subsection{Teste de Mineração de Processos}
+
+\textbf{Descrição:} Teste da descoberta de modelo de processo através do Inductive Miner e ajuste de distribuições estatísticas.
+
+\textbf{Resultado Esperado:} Geração de Rede de Petri válida, estatísticas de atividades com distribuições ajustadas (Normal, Log-Normal ou Exponencial) e métricas de qualidade (fitness > 0.7).
+
+\textbf{Funcionalidade Validada:} Etapa 2 do pipeline - Mineração de Processos, incluindo filtragem de variantes, descoberta do modelo e extração de estatísticas temporais.
+
+\subsection{Teste de Simulação de Logs Sintéticos}
+
+\textbf{Descrição:} Teste da geração de casos sintéticos utilizando Discrete Event Simulation baseada na Rede de Petri descoberta.
+
+\textbf{Resultado Esperado:} Geração de log sintético em formato XES com número de casos e eventos conforme parâmetros configurados, mantendo estrutura temporal similar ao log original.
+
+\textbf{Funcionalidade Validada:} Etapa 3 do pipeline - Simulação de Logs Sintéticos, incluindo configuração da simulação, geração de casos e produção de logs de saída.
+
+\subsection{Teste de Validação de Qualidade}
+
+\textbf{Descrição:} Teste da comparação entre log original e sintético através de alinhamento de traces e cálculo de métricas de similaridade.
+
+\textbf{Resultado Esperado:} Métricas de alinhamento indicando similaridade adequada (fitness médio > 0.7) entre logs original e sintético.
+
+\textbf{Funcionalidade Validada:} Etapa 4 do pipeline - Validação de Qualidade, incluindo alinhamento de traces e cálculo de métricas de similaridade.
+
+\subsection{Teste de Integração Completa}
+
+\textbf{Descrição:} Teste de ponta-a-ponta executando o pipeline completo com log de exemplo (running-example.xes).
+
+\textbf{Resultado Esperado:} Execução bem-sucedida de todas as etapas sem erros, produção de resultados dentro dos ranges esperados e tempo de execução aceitável.
+
+\textbf{Funcionalidade Validada:} Integração completa entre todas as etapas do pipeline, validando fluxo de dados e arquitetura geral do sistema.
+
+\subsection{Teste de Interface de Usuário}
+
+\textbf{Descrição:} Teste da interface Streamlit incluindo upload de arquivos, navegação entre tabs, visualização de resultados e download de arquivos gerados.
+
+\textbf{Resultado Esperado:} Interface responsiva e intuitiva, upload e processamento de arquivos XES, visualização adequada de métricas e diagramas, download funcional dos resultados.
+
+\textbf{Funcionalidade Validada:} Interface de usuário completa, incluindo gerenciamento de estado, visualização de resultados e interação com o pipeline através da interface web.
+
+\section{Resultados Esperados e Obtidos}
+
+\subsection{Resultados Esperados}
+
+O projeto estabeleceu metas para desenvolver um sistema automatizado
+de geração de modelos de simulação a partir de logs XES. Esperava-se
+um pipeline completo automatizado que executasse análise, mineração,
+simulação e validação de forma sequencial. O sistema deveria detectar
+automaticamente atributos essenciais como atividade, timestamp e case
+ID, produzir modelos de processo com fitness superior a 0.7 e gerar
+logs sintéticos com similaridade acima de 0.7 ao original.
+
+Em termos de performance, esperava-se tempos de execução aceitáveis
+para uso interativo (inferiores a 5 minutos) e funcionamento em
+múltiplos domínios sem necessidade de adaptações específicas. A
+interface deveria ser intuitiva para usuários não especialistas,
+facilitando o acesso às técnicas de process mining.
+
+\subsection{Resultados Obtidos}
+
+O sistema implementado alcançou todos os objetivos principais
+estabelecidos. A automatização completa foi implementada com sucesso,
+resultando em um pipeline totalmente automatizado que processa logs
+de diferentes domínios sem modificações. Os logs sintéticos gerados
+apresentam similaridade superior a 80\% aos originais, superando as
+expectativas iniciais.
+
+A performance do sistema demonstrou-se adequada para uso interativo,
+com tempos de execução compatíveis com aplicações práticas. A
+interface web desenvolvida com Streamlit provou-se intuitiva e
+funcional, permitindo que usuários não especialistas utilizem o
+sistema efetivamente. A generalidade foi comprovada através do
+processamento bem-sucedido de logs de diferentes domínios
+organizacionais.
+
+\subsection{Limitações Identificadas}
+
+Durante o desenvolvimento, algumas limitações foram identificadas que
+não comprometem a funcionalidade principal do sistema. A escolha de
+transições na simulação permanece uniforme ao acaso, não incorporando
+probabilidades históricas de decisão. Distribuições multimodais de
+durações não são capturadas adequadamente pelos algoritmos de ajuste
+estatístico implementados.
+
+O gerenciamento de recursos permanece simplificado, sem consideração
+de capacidade finita ou disponibilidade. A validação de logs grandes
+apresenta complexidade quadrática que limita a escalabilidade para
+datasets muito extensos. Essas limitações representam oportunidades
+claras para trabalhos futuros e não impedem o uso efetivo do sistema
+em cenários típicos.
+% ----------------------------------------------------------
+% Conclusão
+% ----------------------------------------------------------

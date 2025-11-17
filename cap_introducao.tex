@@ -1,0 +1,137 @@
+\chapter{Introdução}
+
+Organizações modernas enfrentam o desafio de transformar o crescente volume de dados operacionais em decisões rápidas e baseadas em evidências. Enquanto sistemas informatizados geram logs detalhados de execução de processos, a análise desses dados permanece majoritariamente manual e dependente de expertise humana. A \textit{mineração de processos} (PM) permite extrair modelos descritivos de processos reais, mas oferece primariamente uma visão retrospectiva. A \textit{simulação de eventos discretos} (DES), por outro lado, viabiliza a análise preditiva de cenários, porém sua construção manual é intensiva e inviável para decisões de curto prazo.
+
+O presente trabalho desenvolveu um \textbf{gerador automatizado de modelos de simulação baseado em mineração de processos}, capaz de transformar logs de eventos estruturados em modelos DES parametrizados sem intervenção manual. O protótipo foi validado com dados reais do setor hospitalar e projetado para ser generalizável a diferentes domínios organizacionais que disponham de registros no padrão XES. Essa integração preenche lacuna identificada na literatura: a necessidade de automação end-to-end entre extração de conhecimento (PM) e predição operacional (DES).
+
+\section{Contexto e Problema}
+
+A crescente complexidade dos ambientes organizacionais exige capacidade contínua de adaptação e resposta rápida. Setores como saúde, manufatura e logística compartilham desafios recorrentes: alocação eficiente de recursos, detecção de gargalos e melhoria contínua de desempenho. Em todos esses contextos, decisões de curto prazo — aquelas que precisam ser tomadas em intervalos de horas ou dias — exercem influência direta sobre a produtividade e eficiência operacional.
+
+Com a intensificação da digitalização, grandes volumes de dados passaram a ser gerados em tempo real. Contudo, a transformação desses dados em conhecimento útil ainda depende, em grande medida, da experiência humana e de análises manuais, sujeitas a vieses cognitivos e limitações de tempo de resposta.
+
+A \textit{mineração de processos} (PM) consolida-se como abordagem para extração de conhecimento estruturado a partir de logs de eventos, com aplicações demonstradas em domínios complexos. Entretanto, PM oferece predominantemente uma visão descritiva e diagnóstica. A \textit{simulação de eventos discretos} (DES), por outro lado, permite avaliar cenários alternativos, mas sua construção manual é intensiva e inviável para decisões de curto prazo que exigem reação rápida a eventos inesperados.
+
+O desafio central, portanto, é: \textbf{como automatizar a geração de modelos de simulação baseados em dados reais, de modo a apoiar decisões operacionais de curto prazo}? Trabalhos como PM4SOS \cite{ferronato2022} demonstraram potencial dessa integração em contextos específicos (hospitalar), mas ainda com dependência de intervenções manuais e limitada generalização. A lacuna identificada reside na necessidade de uma solução automatizada, end-to-end e generalizável, que reduza o esforço de modelagem e amplie a aplicabilidade da técnica ao suporte à decisão operacional.
+
+\section{Delimitação do Escopo}
+
+\textbf{Escopo técnico:} Este trabalho aborda processos discretos com eventos estruturados no padrão XES. A solução integra descoberta de processos (Inductive Miner via PM4PY), extração estatística de distribuições de tempos, identificação automática de recursos, e geração de modelos parametrizados em SimPy.
+
+\textbf{Escopo temporal:} O foco é apoiar decisões operacionais de curto prazo, definidas como aquelas que necessitam resposta em horizonte de horas a dias (não inclui planejamento estratégico de longo prazo ou otimização em tempo real).
+
+\textbf{Escopo de aplicação:} Aplicável a processos organizacionais que possuam logs de eventos estruturados conforme padrão XES, incluindo contextos hospitalares, administrativos, logísticos e de manufatura.
+
+\textbf{Limitações explícitas:} O trabalho não aborda: (i) processos contínuos ou híbridos (contínuo-discreto), (ii) tratamento de sensores de tempo real não estruturados, (iii) otimização multicritério automática (focos apenas em simulação), (iv) modelos com sincronização complexa entre múltiplos recursos, (v) tratamento de incerteza estocástica além das distribuições estatísticas estimadas.
+
+\section{Motivação}
+
+Organizações modernas enfrentam uma urgência operacional: decisões precisam ser tomadas em horas ou dias, não em semanas. A maioria dos dados operacionais coletados continua subutilizada, pois análises descritivas retrospectivas não oferecem suporte efetivo a decisões ágeis. O framework PM4SOS \cite{ferronato2022} demonstrou que a integração entre mineração de processos e simulação é viável em contextos hospitalares, porém permanece restrita e com etapas manuais.
+
+A motivação deste trabalho é clara: criar uma solução que (i) elimine intervenções manuais na geração de modelos, (ii) reduza o tempo de análise de semanas para minutos, (iii) seja aplicável a diferentes domínios sem reprogramação, e (iv) democratize o acesso a ferramentas de simulação para analistas e gestores sem expertise em modelagem formal. Acredita-se que automatização completa do pipeline PM-DES pode transformar simulação de instrumento ocasional de especialistas em ferramenta cotidiana de apoio à decisão operacional.
+
+\section{Soluções Similares}
+
+Diversas pesquisas têm buscado integrar \textit{Process Mining} (PM)
+e \textit{Simulação de Eventos Discretos} (DES) como forma de
+aprimorar a compreensão e a predição do comportamento dos processos
+reais. Entretanto, a maioria das soluções existentes mantém um alto
+grau de dependência de intervenção manual, especialmente nas etapas
+de modelagem, parametrização e calibração.
+
+Entre as iniciativas mais influentes, destaca-se a metodologia
+proposta por \cite{maruster2009redesigning}, que combina mineração de
+processos e simulação para o redesenho organizacional. O método parte
+de logs reais para gerar modelos \textit{As-Is}, simulá-los e
+compará-los com versões otimizadas \textit{To-Be}, permitindo estimar
+ganhos de desempenho. Apesar de pioneiro, o processo de conversão dos
+modelos minerados em modelos simuláveis requer ajustes manuais e
+conhecimento técnico em modelagem formal (como redes de Petri
+coloridas).
+
+No contexto hospitalar, o framework PM4SOS, desenvolvido por
+\cite{ferronato2022}, integra mineração de processos, simulação e
+otimização multicritério para o agendamento cirúrgico. Essa abordagem
+automatiza parcialmente a geração de modelos e utiliza indicadores de
+eficiência para suportar decisões em tempo reduzido. Contudo, sua
+aplicação ainda é restrita ao domínio da saúde, carecendo de
+generalização para outros tipos de processos.
+
+Na área industrial, trabalhos como \cite{wuennenberg2023internal}
+propõem pipelines que unem simulação e mineração de processos em
+sistemas logísticos internos. Esses modelos exploram o uso de
+simulação para geração de dados sintéticos, que são posteriormente
+minerados para verificação de conformidade e detecção de gargalos. Em
+paralelo, pesquisas em mineração subterrânea
+\cite{brzychczy2024pm4lmp} e simulação modular
+\cite{meng2024enhancing} também avançam na integração entre dados de
+sensores, abstração de eventos e análise preditiva, embora com foco
+em contextos físicos específicos.
+
+Em síntese, as soluções atuais demonstram o potencial da integração
+entre PM e DES, mas permanecem limitadas quanto à automação de ponta
+a ponta e à adaptabilidade entre diferentes domínios. O presente
+trabalho propõe evoluir essas abordagens por meio de um gerador de
+modelos de simulação automatizado e generalizável, reduzindo o
+esforço técnico necessário e ampliando o alcance da análise preditiva
+em processos de decisão operacional de curto prazo.
+
+\section{Objetivos}
+
+\subsection{Objetivo Geral}
+
+Desenvolver um \textbf{gerador de modelos de simulação baseado em
+	mineração de processos} para apoiar a \textbf{tomada de decisão no
+	curto prazo}, capaz de criar automaticamente modelos de simulação a
+partir de logs de eventos, reduzindo o esforço humano e o tempo
+necessário para a modelagem de sistemas complexos.
+
+\subsection{Objetivos Específicos}
+
+Para alcançar o objetivo geral, este trabalho busca:
+
+\begin{itemize}
+	\item \textbf{Analisar} métodos de integração PM-DES, documentando grau de automação, precisão de modelos e tempo de execução de pelo menos 3 abordagens existentes;
+	\item \textbf{Projetar} arquitetura modular que suporte: (a) leitura automática de logs XES, (b) descoberta de processos via Inductive Miner, (c) extração estatística de distribuições de tempos (normal, lognormal, exponencial), (d) identificação automática de recursos, (e) geração de código SimPy parametrizado;
+	\item \textbf{Implementar} protótipo funcional integrado em pipeline único, com tempo de execução inferior a 5 minutos para logs típicos (10.000+ eventos);
+	\item \textbf{Validar} em estudo de caso hospitalar real: demonstrar correspondência entre comportamento simulado e dados históricos com fitness score $\geq 0,80$ e precisão $\geq 0,75$;
+	\item \textbf{Avaliar} potencial de generalização através de testes em pelo menos 2 domínios adicionais (administrativo/logístico) e documentar limitações técnicas identificadas.
+\end{itemize}
+
+\section{Contribuições Principais}
+
+Este trabalho apresenta as seguintes contribuições:
+
+\begin{itemize}
+	\item \textbf{Arquitetura automatizada end-to-end:} Pipeline integrado que transforma logs XES em modelos DES parametrizados sem intervenção manual, eliminando lacuna de 2-3 semanas típica de modelagem convencional para execução em minutos.
+	\item \textbf{Protocolo de parametrização estatística:} Método sistemático para extração automática de distribuições de tempos, identificação de recursos e padrões de decisão diretamente de event logs, garantindo reprodutibilidade e consistência.
+	\item \textbf{Framework generalizável cross-domain:} Solução testada em contexto hospitalar mas aplicável a manufatura, logística, administração e serviços, desde que dados estejam estruturados em padrão XES.
+	\item \textbf{Validação com dados reais:} Protótipo validado com logs históricos de processos cirúrgicos, demonstrando fitness e precisão compatíveis com literatura, comprovando viabilidade operacional.
+	\item \textbf{Redução de esforço humano:} Democratização do acesso a simulação como ferramenta de apoio à decisão, ampliando capacidade analítica de organizações sem expertise em modelagem formal.
+\end{itemize}
+
+\section{Justificativa}
+
+A literatura demonstra potencial da integração PM-DES \cite{maruster2009redesigning, wuennenberg2023internal, ferronato2022}, porém com dependência de etapas manuais em modelagem, parametrização e calibração. Este trabalho avança teoricamente ao propor método completamente automatizado, com protocolo replicável e reprodutível, ampliando o corpo de conhecimento sobre como transformar dados históricos em modelos preditivos sem perda de precisão. Contribui para reconciliar a natureza descritiva de PM com a capacidade preditiva de DES em contexto operacional.
+
+O protótipo representa avanço em relação a PM4SOS \cite{ferronato2022} e metodologias similares. Enquanto trabalhos precedentes \cite{maruster2009redesigning, wuennenberg2023internal} requerem 2-3 semanas de modelagem manual especializada, esta solução automatiza o pipeline completo em minutos. Diferencia-se por: (i) eliminação de intervenção manual, (ii) generalizabilidade cross-domain (não restrita a saúde), (iii) parametrização estatística sistemática com distribuições ajustadas aos dados (normal, lognormal, exponencial), (iv) integração em ferramenta única e acessível.
+
+Organizações modernas enfrentam pressão por decisões ágeis. Dados operacionais abundam, mas análises demoram semanas. A solução proposta reduz este ciclo para minutos, viabilizando uso operacional cotidiano. Validação com dados reais de processos cirúrgicos comprova viabilidade e aplicabilidade em contextos operacionais complexos \cite{ferronato2022}. Potencial de aplicação: saúde, manufatura, logística, administração — qualquer domínio com logs estruturados XES. Amplia a capacidade analítica organizacional sem exigir expertise em modelagem formal, democratizando acesso a ferramentas de simulação.
+
+\section{Estrutura do Trabalho}
+
+Este trabalho está organizado da seguinte forma:
+
+\textbf{Capítulo 2 – Referencial Teórico:} Apresenta fundamentos de mineração de processos, simulação de eventos discretos, integração PM-DES, e análise crítica do estado da arte com identificação de lacunas que motivam o trabalho.
+
+\textbf{Capítulo 3 – Metodologia:} Descreve arquitetura do sistema proposto, tecnologias utilizadas (PM4PY, SimPy), fluxo do pipeline, protocolos de parametrização estatística e estratégias de validação.
+
+\textbf{Capítulo 4 – Desenvolvimento e Implementação:} Detalha decisões de design, componentes do protótipo, algoritmos de descoberta de processos, extração de distribuições, geração de código SimPy e integração end-to-end.
+
+\textbf{Capítulo 5 – Validação Experimental:} Apresenta estudo de caso hospitalar, métricas de avaliação (fitness, precisão, desempenho), análise de resultados e discussão de limitações.
+
+\textbf{Capítulo 6 – Conclusões e Trabalhos Futuros:} Sintetiza contribuições, impactos potenciais, limitações identificadas e perspectivas de evolução tecnológica.
+
+% ----------------------------------------------------------
+% Referencial Teórico
+% ----------------------------------------------------------

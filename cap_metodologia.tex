@@ -1,0 +1,932 @@
+\chapter{Metodologia}
+
+Este capítulo apresenta a metodologia utilizada para o
+desenvolvimento do gerador de modelos de simulação baseado em
+mineração de processos. A abordagem metodológica foi estruturada em
+quatro etapas principais: análise automática de logs, mineração de
+processos, simulação de eventos discretos e validação de qualidade.
+
+\section{Visão Geral da Abordagem Metodológica}
+
+A metodologia proposta consiste em um pipeline sequencial de quatro
+etapas interdependentes, conforme ilustrado na Figura
+
+\begin{enumerate}
+	\item \textbf{Análise Automática de Logs}: detecção de atributos e validação de compatibilidade
+	\item \textbf{Mineração de Processos}: extração do modelo formal e parâmetros estatísticos
+	\item \textbf{Simulação de Logs Sintéticos}: geração de casos baseada em eventos discretos
+	\item \textbf{Validação de Qualidade}: avaliação de similaridade e conformidade
+\end{enumerate}
+
+\section{Fluxo de Dados Detalhado}
+
+A Figura~\ref{fig:fluxo_metodologia} ilustra o fluxo completo de
+dados através do sistema:
+
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=\textwidth,height=0.85\textheight,keepaspectratio]{figuras/fig2.png}
+	\caption{Fluxo completo da metodologia. Fonte: Autor (2025)}
+	\label{fig:fluxo_metodologia}
+\end{figure}
+\clearpage
+
+Cada etapa produz artefatos específicos que alimentam a etapa
+seguinte, garantindo rastreabilidade e reprodutibilidade do processo.
+O sistema foi projetado para ser 100\% genérico, funcionando com logs
+de qualquer domínio organizacional que disponha de registros
+estruturados em formato XES.
+
+\section{Etapa 1: Análise Automática de Logs}
+
+\subsection{Diagrama de Componente}
+
+A Figura~\ref{fig:fase1_componente} apresenta o diagrama de
+componente da Etapa 1. O componente central, \texttt{LogAnalyzer}, é
+responsável por realizar a análise automática e a extração de perfil
+de um log de eventos.
+
+O componente recebe como entrada um \textbf{log de eventos} no
+formato XES, que encapsula os traces, eventos, atributos, timestamps
+e recursos do processo. A análise é parametrizada por uma
+\textbf{configuração} que define o modo de operação, como a ativação
+da auto-detecção de atributos e a validação do formato.
+
+Internamente, o \texttt{LogAnalyzer} utiliza \textbf{métodos de
+	análise} baseados em bibliotecas como PM4Py para realizar a detecção
+de padrões, análise de variantes e análise estatística. As principais
+tarefas executadas são a detecção automática da estrutura do log, a
+identificação das variantes do processo, a validação de
+compatibilidade com as etapas subsequentes e a extração de
+estatísticas descritivas.
+
+Como resultado, o componente produz um \textbf{Perfil do Log}
+(\texttt{LogProfile}), um artefato estruturado que contém as
+características detectadas. Isso inclui métricas quantitativas
+(número de casos, eventos, atividades e recursos únicos), estruturais
+(variantes de processo, nomes dos atributos-chave identificados) e
+temporais (estatísticas de duração e frequência), além de uma
+verificação de compatibilidade para o pipeline.
+
+\begin{figure}[htb]
+	\centering
+	\makebox[\textwidth][c]{\includegraphics[width=1.25\textwidth, keepaspectratio]{figuras/diagrama1.png}}
+	\caption{Fase 1: Análise Automática de Logs. Fonte: Autor (2025)}
+	\label{fig:fase1_componente}
+\end{figure}
+
+\subsection{Objetivo}
+
+Detectar automaticamente as características estruturais, temporais e
+operacionais do log de entrada, incluindo o cálculo de indicadores de
+eficiência operacional quando aplicável, assegurando compatibilidade
+com diferentes domínios e formatos sem necessidade de configuração
+manual.
+
+\subsection{Justificativa}
+
+Logs de eventos variam significativamente entre domínios quanto à
+nomenclatura de atributos, presença de recursos organizacionais e
+convenções de registro temporal. A análise automática elimina a
+necessidade de parametrização manual e permite processamento
+agnóstico ao domínio, ampliando a aplicabilidade do sistema. Além da
+análise estrutural, a integração de indicadores de eficiência como o
+ORE permite quantificar perdas operacionais e direcionar a simulação
+para cenários de melhoria específicos.
+
+\subsection{Detecção de Atributos-Chave}
+
+O sistema implementa um mecanismo de detecção baseado em prioridades,
+testando sequencialmente diferentes convenções de nomenclatura até
+identificar os atributos obrigatórios:
+
+\begin{itemize}
+	\item \textbf{Activity Key} (nome da atividade): \texttt{concept:name}, \texttt{Activity}, \texttt{activity}, \texttt{event}, \texttt{task}
+	\item \textbf{Timestamp Key} (momento do evento): \texttt{time:timestamp}, \texttt{timestamp}, \texttt{Time}, \texttt{start\_time}
+	\item \textbf{Case ID Key} (identificador do caso): \texttt{concept:name}, \texttt{case\_id}, \texttt{CaseID}, \texttt{Case}
+	\item \textbf{Resource Key} (executor - opcional): \texttt{org:resource}, \texttt{resource}, \texttt{user}, \texttt{actor}
+\end{itemize}
+
+A ordem de prioridade baseia-se no padrão IEEE XES \cite{ieeexes2010}
+e em análise de datasets públicos do BPI Challenge e repositório 4TU.
+
+Quando nenhum candidato da lista de prioridades é encontrado, o
+sistema aplica busca por palavras-chave nos nomes dos atributos. Se
+ainda assim a detecção falhar para atributos obrigatórios, uma
+exceção é lançada com lista dos atributos disponíveis para
+diagnóstico.
+
+\subsection{Coleta de Estatísticas Estruturais}
+
+Para cada log analisado, o sistema extrai as seguintes informações:
+
+\begin{itemize}
+	\item Número total de casos (traces) e eventos
+	\item Número de atividades únicas
+	\item Distribuição de frequência das atividades
+	\item Comprimento mínimo, máximo e médio dos traces
+	\item Número de variantes do processo (sequências únicas de atividades)
+	\item Distribuição de recursos por atividade (quando disponível)
+\end{itemize}
+
+Essas estatísticas são armazenadas em um objeto \texttt{LogProfile},
+que serve como entrada para as etapas posteriores e permite análise
+exploratória dos dados antes da mineração.
+
+\subsection{Análise de Eficiência Operacional (ORE)}
+
+Quando o log de eventos contém informações suficientes sobre
+planejamento e execução de atividades, o sistema realiza
+automaticamente o cálculo de indicadores de eficiência operacional
+baseados no modelo ORE proposto por Souza et al. \cite{souza2020ore}.
+Esta análise é particularmente relevante para processos hospitalares,
+mas pode ser aplicada a qualquer domínio que possua dados de
+agendamento, execução e resultados de atividades.
+
+\subsubsection{Cálculo de Métricas ORE}
+
+O cálculo do ORE é mais preciso quando o log de eventos é enriquecido
+com atributos operacionais específicos. O sistema é capaz de
+processar tanto logs padrão, inferindo perdas, quanto logs
+enriquecidos, utilizando dados reais para maior acurácia. Um
+\textbf{log XES enriquecido}, neste contexto, pode conter os
+seguintes atributos adicionais em nível de caso:
+
+\begin{itemize}
+	\item \texttt{custom:status}: status da atividade (ex: \textit{Realizada}, \textit{Cancelada}). Permite a contagem real de cancelamentos.
+	\item \texttt{custom:actual\_duration}: duração real da atividade. Permite cálculo preciso de perdas de desempenho.
+	\item \texttt{custom:cancellation\_reason}: motivo do cancelamento. Permite análise de causa raiz.
+\end{itemize}
+
+Quando esses atributos não estão presentes, o sistema busca por
+atributos candidatos genéricos para estimar as métricas:
+
+\begin{itemize}
+	\item \textbf{Tempo Planejado}: duração prevista para a atividade
+	      (atributos candidatos: \texttt{planned\_duration},
+	      \texttt{scheduled\_time}, \texttt{expected\_duration})
+
+	\item \textbf{Tempo Disponível}: janela temporal alocada para a
+	      execução (atributos candidatos: \texttt{available\_time},
+	      \texttt{slot\_duration}, \texttt{scheduled\_slot})
+
+	\item \textbf{Status de Execução}: indicador de cancelamentos ou
+	      falhas (atributos candidatos: \texttt{status}, \texttt{outcome},
+	      \texttt{execution\_status})
+
+	\item \textbf{Tipo de Perda}: classificação da perda operacional
+	      quando aplicável (atributos candidatos: \texttt{loss\_type},
+	      \texttt{waste\_category}, \texttt{failure\_reason})
+\end{itemize}
+
+Quando esses atributos estão presentes, o sistema calcula as três
+dimensões do ORE:
+
+\begin{enumerate}
+	\item \textbf{Disponibilidade}: razão entre o tempo total programado
+	      (TTS) e o tempo total disponível (TTA), descontando perdas por falha
+	      de equipamento, setup e não agendamento.
+
+	\item \textbf{Desempenho}: razão entre o tempo total utilizado (TTU)
+	      e o tempo total programado (TTS), descontando perdas por pequenas
+	      paradas, variação no tempo cirúrgico e cancelamentos.
+
+	\item \textbf{Qualidade}: razão entre o tempo total de valor
+	      agregado (TTAV) e o tempo total utilizado (TTU), descontando perdas
+	      por reintervenções.
+\end{enumerate}
+
+O ORE global é calculado como o produto das três dimensões,
+resultando em um indicador percentual que reflete a efetividade
+global do processo.
+
+\subsection{Saída Integrada da Etapa}
+
+A saída da Etapa 1 foi expandida para incluir não apenas o perfil
+estrutural do log, mas também indicadores operacionais quando
+aplicável. A saída consiste em:
+
+\begin{itemize}
+	\item \textbf{LogProfile}: objeto contendo todos os metadados
+	      detectados, incluindo mapeamento de atributos, estatísticas
+	      estruturais e flags de compatibilidade.
+
+	\item \textbf{OREMetrics} (opcional): objeto contendo métricas de
+	      eficiência operacional, incluindo:
+	      \begin{itemize}
+		      \item Valores de Disponibilidade, Desempenho e Qualidade
+		      \item ORE global
+		      \item Decomposição granular das sete categorias de perdas
+	      \end{itemize}
+\end{itemize}
+
+Quando o log não contém informações suficientes para cálculo do ORE,
+o sistema prossegue apenas com o \texttt{LogProfile}, mantendo
+compatibilidade com processos de qualquer domínio. A presença do
+\texttt{OREMetrics} adiciona uma camada analítica que permite
+direcionar a simulação (Etapa 3) para cenários de otimização
+específicos.
+
+\section{Etapa 2: Mineração de Processos}
+
+\subsection{Diagrama de Componente}
+
+A Figura~\ref{fig:fase2_componente} apresenta o diagrama de
+componente da Etapa 2, detalhando o processo de mineração de
+processos e extração de parâmetros estatísticos.
+
+O componente central \texttt{ProcessMiner} recebe como entradas o
+arquivo XES original, o objeto \texttt{LogProfile} produzido na Etapa
+1 contendo os metadados do log, o parâmetro \texttt{variant\_filter}
+configurado em 0.8 para filtragem de variantes, e uma flag
+\texttt{save\_model\_image} para geração opcional de visualização do
+modelo. O processamento interno é organizado em cinco fases
+sequenciais: (1) filtragem de variantes baseada em frequência,
+mantendo apenas as variantes que representam 80\% dos casos totais
+para remoção de ruído; (2) descoberta do modelo de processo
+utilizando o algoritmo Inductive Miner, que garante propriedades de
+soundness e sempre produz um modelo bem-formado; (3) conversão do
+Process Tree resultante para uma Rede de Petri formal com marcação
+inicial e final; (4) ajuste de distribuições estatísticas (Normal,
+Log-Normal e Exponencial) às durações observadas de cada atividade,
+utilizando o teste de Kolmogorov-Smirnov para seleção da distribuição
+com melhor aderência; (5) avaliação de qualidade do modelo através
+das métricas de fitness, precision e simplicity.
+
+A saída produzida consiste em um objeto estruturado
+\texttt{ProcessModel} contendo: a Rede de Petri formal representada
+pela tupla (\texttt{net}, \texttt{im}, \texttt{fm}), onde
+\texttt{net} é a rede, \texttt{im} é a marcação inicial e \texttt{fm}
+é a marcação final; um dicionário de \texttt{ActivityStatistics} para
+cada atividade, incluindo duração média, desvio padrão, distribuição
+ajustada e seus parâmetros; métricas temporais globais como
+\texttt{arrival\_rate} (taxa de chegada de casos),
+\texttt{dispersion\_rate} e \texttt{median\_duration}; métricas de
+qualidade do modelo (\texttt{fitness}, \texttt{precision},
+\texttt{simplicity}); mapeamento de recursos por atividade quando
+disponível; e o \texttt{LogProfile} original para rastreabilidade. As
+bibliotecas PM4Py são utilizadas para implementação do Inductive
+Miner e cálculo de métricas de conformidade, enquanto SciPy (módulo
+\texttt{scipy.stats}) é empregado para ajuste e avaliação das
+distribuições estatísticas.
+
+\begin{figure}[htb]
+	\centering
+	\makebox[\textwidth][c]{\includegraphics[width=1.25\textwidth, keepaspectratio]{figuras/diagrama2.png}}
+	\caption{Fase 2: Mineração de Processos. Fonte: Autor (2025)}
+	\label{fig:fase2_componente}
+\end{figure}
+
+\subsection{Objetivo}
+
+Extrair o modelo formal do processo na forma de uma Rede de Petri e
+parametrizar suas características temporais e organizacionais para
+uso na simulação.
+
+\subsection{Filtragem de Variantes}
+
+\subsubsection{Problema}
+
+Logs reais frequentemente contêm ruído, casos excepcionais e
+variantes raras que dificultam a descoberta de modelos
+representativos e podem levar a overfitting.
+
+\subsubsection{Solução}
+
+Aplicação de filtragem baseada em frequência, mantendo apenas as
+variantes que representam um percentual especificado dos casos
+totais.
+
+\subsubsection{Parâmetro Padrão}
+
+O sistema utiliza como padrão a retenção de 80\% das variantes mais
+frequentes (\texttt{variant\_filter=0.8}).
+
+\subsubsection{Justificativa}
+
+O valor de 80\% fundamenta-se no Princípio de Pareto, onde
+aproximadamente 20\% das variantes explicam 80\% do comportamento
+observado \cite{aalst2016process}. Este limiar oferece balance
+adequado entre cobertura comportamental e remoção de ruído.
+
+\subsection{Descoberta do Modelo de Processo}
+
+\subsubsection{Algoritmo Selecionado}
+
+O sistema utiliza o \textbf{Inductive Miner} proposto por Leemans,
+Fahland e van der Aalst \cite{leemans2013discovering}.
+
+\subsubsection{Justificativa da Escolha}
+
+A Tabela~\ref{tab:algoritmos} apresenta comparação entre algoritmos
+de descoberta disponíveis:
+
+\begin{table}[htb]
+	\centering
+	\caption{Comparação entre algoritmos de descoberta de processos}
+	\label{tab:algoritmos}
+	\begin{tabular}{l>{\raggedright\arraybackslash}p{4cm}>{\raggedright\arraybackslash}p{4cm}>{\raggedright\arraybackslash}p{3cm}}
+		\hline
+		\textbf{Algoritmo}       & \textbf{Vantagens}                                         & \textbf{Desvantagens}     & \textbf{Decisão}   \\
+		\hline
+		Alpha Miner              & Simples, pioneiro                                          & Não lida com ruído, loops & Não escolhido      \\
+		Heuristic Miner          & Tolerante a ruído                                          & Modelos não-formais       & Não escolhido      \\
+		\textbf{Inductive Miner} & Soundness garantido, robusto a ruído, sempre produz modelo & Pode generalizar demais   & \textbf{ESCOLHIDO} \\
+		Split Miner              & Alta precisão                                              & Requer tuning complexo    & Não escolhido      \\
+		\hline
+	\end{tabular}
+\end{table}
+
+O Inductive Miner foi escolhido por garantir três propriedades
+fundamentais:
+
+\begin{enumerate}
+	\item \textbf{Soundness}: modelo sempre bem-formado, sem deadlocks
+	\item \textbf{Fitness}: modelo sempre capaz de reproduzir o log
+	\item \textbf{Completude}: sempre produz um modelo, mesmo com logs problemáticos
+\end{enumerate}
+
+Além disso, o algoritmo gera modelos estruturados em blocos
+(block-structured), facilitando a conversão para formatos simuláveis.
+
+\subsubsection{Saída}
+
+Uma Rede de Petri formalmente definida como a tupla $N = (P, T, F)$,
+onde:
+\begin{itemize}
+	\item $P$: conjunto de lugares (places)
+	\item $T$: conjunto de transições (transitions)
+	\item $F \subseteq (P \times T) \cup (T \times P)$: conjunto de arcos
+\end{itemize}
+
+Acompanhada de marcação inicial ($M_0$) e marcação final ($M_f$).
+
+\subsection{Extração de Estatísticas Temporais}
+
+\subsubsection{Cálculo de Durações}
+
+Para cada atividade, o sistema calcula durações baseando-se em:
+
+\textbf{Casos com timestamp de conclusão}:
+\begin{equation}
+	duration = time:complete - time:timestamp
+\end{equation}
+
+\textbf{Casos sem timestamp de conclusão} (maioria dos logs):
+\begin{equation}
+	duration = timestamp(event_{i+1}) - timestamp(event_i)
+\end{equation}
+
+\subsection{Ajuste de Distribuições Estatísticas}
+
+\subsubsection{Objetivo}
+
+Modelar a variabilidade realista das durações para simulação
+estocástica fiel ao comportamento observado.
+
+\subsubsection{Distribuições Candidatas}
+
+O sistema testa três distribuições de probabilidade:
+
+\begin{enumerate}
+	\item \textbf{Normal (Gaussiana)}: para atividades com duração relativamente constante e variação simétrica
+	\item \textbf{Log-Normal}: para atividades com cauda longa à direita, comum em processos humanos
+	\item \textbf{Exponencial}: para tempos de espera e processos de chegada
+\end{enumerate}
+
+\subsection{Avaliação de Qualidade do Modelo}
+
+O sistema calcula três métricas complementares de qualidade
+\cite{aalst2016process}:
+
+\subsubsection{Fitness (0-1, maior é melhor)}
+
+\textbf{Definição}: proporção de comportamento do log que o modelo consegue reproduzir.
+
+\textbf{Método}: replay fitness baseado em alinhamentos.
+
+\textbf{Cálculo}: O fitness utiliza token-based replay ou alignment-based conformance. A fórmula mais comum é:
+
+\begin{equation}
+	\text{fitness} = 1 - \frac{\text{custo\_total}}{\text{custo\_máximo\_possível}}
+\end{equation}
+
+\textbf{Definição do Custo}: O custo representa o número de operações necessárias para fazer o modelo aceitar um trace do log. Durante a mineração, o custo inclui: (1) \textit{movimentos no modelo} - transições silenciosas que precisam ser executadas, (2) \textit{movimentos no log} - eventos que precisam ser ignorados, e (3) \textit{movimentos síncronos} - eventos que coincidem perfeitamente (custo zero). Algoritmos de mineração usam esse custo para decidir quando parar de dividir o log e qual divisão produz o melhor modelo.
+
+No contexto de alinhamentos, para cada trace individual:
+\begin{equation}
+	\text{fitness\_trace}_i = 1 - \frac{\text{edit\_distance}_i}{\text{max\_length}_i}
+\end{equation}
+
+O fitness global do log é calculado como:
+\begin{equation}
+	\text{fitness\_log} = \frac{1}{n} \sum_{i=1}^{n} \text{fitness\_trace}_i
+\end{equation}
+
+onde $n$ é o número total de traces no log. O PM4Py implementa
+automaticamente esses cálculos utilizando algoritmos de alinhamento
+otimizados.
+
+\textbf{Interpretação}:
+\begin{itemize}
+	\item $\geq 0.9$: modelo explica quase todo o log
+	\item $0.7-0.9$: modelo explica maior parte
+	\item $< 0.7$: modelo inadequado
+\end{itemize}
+
+\subsubsection{Precision (0-1, maior é melhor)}
+
+\textbf{Definição}: quão preciso é o modelo, evitando comportamento extra não observado.
+
+\textbf{Método}: token-based conformance.
+
+\textbf{Cálculo}: A precision mede quantos comportamentos extras (não observados) o modelo permite. Utiliza a fórmula ETC (Escaping Arcs):
+
+\begin{equation}
+	\text{precision} = 1 - \frac{\text{arcos\_escapando}}{\text{arcos\_totais}}
+\end{equation}
+
+onde os arcos escapando representam transições que podem ser
+executadas pelo modelo mas não foram observadas no log original. O
+PM4Py calcula automaticamente essa métrica através de algoritmos de
+conformance checking que identificam comportamentos não observados.
+
+\textbf{Interpretação}:
+\begin{itemize}
+	\item $\geq 0.8$: modelo preciso
+	\item $< 0.5$: modelo muito generalista
+\end{itemize}
+
+\subsubsection{Simplicity (0-1, maior é melhor)}
+
+\textbf{Definição}: simplicidade estrutural do modelo.
+
+\textbf{Método}: razão entre arcos e nós na rede de Petri.
+
+\textbf{Cálculo}: A simplicidade mede a complexidade topológica da Rede de Petri através da fórmula estrutural:
+
+\begin{equation}
+	\text{simplicity} = \frac{1}{1 + \frac{|\text{arcos}|}{|\text{nós}|}}
+\end{equation}
+
+onde $|\text{arcos}|$ representa o número total de arcos (transições)
+e $|\text{nós}|$ representa o número total de nós (places) na rede de
+Petri. O PM4Py calcula automaticamente essa métrica analisando a
+estrutura topológica do modelo descoberto.
+
+\textbf{Interpretação}:
+\begin{itemize}
+	\item $\geq 0.7$: modelo simples
+	\item $< 0.4$: modelo complexo
+\end{itemize}
+
+\subsection{Saída da Etapa}
+
+\noindent Um objeto \texttt{ProcessModel} contendo:
+\begin{itemize}
+	\item Rede de Petri (net, im, fm)
+	\item Dicionário de estatísticas de atividades
+	      (\texttt{ActivityStatistics})
+	\item Métricas globais (arrival\_rate, dispersion\_rate, median\_duration)
+	\item Métricas de qualidade (fitness, precision, simplicity)
+	\item Mapeamento de recursos (opcional)
+	\item Perfil do log original (\texttt{LogProfile})
+\end{itemize}
+
+\section{Etapa 3: Simulação de Logs Sintéticos}
+
+\subsection{Diagrama de Componente}
+
+A Figura~\ref{fig:fase3_componente} apresenta o diagrama de
+componente da Etapa 3, ilustrando o processo de simulação de logs
+sintéticos baseado em eventos discretos.
+
+O componente central \texttt{LogSimulator} recebe como entradas o
+objeto \texttt{ProcessModel} contendo a Rede de Petri e todos os
+parâmetros estatísticos extraídos na Etapa 2, e um objeto
+\texttt{SimulationConfig} que especifica os parâmetros da simulação:
+\texttt{num\_cases} (padrão 100) para número de casos a serem
+gerados, \texttt{arrival\_rate} (extraído do modelo) para taxa de
+chegada de novos casos, \texttt{activity\_durations} (extraídos do
+modelo) contendo as distribuições estatísticas de duração de cada
+atividade, e \texttt{random\_seed} (padrão 42) para garantir
+reprodutibilidade dos experimentos.
+
+O processamento interno implementa um simulador de eventos discretos
+utilizando a biblioteca SimPy, organizado em quatro componentes
+principais: (1) gerador de chegadas, que cria novos casos seguindo
+uma distribuição exponencial baseada na \texttt{arrival\_rate}
+observada; (2) executor de casos, que para cada caso individual
+percorre a Rede de Petri respeitando sua semântica formal,
+identificando transições habilitadas e escolhendo uma aleatoriamente
+para disparo; (3) gerador de eventos, que para cada transição
+disparada cria um evento no log sintético com \texttt{case\_id},
+\texttt{activity}, \texttt{timestamp} (tempo atual da simulação) e
+\texttt{resource} (selecionado aleatoriamente do pool de recursos
+disponíveis para aquela atividade); (4) controlador de duração, que
+para cada atividade amostra uma duração da distribuição estatística
+ajustada (Normal, Log-Normal ou Exponencial) e avança o relógio da
+simulação pelo tempo correspondente. A simulação continua até que
+todos os casos alcancem a marcação final da Rede de Petri ou atinjam
+o limite de segurança (\texttt{max\_trace\_length=1000}) para
+proteção contra loops infinitos.
+
+A saída produzida consiste em um objeto \texttt{SimulationResult}
+contendo: caminho para o arquivo CSV intermediário com os eventos
+gerados em formato tabular (\texttt{case\_id}, \texttt{activity},
+\texttt{time:timestamp}, \texttt{resource}); caminho para o arquivo
+XES final convertido seguindo o padrão IEEE 1849-2016, incluindo
+classificador de atividade para compatibilidade com ferramentas como
+ProM e Disco; estatísticas da simulação incluindo
+\texttt{num\_cases\_generated}, \texttt{num\_events\_generated},
+\texttt{simulation\_time\_seconds} e \texttt{generation\_timestamp}.
+As bibliotecas SimPy são utilizadas para implementação da lógica de
+eventos discretos (processos, timeouts, environment), enquanto PM4Py
+é empregada para conversão do formato intermediário CSV para o
+formato XES padronizado.
+
+\begin{figure}[htb]
+	\centering
+	\makebox[\textwidth][c]{\includegraphics[width=1.25\textwidth, keepaspectratio]{figuras/diagrama3.png}}
+	\caption{Fase 3: Simulação de Logs Sintéticos. Fonte: Autor (2025)}
+	\label{fig:fase3_componente}
+\end{figure}
+
+\subsection{Objetivo}
+
+Gerar novos casos de processo que sigam o modelo descoberto e as
+distribuições estatísticas extraídas, preservando características
+estruturais e temporais do processo original.
+
+\subsection{Paradigma de Simulação}
+
+\subsubsection{Abordagem Escolhida}
+
+O sistema utiliza \textbf{Discrete Event Simulation (DES)}
+implementada com a biblioteca SimPy.
+
+\subsubsection{Justificativa}
+
+\noindent DES é adequado porque:
+\begin{itemize}
+	\item Processos de negócio são inerentemente discretos (atividades têm
+	      início e fim definidos)
+	\item Eventos ocorrem em pontos específicos do tempo
+	\item Estado do sistema muda apenas em eventos
+	\item SimPy oferece abstrações adequadas (processos, timeouts, recursos)
+\end{itemize}
+
+\subsection{Configuração da Simulação}
+
+A Tabela~\ref{tab:parametros} lista os parâmetros principais:
+
+\begin{table}[htb]
+	\centering
+	\caption{Parâmetros de configuração da simulação}
+	\label{tab:parametros}
+	\begin{tabular}{llp{6cm}}
+		\hline
+		\textbf{Parâmetro}           & \textbf{Valor Padrão} & \textbf{Justificativa}                           \\
+		\hline
+		\texttt{num\_cases}          & 100                   & Suficiente para análise estatística sem overhead \\
+		\texttt{arrival\_rate}       & Do modelo             & Preserva taxa de chegada original                \\
+		\texttt{activity\_durations} & Do modelo             & Preserva durações originais                      \\
+		\texttt{random\_seed}        & 42                    & Reprodutibilidade dos experimentos               \\
+		\texttt{max\_trace\_length}  & 1000                  & Limite de segurança contra loops                 \\
+		\hline
+	\end{tabular}
+\end{table}
+
+Todos os parâmetros podem ser sobrescritos para simulação de cenários
+alternativos (por exemplo, "E se reduzirmos durações em 50\%?").
+
+\subsection{Geração de Casos}
+
+\subsubsection{Processo de Chegadas}
+
+O sistema implementa um gerador SimPy que cria casos sequencialmente:
+
+\begin{verbatim}
+Para cada caso i de 1 até num_cases:
+    1. Aguardar intervalo de chegada (arrival_rate)
+    2. Iniciar processo paralelo para simular caso i
+\end{verbatim}
+
+Este padrão permite múltiplos casos ativos simultaneamente,
+representando carga de trabalho real com concorrência.
+
+\subsection{Simulação Individual de Casos}
+
+O sistema implementa algoritmo baseado na semântica formal de Redes
+de Petri \cite{peterson1981petri}:
+
+\begin{algorithm}[H]
+	\caption{Simulação de um caso individual}
+	\begin{algorithmic}[1]
+		\State \textbf{Entrada:} Rede de Petri $(net, im, fm)$
+		\State $marking \gets im$ \Comment{Marcação inicial}
+		\While{$marking \neq fm$} \Comment{Até marcação final}
+		\State $T_{enabled} \gets$ transições habilitadas em $marking$
+		\If{$T_{enabled} = \emptyset$}
+		\State \textbf{break} \Comment{Marcação final ou deadlock}
+		\EndIf
+		\State $t \gets$ escolhe aleatoriamente de $T_{enabled}$
+		\If{$t$ não é transição silenciosa}
+		\State $timestamp \gets \text{tempo\_atual\_simulação}$
+		\State $recurso \gets$ escolhe aleatório de $\text{recursos}(t.\text{atividade})$
+		\State Registrar evento$(caso\_id, t.atividade, timestamp, recurso)$
+		\State Aguardar $\text{duração}(t.\text{atividade})$ segundos
+		\EndIf
+		\State $marking \gets \text{executa}(t, marking)$ \Comment{Atualizar marcação}
+		\If{comprimento\_trace $> max\_trace\_length$}
+		\State \textbf{break} \Comment{Limite de segurança}
+		\EndIf
+		\EndWhile
+	\end{algorithmic}
+\end{algorithm}
+\subsection{Geração dos Logs de Saída}
+
+\subsubsection{Formato Intermediário (CSV)}
+
+\begin{verbatim}
+case_id,activity,time:timestamp,resource
+Case 1,Register Request,2024-10-13 10:00:00,John
+Case 1,Examine,2024-10-13 10:02:30,Mary
+...
+\end{verbatim}
+
+\subsubsection{Conversão para XES}
+
+\noindent Processo automatizado:
+
+\begin{enumerate}
+	\item Leitura do CSV com Pandas
+	\item Renomeação de colunas para padrão XES IEEE
+	\item Formatação via \texttt{pm4py.format\_dataframe()}
+	\item Conversão para estrutura de log PM4Py
+	\item Exportação XES via \texttt{pm4py.write\_xes()}
+	\item Inserção manual de classificador (workaround limitação PM4Py)
+\end{enumerate}
+
+O classificador XES inserido:
+\begin{verbatim}
+<classifier name="Activity" keys="concept:name"/>
+\end{verbatim}
+
+É necessário para compatibilidade com ferramentas como ProM e Disco.
+
+\subsection{Saída da Etapa}
+
+\noindent Um objeto \texttt{SimulationResult} contendo:
+\begin{itemize}
+	\item Caminhos dos arquivos (CSV e XES)
+	\item Número de casos e eventos gerados
+	\item Tempo de execução da simulação
+	\item Timestamp de geração
+\end{itemize}
+
+\section{Etapa 4: Validação de Qualidade}
+
+\subsection{Diagrama de Componente}
+
+A Figura~\ref{fig:fase4_componente} apresenta o diagrama de
+componente da Etapa 4, detalhando o processo de validação de
+qualidade dos logs sintéticos gerados.
+
+O componente central \texttt{LogValidator} recebe como entradas dois
+arquivos XES: o arquivo \texttt{original\_xes} contendo o log de
+eventos real e o arquivo \texttt{simulated\_xes} contendo o log
+sintético gerado na Etapa 3.
+
+O processamento interno implementa uma validação multidimensional que
+compara diferentes perspectivas dos logs: (1) \textbf{Análise
+	Estrutural}, onde calcula-se a similaridade dos traces usando
+distância de edição; (2) \textbf{Análise de Frequência}, que compara
+as distribuições de atividades e variantes; (3) \textbf{Análise
+	Temporal}, que mede a similaridade das distribuições de duração das
+atividades e aplica o teste de Kolmogorov-Smirnov para validação
+estatística.
+
+A saída produzida consiste em um objeto estruturado
+\texttt{ValidationResult} contendo as métricas agregadas de todas as
+análises, incluindo percentual de similaridade, p-valor e
+estatísticas detalhadas. A biblioteca PM4Py é utilizada para os
+cálculos de alinhamento e extração de características dos logs.
+
+\begin{figure}[htb]
+	\centering
+	\makebox[\textwidth][c]{\includegraphics[width=1.25\textwidth, keepaspectratio]{figuras/diagrama4.png}}
+	\caption{Fase 4: Validação de Qualidade. Fonte: Autor (2025)}
+	\label{fig:fase4_componente}
+\end{figure}
+
+\subsection{Objetivo}
+
+Avaliar quão similares são os logs original e sintético, validando a
+qualidade da geração e a fidelidade do modelo. A validação é
+multidimensional, comparando os logs sob perspectivas estrutural, de
+frequência e temporal.
+
+\subsection{Métricas de Validação}
+
+O sistema calcula um conjunto de métricas para fornecer uma visão
+holística da similaridade entre os logs.
+
+\subsubsection{Similaridade Estrutural (Fitness de Alinhamento)}
+
+A similaridade estrutural é calculada usando alinhamentos baseados em
+\textbf{Distância de Edição} (\textit{Edit Distance}) entre os
+traces. Para cada par de traces (um original, um sintético),
+calcula-se o número mínimo de operações (inserção, deleção,
+substituição) para transformar um no outro. A partir do custo do
+alinhamento, deriva-se uma métrica de \textit{fitness} normalizada:
+
+\begin{equation}
+	fitness = 1 - \frac{\text{custo\_alinhamento}}{\text{custo\_máximo}}
+\end{equation}
+
+Onde $\text{custo\_máximo}$ é o custo do pior caso (deletar todos os
+eventos de um trace e inserir todos do outro). O \textit{fitness}
+médio de todos os alinhamentos resulta em um percentual de
+similaridade estrutural.
+
+\subsubsection{Similaridade de Distribuição de Atividades}
+
+Esta métrica compara a frequência relativa de cada atividade entre o
+log original e o sintético. Utiliza-se a distância de Jaccard ou
+similar para quantificar a sobreposição das distribuições de
+frequência. Um valor próximo de 1.0 indica que as atividades mais
+comuns no processo real também são as mais comuns no processo
+simulado.
+
+\subsubsection{Similaridade de Distribuição de Variantes}
+
+Compara a distribuição das variantes (sequências de atividades
+únicas) entre os dois logs. Esta métrica avalia se o modelo simulado
+consegue reproduzir os caminhos mais frequentes do processo real com
+uma frequência parecida. Assim como na métrica de atividades, um
+valor próximo de 1.0 é desejável.
+
+\subsubsection{Similaridade de Distribuição de Durações}
+
+Avalia se as durações das atividades no log sintético seguem uma
+distribuição estatística similar às do log original. A comparação é
+feita utilizando a distância de Wasserstein (Earth Mover's Distance)
+ou outra métrica de distância entre distribuições, que mede o
+"esforço" necessário para transformar uma distribuição na outra.
+
+\subsubsection{Validação Estatística (Teste de Kolmogorov-Smirnov)}
+
+Para uma validação mais rigorosa das durações, o sistema aplica o
+teste de Kolmogorov-Smirnov (K-S) de duas amostras. Este teste não
+paramétrico avalia a hipótese nula de que as amostras de duração
+(original e sintética) foram extraídas da mesma distribuição. O
+resultado é um \textbf{p-valor}:
+
+\begin{itemize}
+	\item \textbf{p-valor > 0.05}: Não há evidência estatística para rejeitar a hipótese nula. As distribuições são consideradas estatisticamente similares.
+	\item \textbf{p-valor $\leq$ 0.05}: A hipótese nula é rejeitada. As distribuições são consideradas estatisticamente diferentes.
+\end{itemize}
+
+Um p-valor alto indica que a simulação reproduz fielmente a
+variabilidade temporal do processo original.
+
+\subsection{Agregação e Interpretação de Resultados}
+
+As métricas são agregadas em um placar de validação. A
+Tabela~\ref{tab:interpretacao} apresenta os thresholds para
+interpretação.
+
+\begin{table}[htb]
+	\centering
+	\caption{Interpretação de métricas de validação}
+	\label{tab:interpretacao}
+	\begin{tabular}{ll}
+		\hline
+		\textbf{Métrica}          & \textbf{Interpretação}                     \\
+		\hline
+		Similaridade Estrutural   & $\geq 80\%$ (Boa), $\geq 90\%$ (Excelente) \\
+		Similaridade (Atividades) & $\geq 0.8$ (Boa)                           \\
+		Similaridade (Variantes)  & $\geq 0.7$ (Boa)                           \\
+		Similaridade (Durações)   & $\geq 0.8$ (Boa)                           \\
+		KS-Test p-valor           & $> 0.05$ (Similaridade Estatística)        \\
+		\hline
+	\end{tabular}
+\end{table}
+
+\subsection{Saída da Etapa}
+
+Um objeto \texttt{ValidationResult} contendo:
+\begin{itemize}
+	\item Percentual de similaridade estrutural (baseado em fitness médio)
+	\item Similaridade de distribuição de atividades, variantes e durações
+	\item P-valor do teste de Kolmogorov-Smirnov
+	\item Detalhes estatísticos (médias, mínimos, máximos de fitness e custo)
+\end{itemize}
+
+\section{Parâmetros e Configurações}
+
+\subsection{Tabela de Parâmetros Principais}
+
+A Tabela~\ref{tab:parametros_completos} apresenta todos os parâmetros
+configuráveis do sistema:
+
+\begin{table}[htb]
+	\centering
+	\caption{Parâmetros configuráveis do sistema}
+	\label{tab:parametros_completos}
+	\begin{tabular}{lccl}
+		\hline
+		\textbf{Parâmetro}          & \textbf{Padrão} & \textbf{Faixa}   & \textbf{Impacto}                \\
+		\hline
+		\texttt{variant\_filter}    & 0.8             & 0.0-1.0          & Filtragem de ruído na mineração \\
+		\texttt{num\_cases}         & 100             & 1-$\infty$       & Tamanho do log sintético        \\
+		\texttt{arrival\_rate}      & Auto            & 0.1-$\infty$ min & Taxa de chegada de casos        \\
+		\texttt{random\_seed}       & 42              & 0-$2^{32}$-1     & Reprodutibilidade               \\
+		\texttt{max\_trace\_length} & 1000            & 1-$\infty$       & Proteção contra loops           \\
+		\texttt{verbose}            & True            & True/False       & Saída de diagnóstico            \\
+		\texttt{save\_model\_image} & None            & Path/None        & Visualização do modelo          \\
+		\hline
+	\end{tabular}
+\end{table}
+
+\section{Ferramentas e Tecnologias}
+
+\subsection{Bibliotecas Principais}
+
+A Tabela~\ref{tab:bibliotecas} apresenta as tecnologias utilizadas.
+
+\begin{table}[htb]
+	\centering
+	\caption{Bibliotecas e ferramentas utilizadas}
+	\label{tab:bibliotecas}
+	\small
+	\begin{tabular}{llp{6cm}}
+		\hline
+		\textbf{Biblioteca} & \textbf{Versão} & \textbf{Justificativa}                                                     \\
+		\hline
+		PM4Py               & 2.2.22          & Padrão de facto em Python para process mining, algoritmos state-of-the-art \\
+		SimPy               & 4.0.1           & Leve, Pythônico, documentação excelente para DES                           \\
+		SciPy               & 1.13.0          & Completa, bem testada, K-S test built-in                                   \\
+		Pandas              & 2.2.2           & Eficiente para manipulação de dados, operações vetorizadas                 \\
+		NumPy               & 1.26.4          & Base do ecossistema científico Python                                      \\
+		Streamlit           & 1.28.0          & Interface web rápida e intuitiva                                           \\
+		Graphviz            & 0.20.3          & Visualização de Redes de Petri                                             \\
+		\hline
+	\end{tabular}
+\end{table}
+
+\subsection{Justificativa das Escolhas}
+
+A escolha das bibliotecas foi fundamentada em critérios técnicos
+específicos para cada funcionalidade do sistema. O PM4Py representa o
+padrão de facto em Python para process mining, oferecendo algoritmos
+state-of-the-art com documentação completa. O SimPy foi selecionado
+para simulação discreta de eventos por sua simplicidade e adequação
+perfeita para modelagem de sistemas discretos. O SciPy foi escolhido
+para análise estatística por sua robustez e confiabilidade.
+
+Para manipulação de dados, o Pandas foi selecionado por sua
+eficiência em operações vetorizadas, essencial para processamento dos
+logs de eventos. O NumPy serve como base fundamental do ecossistema
+científico Python, proporcionando operações matemáticas otimizadas. O
+Streamlit foi escolhido para criar interfaces web rápidas e
+intuitivas, facilitando a interação com o sistema. O Graphviz foi
+selecionado especificamente para visualização de Redes de Petri,
+oferecendo capacidades gráficas adequadas para representação dos
+modelos de processo descobertos.
+
+\section{Pseudocódigo de Alto Nível}
+
+O algoritmo~\ref{alg:pipeline} apresenta o pipeline completo:
+
+\begin{algorithm}[H]
+	\caption{Pipeline completo de geração de logs sintéticos}
+	\label{alg:pipeline}
+	\begin{algorithmic}[1]
+		\Function{GenerateSyntheticLog}{$original\_xes\_path$}
+		\State \textbf{// Etapa 1: Análise}
+		\State $analyzer \gets$ \Call{LogAnalyzer}{}
+		\State $profile \gets analyzer.analyze(original\_xes\_path)$
+		\State
+		\State \textbf{// Etapa 2: Mineração}
+		\State $miner \gets$ \Call{ProcessMiner}{verbose=True}
+		\State $model \gets miner.mine\_process(original\_xes\_path, variant\_filter=0.8)$
+		\State
+		\State \textbf{// Etapa 3: Simulação}
+		\State $config \gets$ \Call{SimulationConfig}{num\_cases=100, random\_seed=42}
+		\State $simulator \gets$ \Call{LogSimulator}{$config$, verbose=True}
+		\State $result \gets simulator.simulate(model, output\_dir)$
+		\State
+		\State \textbf{// Etapa 4: Validação}
+		\State $validator \gets$ \Call{LogValidator}{verbose=True}
+		\State $validation \gets validator.validate(original\_xes\_path, result.xes\_path)$
+		\State
+		\State \Return $(result, validation)$
+		\EndFunction
+	\end{algorithmic}
+\end{algorithm}
+
+% ----------------------------------------------------------
+% Desenvolvimento
+% ----------------------------------------------------------
