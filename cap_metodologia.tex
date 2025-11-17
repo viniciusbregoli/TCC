@@ -34,61 +34,9 @@ Figura~\ref{fig:arquitetura_camadas}.
 
 \begin{figure}[htb]
 	\centering
-	\fbox{\begin{minipage}{0.95\textwidth}
-			\small
-			\begin{verbatim}
-┌────────────────────────────────────────────────────────┐
-│           CAMADA 1: INTERFACE DE USUÁRIO               │
-│  ┌──────────────────────────────────────────────────┐  │
-│  │  Streamlit Web Dashboard (app/app.py)            │  │
-│  │  - Upload de arquivos XES                        │  │
-│  │  - Execução passo-a-passo                        │  │
-│  │  - Visualizações interativas                     │  │
-│  │  - Exportação de resultados                      │  │
-│  └──────────────────────────────────────────────────┘  │
-└───────────────────────┬────────────────────────────────┘
-                        │
-                        ▼
-┌────────────────────────────────────────────────────────┐
-│              CAMADA 2: FACHADA                         │
-│  ┌──────────────────────────────────────────────────┐  │
-│  │  ProcessMiningPipeline (pipeline.py)             │  │
-│  │  - Orquestra todos os componentes                │  │
-│  │  - Fornece API de alto nível                     │  │
-│  │  - Gerencia fluxo de dados entre etapas          │  │
-│  │  - Método: run_full_pipeline()                   │  │
-│  └──────────────────────────────────────────────────┘  │
-└───────────┬────┬────┬────┬────┬───────────────────────┘
-            │    │    │    │    │
-            ▼    ▼    ▼    ▼    ▼
-┌────────────────────────────────────────────────────────┐
-│        CAMADA 3: COMPONENTES (Serviços)               │
-├──────────┬──────────┬──────────┬──────────┬───────────┤
-│LogAnalyz │ProcessM- │LogSimul- │LogValid- │ORECalc-   │
-│er        │iner      │ator      │ator      │ulator     │
-│(396 LOC) │(459 LOC) │(334 LOC) │(118 LOC) │(451 LOC)  │
-│          │          │          │          │           │
-│Perfila-  │Descobre  │Gera logs │Valida    │Calcula    │
-│mento     │modelos   │sintéti-  │qualidade │métricas   │
-│automático│formais   │cos       │          │ORE        │
-└──────────┴──────────┴──────────┴──────────┴───────────┘
-            │
-            ▼
-┌────────────────────────────────────────────────────────┐
-│       CAMADA 4: MODELOS DE DADOS (models.py)           │
-│  - SimulationConfig      - ProcessModel                │
-│  - ActivityStatistics    - SimulationResult            │
-│  - ValidationResult      - OREMetrics                  │
-│  - LogProfile                                          │
-└────────────────────────────────────────────────────────┘
-            │
-            ▼
-┌────────────────────────────────────────────────────────┐
-│         CAMADA 5: INFRAESTRUTURA                       │
-│  PM4Py | SimPy | Pandas | SciPy | NumPy               │
-└────────────────────────────────────────────────────────┘
-\end{verbatim}
-		\end{minipage}}
+	% TODO: Inserir diagrama da arquitetura em camadas (5 camadas)
+	% Ver arquivo FIGURAS_METODOLOGIA.md para instruções de criação
+	\includegraphics[width=0.9\textwidth]{figuras/arquitetura_camadas.png}
 	\caption{Arquitetura em camadas do Sim2Log-Core. Fonte: Autor (2025)}
 	\label{fig:arquitetura_camadas}
 \end{figure}
@@ -245,80 +193,9 @@ relacionamentos.
 
 \begin{figure}[htb]
 	\centering
-	\fbox{\begin{minipage}{0.95\textwidth}
-			\small
-			\begin{verbatim}
-┌──────────────────────────────────────────────────────┐
-│         ProcessMiningPipeline (402 LOC)              │
-├──────────────────────────────────────────────────────┤
-│ Attributes:                                          │
-│ - verbose: bool                                      │
-│ - daily_hours: float                                 │
-│ - setup_time_minutes: float                          │
-│ - analyzer: LogAnalyzer                              │
-│ - miner: ProcessMiner                                │
-│ - simulator: LogSimulator                            │
-│ - validator: LogValidator                            │
-│ - ore_calculator: ORECalculator                      │
-├──────────────────────────────────────────────────────┤
-│ Methods:                                             │
-│ + analyze_log(log_path: str) -> LogProfile           │
-│ + mine_process(log_path, filter) -> ProcessModel     │
-│ + simulate(model, num_cases) -> SimulationResult     │
-│ + validate(original, simulated) -> ValidationResult  │
-│ + calculate_ore(log_path) -> OREMetrics              │
-│ + run_full_pipeline(log_path) -> Dict                │
-└──────────────────────────────────────────────────────┘
-         │ uses
-         ├────────────────┬────────────┬─────────────┐
-         ▼                ▼            ▼             ▼
-┌─────────────────┐ ┌──────────────┐ ┌──────────┐ ┌──────────────┐
-│  LogAnalyzer    │ │ProcessMiner  │ │LogSimul- │ │LogValidator  │
-│  (396 LOC)      │ │(459 LOC)     │ │ator      │ │(118 LOC)     │
-├─────────────────┤ ├──────────────┤ │(334 LOC) │ ├──────────────┤
-│+ analyze()      │ │+ mine_proc-  │ ├──────────┤ │+ validate()  │
-│  -> LogProfile  │ │  ess()       │ │+ simula- │ │  -> Valid-   │
-│                 │ │  -> Process  │ │  te()    │ │     ation-   │
-│                 │ │     Model    │ │  -> Sim- │ │     Result   │
-│                 │ │              │ │     ula- │ │              │
-│                 │ │              │ │     tion │ │              │
-│                 │ │              │ │     Res- │ │              │
-│                 │ │              │ │     ult  │ │              │
-└─────────────────┘ └──────────────┘ └──────────┘ └──────────────┘
-         │ produces       │ produces    │ produces   │ produces
-         ▼                ▼             ▼            ▼
-┌─────────────────────────────────────────────────────────┐
-│              DATA MODELS (models.py - 131 LOC)          │
-├──────────────┬──────────────┬──────────────┬───────────┤
-│ LogProfile   │ProcessModel  │Simulation    │Validation │
-│              │              │Result        │Result     │
-├──────────────┼──────────────┼──────────────┼───────────┤
-│- num_traces  │- petri_net   │- csv_path    │- fitness  │
-│- num_events  │- activities  │- xes_path    │- cost     │
-│- activity_   │- arrival_    │- num_cases_  │- similar- │
-│  frequencies │  rate        │  generated   │  ity_%    │
-│- variants    │- quality_    │- timestamp   │- details  │
-│              │  metrics     │              │           │
-└──────────────┴──────────────┴──────────────┴───────────┘
-         │
-         ├─────────────────────────────┐
-         │                             │
-         ▼                             ▼
-┌──────────────────────┐    ┌──────────────────────┐
-│ ActivityStatistics   │    │    OREMetrics        │
-├──────────────────────┤    ├──────────────────────┤
-│- min_duration        │    │- ore: float          │
-│- max_duration        │    │- availability        │
-│- mean_duration       │    │- performance         │
-│- std_duration        │    │- quality             │
-│- distribution:       │    │- loss_breakdown:     │
-│  {name, params,      │    │  Dict[str, float]    │
-│   p_value}           │    │- cancellation_rate   │
-│- frequency           │    │                      │
-│- resources: List     │    │                      │
-└──────────────────────┘    └──────────────────────┘
-\end{verbatim}
-		\end{minipage}}
+	% TODO: Inserir diagrama da arquitetura de classes (UML-style)
+	% Ver arquivo FIGURAS_METODOLOGIA.md para instruções de criação
+	\includegraphics[width=\textwidth]{figuras/class_architecture.png}
 	\caption{Arquitetura de classes do Sim2Log-Core. Fonte: Autor (2025)}
 	\label{fig:class_architecture}
 \end{figure}
@@ -330,45 +207,9 @@ entre os módulos do sistema:
 
 \begin{figure}[htb]
 	\centering
-	\fbox{\begin{minipage}{0.95\textwidth}
-			\small
-			\begin{verbatim}
-pipeline.py (Orquestrador)
-├──→ log_analyzer.py
-├──→ process_mining.py
-├──→ simulation.py
-├──→ validation.py
-├──→ ore_indicators.py
-└──→ models.py
-
-process_mining.py
-├──→ models.py
-├──→ utils.py
-└──→ [PM4Py, SciPy]
-
-simulation.py
-├──→ models.py
-├──→ utils.py
-└──→ [SimPy, PM4Py, Pandas]
-
-ore_indicators.py
-├──→ models.py
-├──→ utils.py
-└──→ [Pandas, SciPy]
-
-validation.py
-├──→ models.py
-└──→ [PM4Py, Pandas]
-
-log_analyzer.py
-├──→ models.py
-└──→ [PM4Py, Pandas]
-
-app/app.py (Interface Web)
-└──→ pipeline.py
-    └──→ (Todos os componentes)
-\end{verbatim}
-		\end{minipage}}
+	% TODO: Inserir diagrama de dependências entre módulos
+	% Ver arquivo FIGURAS_METODOLOGIA.md para instruções de criação
+	\includegraphics[width=0.8\textwidth]{figuras/module_dependencies.png}
 	\caption{Grafo de dependências entre módulos. Fonte: Autor (2025)}
 	\label{fig:module_dependencies}
 \end{figure}
@@ -393,80 +234,9 @@ dados fluem entre os componentes:
 
 \begin{figure}[htb]
 	\centering
-	\fbox{\begin{minipage}{0.95\textwidth}
-			\small
-			\begin{verbatim}
-INPUT: log.xes (arquivo XES)
-  │
-  ▼
-┌─────────────────────────┐
-│   LogAnalyzer           │
-│   analyze(log.xes)      │
-└───────────┬─────────────┘
-            │ produz
-            ▼
-      ┌──────────────┐
-      │ LogProfile   │ ─────┐
-      └──────────────┘      │ alimenta
-            │               │
-            ▼               │
-┌─────────────────────────┐ │
-│   ProcessMiner          │ │
-│   mine_process(log.xes) │◄┘
-└───────────┬─────────────┘
-            │ produz
-            ▼
-      ┌──────────────┐
-      │ProcessModel  │
-      │- petri_net   │
-      │- activities  │
-      │- statistics  │
-      └──────┬───────┘
-             │ alimenta
-             ▼
-┌──────────────────────────┐
-│   LogSimulator           │
-│   simulate(model)        │
-└───────────┬──────────────┘
-            │ produz
-            ▼
-      ┌──────────────────┐
-      │SimulationResult  │
-      │- csv_path        │
-      │- xes_path        │
-      └────┬─────────────┘
-           │ alimenta
-           ▼
-┌────────────────────────────┐
-│   LogValidator             │
-│   validate(original,       │
-│            synthetic)      │
-└───────────┬────────────────┘
-            │ produz
-            ▼
-      ┌──────────────────┐
-      │ValidationResult  │
-      │- fitness         │
-      │- similarity      │
-      └──────────────────┘
-
-   (Paralelamente)
-INPUT: log.xes
-  │
-  ▼
-┌─────────────────────────┐
-│   ORECalculator         │
-│   calculate_from_log()  │
-└───────────┬─────────────┘
-            │ produz
-            ▼
-      ┌──────────────┐
-      │  OREMetrics  │
-      │  - ore       │
-      │  - losses    │
-      └──────────────┘
-\end{verbatim}
-		\end{minipage}}
+	% TODO: Inserir diagrama de fluxo de dados entre componentes
+	% Ver arquivo FIGURAS_METODOLOGIA.md para instruções de criação
+	\includegraphics[width=0.85\textwidth]{figuras/data_flow_components.png}
 	\caption{Fluxo de dados entre componentes. Fonte: Autor (2025)}
 	\label{fig:data_flow_components}
 \end{figure}
@@ -1350,44 +1120,9 @@ sem necessidade de executar as etapas de mineração ou simulação.
 
 \begin{figure}[htb]
 	\centering
-	\fbox{\begin{minipage}{0.9\textwidth}
-			\small
-			\begin{verbatim}
-┌─────────────────────────────────────────────────────┐
-│          Componente ORECalculator                   │
-├─────────────────────────────────────────────────────┤
-│ Entrada:                                            │
-│  - log.xes (arquivo XES)                            │
-│  - daily_hours: float (padrão: 11.5h)               │
-│  - setup_time_minutes: float (padrão: 15 min)       │
-├─────────────────────────────────────────────────────┤
-│ Processamento:                                      │
-│  1. Detecção de atributos enriquecidos             │
-│     - surgery:status                                │
-│     - surgery:actual_duration                       │
-│     - surgery:cancellation_reason                   │
-│  2. Extração de componentes temporais              │
-│     - TTA (Total Time Available)                    │
-│     - TTS (Total Time Scheduled)                    │
-│     - TTU (Total Time Used)                         │
-│     - TTAV (Total Time Added Value)                 │
-│  3. Cálculo de indicadores ORE                     │
-│     - A (Availability) = TTS / TTA                  │
-│     - P (Performance) = TTU / TTS                   │
-│     - Q (Quality) = TTAV / TTU                      │
-│     - ORE = A × P × Q                               │
-│  4. Decomposição de perdas (7 categorias)          │
-│  5. Análise de cancelamentos                       │
-├─────────────────────────────────────────────────────┤
-│ Saída:                                              │
-│  - OREMetrics (dataclass)                           │
-│    - ore: float                                     │
-│    - availability, performance, quality: float      │
-│    - loss_breakdown: Dict[str, float]               │
-│    - cancellation_metrics: Dict                     │
-└─────────────────────────────────────────────────────┘
-\end{verbatim}
-		\end{minipage}}
+	% TODO: Inserir diagrama do componente ORECalculator
+	% Ver arquivo FIGURAS_METODOLOGIA.md para instruções de criação
+	\includegraphics[width=0.8\textwidth]{figuras/ore_component.png}
 	\caption{Arquitetura do componente ORECalculator. Fonte: Autor (2025)}
 	\label{fig:ore_component}
 \end{figure}
@@ -1655,60 +1390,9 @@ exploratória e validação de processos.
 
 \begin{figure}[htb]
 	\centering
-	\fbox{\begin{minipage}{0.9\textwidth}
-			\small
-			\begin{verbatim}
-┌─────────────────────────────────────────────────────┐
-│           Streamlit Web Dashboard                   │
-│                 (app/app.py)                        │
-├─────────────────────────────────────────────────────┤
-│                                                     │
-│  [Upload XES File]                                  │
-│       │                                             │
-│       ▼                                             │
-│  ┌───────────────────────────────────────────┐     │
-│  │  Modo de Execução                         │     │
-│  │  ○ Executar Tudo (pipeline completo)      │     │
-│  │  ○ Passo-a-Passo (controle granular)      │     │
-│  └───────────────────────────────────────────┘     │
-│                                                     │
-│  ┌─ Etapa 1: Análise ─────────────────────┐        │
-│  │ ✓ Detectados 1500 casos                │        │
-│  │ ✓ Detectados 25 atividades             │        │
-│  │ [Ver Estatísticas Detalhadas]          │        │
-│  └────────────────────────────────────────┘        │
-│                                                     │
-│  ┌─ Etapa 2: Mineração ────────────────────┐       │
-│  │ ✓ Modelo descoberto (Inductive Miner)  │        │
-│  │ ✓ Fitness: 0.92 | Precision: 0.88      │        │
-│  │ [Visualizar Rede de Petri]             │        │
-│  │ [Download: model.pnml]                 │        │
-│  └────────────────────────────────────────┘        │
-│                                                     │
-│  ┌─ Etapa 3: Simulação ────────────────────┐       │
-│  │ Número de casos: [100] ▼                │       │
-│  │ Seed: [42]                              │       │
-│  │ ✓ Gerados 100 casos sintéticos         │        │
-│  │ [Download: synthetic.xes]               │       │
-│  │ [Download: synthetic.csv]               │       │
-│  └────────────────────────────────────────┘        │
-│                                                     │
-│  ┌─ Etapa 4: Validação ────────────────────┐       │
-│  │ ✓ Similaridade: 91.2%                  │        │
-│  │ ✓ Fitness: 0.94                        │        │
-│  │ ✓ KS-test p-value: 0.23                │        │
-│  │ [Ver Comparação Detalhada]             │        │
-│  └────────────────────────────────────────┘        │
-│                                                     │
-│  ┌─ ORE (Opcional) ─────────────────────────┐      │
-│  │ ✓ ORE: 68.7%                            │       │
-│  │ ✓ Disponibilidade: 82% | Desempenho: 91%│       │
-│  │ [Ver Decomposição de Perdas]            │       │
-│  └────────────────────────────────────────┘        │
-│                                                     │
-└─────────────────────────────────────────────────────┘
-\end{verbatim}
-		\end{minipage}}
+	% TODO: Inserir diagrama da interface web Streamlit
+	% Ver arquivo FIGURAS_METODOLOGIA.md para instruções de criação
+	\includegraphics[width=0.7\textwidth]{figuras/web_interface.png}
 	\caption{Arquitetura da interface web Streamlit. Fonte: Autor (2025)}
 	\label{fig:web_interface}
 \end{figure}
