@@ -10,7 +10,7 @@ A crescente complexidade dos ambientes organizacionais exige capacidade contínu
 
 Com a intensificação da digitalização, grandes volumes de dados passaram a ser gerados em tempo real. Contudo, a transformação desses dados em conhecimento útil ainda depende, em grande medida, da experiência humana e de análises manuais, sujeitas a vieses cognitivos e limitações de tempo de resposta.
 
-A \textit{mineração de processos} (PM) consolida-se como abordagem para extração de conhecimento estruturado a partir de logs de eventos, com aplicações demonstradas em domínios complexos. Entretanto, PM oferece predominantemente uma visão descritiva e diagnóstica. A \textit{simulação de eventos discretos} (DES), por outro lado, permite avaliar cenários alternativos, mas sua construção manual é intensiva e inviável para decisões de curto prazo que exigem reação rápida a eventos inesperados.
+A \textit{mineração de processos} (PM) consolida-se como abordagem para extração de conhecimento estruturado a partir de logs de eventos, com aplicações demonstradas em domínios complexos. Entretanto, PM oferece predominantemente uma visão descritiva e diagnóstica. A simulação de eventos discretos, por outro lado, permite avaliar cenários alternativos, mas sua construção manual é intensiva e inviável para decisões de curto prazo que exigem reação rápida a eventos inesperados.
 
 O desafio central, portanto, é: \textbf{como automatizar a geração de modelos de simulação baseados em dados reais, de modo a apoiar decisões operacionais de curto prazo}? Trabalhos como PM4SOS \cite{ferronato2022} demonstraram potencial dessa integração em contextos específicos (hospitalar), mas ainda com dependência de intervenções manuais e limitada generalização. A lacuna identificada reside na necessidade de uma solução automatizada, end-to-end e generalizável, que reduza o esforço de modelagem e amplie a aplicabilidade da técnica ao suporte à decisão operacional.
 
@@ -33,7 +33,7 @@ A motivação deste trabalho é clara: criar uma solução que (i) elimine inter
 \section{Soluções Similares}
 
 Diversas pesquisas têm buscado integrar \textit{Process Mining} (PM)
-e \textit{Simulação de Eventos Discretos} (DES) como forma de
+e Simulação de Eventos Discretos como forma de
 aprimorar a compreensão e a predição do comportamento dos processos
 reais. Entretanto, a maioria das soluções existentes mantém um alto
 grau de dependência de intervenção manual, especialmente nas etapas
@@ -93,7 +93,6 @@ Para alcançar o objetivo geral, este trabalho busca:
 \begin{itemize}
 	\item \textbf{Analisar} métodos de integração PM-DES, documentando grau de automação, precisão de modelos e tempo de execução de pelo menos 3 abordagens existentes;
 	\item \textbf{Projetar} arquitetura modular que suporte: (a) leitura automática de logs XES, (b) descoberta de processos via Inductive Miner, (c) extração estatística de distribuições de tempos (normal, lognormal, exponencial), (d) identificação automática de recursos, (e) geração de código SimPy parametrizado;
-	\item \textbf{Implementar} protótipo funcional integrado em pipeline único, com tempo de execução inferior a 5 minutos para logs típicos (10.000+ eventos);
 	\item \textbf{Validar} em estudo de caso hospitalar real: demonstrar correspondência entre comportamento simulado e dados históricos com fitness score $\geq 0,80$ e precisão $\geq 0,75$;
 	\item \textbf{Avaliar} potencial de generalização através de testes em pelo menos 2 domínios adicionais (administrativo/logístico) e documentar limitações técnicas identificadas.
 \end{itemize}
@@ -117,21 +116,6 @@ A literatura demonstra potencial da integração PM-DES \cite{maruster2009redesi
 O protótipo representa avanço em relação a PM4SOS \cite{ferronato2022} e metodologias similares. Enquanto trabalhos precedentes \cite{maruster2009redesigning, wuennenberg2023internal} requerem 2-3 semanas de modelagem manual especializada, esta solução automatiza o pipeline completo em minutos. Diferencia-se por: (i) eliminação de intervenção manual, (ii) generalizabilidade cross-domain (não restrita a saúde), (iii) parametrização estatística sistemática com distribuições ajustadas aos dados (normal, lognormal, exponencial), (iv) integração em ferramenta única e acessível.
 
 Organizações modernas enfrentam pressão por decisões ágeis. Dados operacionais abundam, mas análises demoram semanas. A solução proposta reduz este ciclo para minutos, viabilizando uso operacional cotidiano. Validação com dados reais de processos cirúrgicos comprova viabilidade e aplicabilidade em contextos operacionais complexos \cite{ferronato2022}. Potencial de aplicação: saúde, manufatura, logística, administração — qualquer domínio com logs estruturados XES. Amplia a capacidade analítica organizacional sem exigir expertise em modelagem formal, democratizando acesso a ferramentas de simulação.
-
-\section{Estrutura do Trabalho}
-
-Este trabalho está organizado da seguinte forma:
-
-\textbf{Capítulo 2 – Referencial Teórico:} Apresenta fundamentos de mineração de processos, simulação de eventos discretos, integração PM-DES, e análise crítica do estado da arte com identificação de lacunas que motivam o trabalho.
-
-\textbf{Capítulo 3 – Metodologia:} Descreve arquitetura do sistema proposto, tecnologias utilizadas (PM4PY, SimPy), fluxo do pipeline, protocolos de parametrização estatística e estratégias de validação.
-
-\textbf{Capítulo 4 – Desenvolvimento e Implementação:} Detalha decisões de design, componentes do protótipo, algoritmos de descoberta de processos, extração de distribuições, geração de código SimPy e integração end-to-end.
-
-\textbf{Capítulo 5 – Validação Experimental:} Apresenta estudo de caso hospitalar, métricas de avaliação (fitness, precisão, desempenho), análise de resultados e discussão de limitações.
-
-\textbf{Capítulo 6 – Conclusões e Trabalhos Futuros:} Sintetiza contribuições, impactos potenciais, limitações identificadas e perspectivas de evolução tecnológica.
-
 % ----------------------------------------------------------
 % Referencial Teórico
 % ----------------------------------------------------------

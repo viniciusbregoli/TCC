@@ -2,18 +2,17 @@
 
 Este capítulo apresenta os fundamentos conceituais e técnicos que
 sustentam o desenvolvimento de um gerador de modelos de simulação
-orientado por mineração de processos (\textit{Process Mining}). São
+orientado por mineração de processos. São
 abordados desde os conceitos fundamentais de mineração de processos
 até a integração com simulação de eventos discretos e indicadores de
 desempenho operacional aplicados a ambientes hospitalares.
 
 \section{Mineração de Processos}
 
-A mineração de processos (\textit{Process Mining}) é uma disciplina
-que une conceitos de mineração de dados (\textit{data mining}) e de
-gerenciamento de processos de negócio (\textit{Business Process
-	Management — BPM}) com o objetivo de extrair conhecimento útil a
-partir de registros de eventos (\textit{event logs}) provenientes de
+A mineração de processos  é uma disciplina
+que une conceitos de mineração de dados e de
+gerenciamento de processos de negócio com o objetivo de extrair conhecimento útil a
+partir de registros de eventos provenientes de
 sistemas de informação. Segundo van der Aalst
 \cite{aalst2016process}, a mineração de processos tem como propósito
 descobrir, monitorar e aprimorar processos reais com base nos dados
@@ -26,7 +25,7 @@ passou a ser possível registrar detalhadamente cada etapa executada
 em um processo. Esses registros, conhecidos como \textit{event logs},
 formam a base para a aplicação de técnicas de mineração de processos.
 Cada evento registrado representa a execução de uma atividade
-pertencente a um caso (\textit{case}) e contém atributos como o nome
+pertencente a um caso e contém atributos como o nome
 da atividade, o identificador do caso, o responsável
 (\textit{resource}) e o carimbo de tempo (\textit{timestamp}). A
 estrutura desses logs permite a reconstituição da sequência de
@@ -98,10 +97,10 @@ Diferentemente de abordagens anteriores, como o \textit{Alpha Miner}
 e o \textit{Heuristic Miner}, o Inductive Miner foi projetado para
 garantir propriedades formais no modelo resultante, como a
 \textit{soundness} (correção comportamental) e a estrutura
-hierárquica em blocos (\textit{block-structured}). Essas propriedades
+hierárquica em blocos. Essas propriedades
 asseguram que o modelo possa ser executado sem estados mortos ou
 impasses, além de facilitar sua conversão em linguagens formais como
-Redes de Petri e Árvores de Processo (\textit{Process Trees}).
+Redes de Petri e Árvores de Processo.
 
 O princípio fundamental do algoritmo baseia-se na decomposição
 recursiva do log de eventos. O IM analisa as relações de precedência
@@ -213,8 +212,7 @@ modelagem computacional.
 
 \section{Simulação de Eventos Discretos}
 
-A simulação de eventos discretos (\textit{Discrete Event Simulation —
-	DES}) é uma técnica de modelagem computacional amplamente utilizada
+A simulação de eventos discretos é uma técnica de modelagem computacional amplamente utilizada
 para representar sistemas dinâmicos em que o estado do sistema muda
 apenas em pontos discretos no tempo. Cada mudança é provocada por um
 evento, que ocorre em um instante específico e representa uma
@@ -495,8 +493,6 @@ A avaliação de desempenho é um componente essencial em sistemas que utilizam 
 
 No contexto hospitalar específico, Souza, Vaccaro e Lima \cite{souza2020ore} propuseram o indicador \textit{Operating Room Effectiveness} (ORE), adaptado do conceito de \textit{Overall Equipment Effectiveness} (OEE) da manufatura enxuta. O ORE é calculado pelo produto de três dimensões — Disponibilidade, Desempenho e Qualidade — permitindo decompor perdas operacionais em categorias mensuráveis: falhas de equipamento, setup, variações de tempo, cancelamentos e reintervenções.
 
-A fórmula básica é:
-
 O ORE foi concebido para fornecer uma visão integrada da efetividade
 operacional de salas cirúrgicas, permitindo identificar e classificar
 perdas operacionais de forma sistemática. Diferentemente de
@@ -586,8 +582,7 @@ As perdas de desempenho incluem:
 	      cancelamentos em cascata das cirurgias subsequentes.
 
 	\item \textbf{Cancelamentos}: cirurgias canceladas após o
-	      agendamento resultam em capacidade ociosa não recuperável. Os autores
-	      identificaram que 50\% dos cancelamentos ocorrem por falta de
+	      agendamento resultam em capacidade ociosa não recuperável. Cerca de 50\% dos cancelamentos ocorrem por falta de
 	      condição clínica do paciente ou absenteísmo, indicando falhas na
 	      gestão do fluxo pré-operatório.
 \end{itemize}
