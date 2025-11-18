@@ -9,7 +9,7 @@ processos, simulação de eventos discretos e validação de qualidade.
 \section{Visão Geral da Abordagem Metodológica}
 
 A metodologia proposta consiste em um pipeline sequencial de quatro
-etapas interdependentes, conforme ilustrado na Figura
+etapas interdependentes:
 
 \begin{enumerate}
 	\item \textbf{Análise Automática de Logs}: detecção de atributos e validação de compatibilidade
@@ -23,13 +23,12 @@ etapas interdependentes, conforme ilustrado na Figura
 A Figura~\ref{fig:fluxo_metodologia} ilustra o fluxo completo de
 dados através do sistema:
 
-\begin{figure}[htb]
+\begin{figure}[H]
 	\centering
-	\includegraphics[width=\textwidth,height=0.85\textheight,keepaspectratio]{figuras/fig2.png}
+	\includegraphics[width=0.5\textwidth,keepaspectratio]{figuras/fig2.png}
 	\caption{Fluxo completo da metodologia. Fonte: Autor (2025)}
 	\label{fig:fluxo_metodologia}
 \end{figure}
-\clearpage
 
 Cada etapa produz artefatos específicos que alimentam a etapa
 seguinte, garantindo rastreabilidade e reprodutibilidade do processo.
@@ -68,9 +67,11 @@ características detectadas. Isso inclui métricas quantitativas
 temporais (estatísticas de duração e frequência), além de uma
 verificação de compatibilidade para o pipeline.
 
-\begin{figure}[htb]
+\begin{figure}[H]
 	\centering
-	\makebox[\textwidth][c]{\includegraphics[width=1.25\textwidth, keepaspectratio]{figuras/diagrama1.png}}
+	\begin{adjustwidth}{-1.5cm}{-1.5cm}
+	\adjustbox{max width=1.15\textwidth,max height=0.9\textheight,center}{\includegraphics[keepaspectratio]{figuras/diagrama1.png}}
+	\end{adjustwidth}
 	\caption{Fase 1: Análise Automática de Logs. Fonte: Autor (2025)}
 	\label{fig:fase1_componente}
 \end{figure}
@@ -133,99 +134,29 @@ Essas estatísticas são armazenadas em um objeto \texttt{LogProfile},
 que serve como entrada para as etapas posteriores e permite análise
 exploratória dos dados antes da mineração.
 
-\subsection{Análise de Eficiência Operacional (ORE)}
+\subsection{Saída da Etapa}
 
-Quando o log de eventos contém informações suficientes sobre
-planejamento e execução de atividades, o sistema realiza
-automaticamente o cálculo de indicadores de eficiência operacional
-baseados no modelo ORE proposto por Souza et al. \cite{souza2020ore}.
-Esta análise é particularmente relevante para processos hospitalares,
-mas pode ser aplicada a qualquer domínio que possua dados de
-agendamento, execução e resultados de atividades.
-
-\subsubsection{Cálculo de Métricas ORE}
-
-O cálculo do ORE é mais preciso quando o log de eventos é enriquecido
-com atributos operacionais específicos. O sistema é capaz de
-processar tanto logs padrão, inferindo perdas, quanto logs
-enriquecidos, utilizando dados reais para maior acurácia. Um
-\textbf{log XES enriquecido}, neste contexto, pode conter os
-seguintes atributos adicionais em nível de caso:
-
+\noindent Um objeto \texttt{LogProfile} contendo:
 \begin{itemize}
-	\item \texttt{custom:status}: status da atividade (ex: \textit{Realizada}, \textit{Cancelada}). Permite a contagem real de cancelamentos.
-	\item \texttt{custom:actual\_duration}: duração real da atividade. Permite cálculo preciso de perdas de desempenho.
-	\item \texttt{custom:cancellation\_reason}: motivo do cancelamento. Permite análise de causa raiz.
+	\item \textbf{Metadados estruturais}: número de traces, eventos,
+	      atividades únicas, variantes
+	\item \textbf{Mapeamento de atributos}: activity\_key, timestamp\_key,
+	      case\_id\_key, resource\_key (quando disponível)
+	\item \textbf{Estatísticas descritivas}: frequências de atividades,
+	      comprimentos de traces, distribuição de variantes
+	\item \textbf{Flags de compatibilidade}: has\_resources,
+	      has\_lifecycle, has\_enriched\_attributes
+	\item \textbf{Informações de recursos}: mapeamento de recursos por
+	      atividade (quando disponível)
 \end{itemize}
 
-Quando esses atributos não estão presentes, o sistema busca por
-atributos candidatos genéricos para estimar as métricas:
-
-\begin{itemize}
-	\item \textbf{Tempo Planejado}: duração prevista para a atividade
-	      (atributos candidatos: \texttt{planned\_duration},
-	      \texttt{scheduled\_time}, \texttt{expected\_duration})
-
-	\item \textbf{Tempo Disponível}: janela temporal alocada para a
-	      execução (atributos candidatos: \texttt{available\_time},
-	      \texttt{slot\_duration}, \texttt{scheduled\_slot})
-
-	\item \textbf{Status de Execução}: indicador de cancelamentos ou
-	      falhas (atributos candidatos: \texttt{status}, \texttt{outcome},
-	      \texttt{execution\_status})
-
-	\item \textbf{Tipo de Perda}: classificação da perda operacional
-	      quando aplicável (atributos candidatos: \texttt{loss\_type},
-	      \texttt{waste\_category}, \texttt{failure\_reason})
-\end{itemize}
-
-Quando esses atributos estão presentes, o sistema calcula as três
-dimensões do ORE:
-
-\begin{enumerate}
-	\item \textbf{Disponibilidade}: razão entre o tempo total programado
-	      (TTS) e o tempo total disponível (TTA), descontando perdas por falha
-	      de equipamento, setup e não agendamento.
-
-	\item \textbf{Desempenho}: razão entre o tempo total utilizado (TTU)
-	      e o tempo total programado (TTS), descontando perdas por pequenas
-	      paradas, variação no tempo cirúrgico e cancelamentos.
-
-	\item \textbf{Qualidade}: razão entre o tempo total de valor
-	      agregado (TTAV) e o tempo total utilizado (TTU), descontando perdas
-	      por reintervenções.
-\end{enumerate}
-
-O ORE global é calculado como o produto das três dimensões,
-resultando em um indicador percentual que reflete a efetividade
-global do processo.
-
-\subsection{Saída Integrada da Etapa}
-
-A saída da Etapa 1 foi expandida para incluir não apenas o perfil
-estrutural do log, mas também indicadores operacionais quando
-aplicável. A saída consiste em:
-
-\begin{itemize}
-	\item \textbf{LogProfile}: objeto contendo todos os metadados
-	      detectados, incluindo mapeamento de atributos, estatísticas
-	      estruturais e flags de compatibilidade.
-
-	\item \textbf{OREMetrics} (opcional): objeto contendo métricas de
-	      eficiência operacional, incluindo:
-	      \begin{itemize}
-		      \item Valores de Disponibilidade, Desempenho e Qualidade
-		      \item ORE global
-		      \item Decomposição granular das sete categorias de perdas
-	      \end{itemize}
-\end{itemize}
-
-Quando o log não contém informações suficientes para cálculo do ORE,
-o sistema prossegue apenas com o \texttt{LogProfile}, mantendo
-compatibilidade com processos de qualquer domínio. A presença do
-\texttt{OREMetrics} adiciona uma camada analítica que permite
-direcionar a simulação (Etapa 3) para cenários de otimização
-específicos.
+\textbf{Nota sobre Métricas de Eficiência Operacional}: O sistema
+possui um componente independente (\texttt{ORECalculator}) para
+cálculo de métricas de eficiência operacional específicas para
+processos hospitalares. Este componente é descrito em detalhes na
+Seção "Componente Independente: Cálculo de Métricas ORE" e pode ser
+invocado paralelamente ao pipeline principal quando o log contém
+atributos específicos do domínio hospitalar.
 
 \section{Etapa 2: Mineração de Processos}
 
@@ -270,9 +201,11 @@ Miner e cálculo de métricas de conformidade, enquanto SciPy (módulo
 \texttt{scipy.stats}) é empregado para ajuste e avaliação das
 distribuições estatísticas.
 
-\begin{figure}[htb]
+\begin{figure}[H]
 	\centering
-	\makebox[\textwidth][c]{\includegraphics[width=1.25\textwidth, keepaspectratio]{figuras/diagrama2.png}}
+	\begin{adjustwidth}{-1.5cm}{-1.5cm}
+	\adjustbox{max width=1.15\textwidth,max height=0.9\textheight,center}{\includegraphics[keepaspectratio]{figuras/diagrama2.png}}
+	\end{adjustwidth}
 	\caption{Fase 2: Mineração de Processos. Fonte: Autor (2025)}
 	\label{fig:fase2_componente}
 \end{figure}
@@ -545,9 +478,11 @@ eventos discretos (processos, timeouts, environment), enquanto PM4Py
 é empregada para conversão do formato intermediário CSV para o
 formato XES padronizado.
 
-\begin{figure}[htb]
+\begin{figure}[H]
 	\centering
-	\makebox[\textwidth][c]{\includegraphics[width=1.25\textwidth, keepaspectratio]{figuras/diagrama3.png}}
+	\begin{adjustwidth}{-1.5cm}{-1.5cm}
+	\adjustbox{max width=1.15\textwidth,max height=0.9\textheight,center}{\includegraphics[keepaspectratio]{figuras/diagrama3.png}}
+	\end{adjustwidth}
 	\caption{Fase 3: Simulação de Logs Sintéticos. Fonte: Autor (2025)}
 	\label{fig:fase3_componente}
 \end{figure}
@@ -675,6 +610,103 @@ O classificador XES inserido:
 
 É necessário para compatibilidade com ferramentas como ProM e Disco.
 
+\subsection{Reprodutibilidade e Determinismo}
+
+Um requisito fundamental da metodologia científica é a
+\textbf{reprodutibilidade}: a capacidade de outros pesquisadores
+replicarem exatamente os mesmos resultados a partir das mesmas
+entradas. A simulação de eventos discretos, por sua natureza
+estocástica, introduz aleatoriedade através de:
+
+\begin{itemize}
+	\item Amostragem de durações de atividades de distribuições estatísticas
+	\item Seleção aleatória de recursos do pool disponível
+	\item Escolha de transições habilitadas em marcações com múltiplas opções
+	\item Geração de tempos de chegada seguindo distribuição exponencial
+\end{itemize}
+
+Para garantir reprodutibilidade total, o sistema implementa as
+seguintes estratégias:
+
+\subsubsection{Geração de Números Aleatórios Baseada em Seed}
+
+O sistema utiliza um \textbf{seed fixo} (valor padrão: 42) para
+inicialização do gerador de números pseudoaleatórios. Isto garante que,
+para o mesmo seed, a mesma sequência de números aleatórios seja gerada,
+resultando em logs sintéticos idênticos:
+
+\begin{verbatim}
+config = SimulationConfig(
+    num_cases=100,
+    random_seed=42  # Reprodutibilidade total
+)
+\end{verbatim}
+
+O seed é propagado para:
+\begin{itemize}
+	\item \texttt{numpy.random.seed()}: amostragem de distribuições
+	\item \texttt{random.seed()}: seleção de recursos e transições
+	\item SimPy environment: sequenciamento de eventos
+\end{itemize}
+
+\subsubsection{Versionamento de Dependências}
+
+O arquivo \texttt{requirements.txt} fixa versões exatas de todas as
+bibliotecas:
+
+\begin{verbatim}
+pm4py==2.2.22
+simpy==4.1.1
+scipy==1.13.0
+pandas==2.2.2
+numpy==1.26.4
+\end{verbatim}
+
+Isto previne comportamento divergente causado por atualizações de
+bibliotecas que possam alterar implementações de algoritmos.
+
+\subsubsection{Logging Completo de Configurações}
+
+Cada execução registra automaticamente:
+\begin{itemize}
+	\item Parâmetros de configuração utilizados
+	\item Seed do gerador de números aleatórios
+	\item Versões das bibliotecas carregadas
+	\item Hash SHA256 do arquivo de entrada
+	\item Timestamp de execução
+\end{itemize}
+
+\subsubsection{Determinismo na Ordem de Execução}
+
+Quando múltiplas transições estão habilitadas simultaneamente em uma
+marcação, a seleção é determinística dado o mesmo seed, evitando
+não-determinismo causado por ordenação de estruturas de dados.
+
+\subsubsection{Benefícios da Reprodutibilidade}
+
+\begin{enumerate}
+	\item \textbf{Validação Científica}: Outros pesquisadores podem
+	      verificar os resultados apresentados
+	\item \textbf{Debugging Determinístico}: Bugs podem ser reproduzidos
+	      exatamente para diagnóstico
+	\item \textbf{Comparação Justa}: Experimentos com diferentes
+	      parâmetros partem da mesma base aleatória
+	\item \textbf{Auditoria}: Resultados podem ser rastreados para suas
+	      configurações exatas
+	\item \textbf{Evolução Controlada}: Mudanças no código podem ser
+	      testadas contra baseline reproduzível
+\end{enumerate}
+
+Para produzir resultados diferentes (por exemplo, para análise de
+sensibilidade), basta alterar o seed:
+
+\begin{verbatim}
+# Executar 10 replicações independentes
+for seed in range(10):
+    config = SimulationConfig(random_seed=seed)
+    result = simulator.simulate(model, config)
+\end{verbatim}
+
 \subsection{Saída da Etapa}
 
 \noindent Um objeto \texttt{SimulationResult} contendo:
@@ -683,6 +715,8 @@ O classificador XES inserido:
 	\item Número de casos e eventos gerados
 	\item Tempo de execução da simulação
 	\item Timestamp de geração
+	\item Seed utilizado (para reprodutibilidade)
+	\item Configuração completa da simulação
 \end{itemize}
 
 \section{Etapa 4: Validação de Qualidade}
@@ -713,9 +747,11 @@ análises, incluindo percentual de similaridade, p-valor e
 estatísticas detalhadas. A biblioteca PM4Py é utilizada para os
 cálculos de alinhamento e extração de características dos logs.
 
-\begin{figure}[htb]
+\begin{figure}[H]
 	\centering
-	\makebox[\textwidth][c]{\includegraphics[width=1.25\textwidth, keepaspectratio]{figuras/diagrama4.png}}
+	\begin{adjustwidth}{-1.5cm}{-1.5cm}
+	\adjustbox{max width=1.15\textwidth,max height=0.9\textheight,center}{\includegraphics[keepaspectratio]{figuras/diagrama4.png}}
+	\end{adjustwidth}
 	\caption{Fase 4: Validação de Qualidade. Fonte: Autor (2025)}
 	\label{fig:fase4_componente}
 \end{figure}
@@ -823,6 +859,365 @@ Um objeto \texttt{ValidationResult} contendo:
 	\item P-valor do teste de Kolmogorov-Smirnov
 	\item Detalhes estatísticos (médias, mínimos, máximos de fitness e custo)
 \end{itemize}
+
+\section{Componente Independente: Cálculo de Métricas ORE}
+
+\subsection{Posicionamento no Sistema}
+
+O \textbf{ORECalculator} é um componente independente e opcional do
+sistema, especializado em calcular métricas de eficiência operacional
+para processos hospitalares, especificamente para salas cirúrgicas. Ao
+contrário dos quatro componentes anteriores que formam o pipeline
+sequencial obrigatório (LogAnalyzer → ProcessMiner → LogSimulator →
+LogValidator), o ORECalculator opera de forma \textbf{paralela e
+	independente}, podendo ser invocado diretamente sobre o log original
+sem necessidade de executar as etapas de mineração ou simulação.
+
+\subsection{Arquitetura do Componente}
+
+\begin{figure}[H]
+	\centering
+	% TODO: Inserir diagrama do componente ORECalculator
+	% Ver arquivo FIGURAS_METODOLOGIA.md para instruções de criação
+	% \includegraphics[width=0.7\textwidth]{figuras/ore_component.png}
+	\caption{Arquitetura do componente ORECalculator. Fonte: Autor (2025)}
+	\label{fig:ore_component}
+\end{figure}
+
+\subsection{Justificativa da Separação Arquitetural}
+
+A decisão de implementar o ORECalculator como componente independente
+fundamenta-se em três razões principais:
+
+\begin{enumerate}
+	\item \textbf{Especificidade de Domínio}: As métricas ORE são
+	      específicas para processos hospitalares (salas cirúrgicas),
+	      enquanto os componentes do pipeline principal são
+	      \textbf{domain-agnostic}, funcionando para qualquer tipo de
+	      processo de negócio (manufatura, finanças, logística, etc.).
+
+	\item \textbf{Independência Funcional}: O cálculo de ORE não depende
+	      da execução do pipeline de simulação. Um analista hospitalar
+	      pode querer apenas calcular indicadores de eficiência do log
+	      real, sem interesse em gerar logs sintéticos.
+
+	\item \textbf{Extensibilidade}: Esta arquitetura permite adicionar
+	      outros calculadores específicos de domínio no futuro (por
+	      exemplo, métricas financeiras, KPIs de manufatura) sem acoplar
+	      ao pipeline principal.
+\end{enumerate}
+
+\subsection{Framework ORE (Operating Room Effectiveness)}
+
+O sistema implementa o framework ORE proposto por Souza et al.
+\cite{souza2020ore}, que decompõe a efetividade operacional de salas
+cirúrgicas em três dimensões multiplicativas:
+
+\begin{equation}
+	\text{ORE} = \text{Disponibilidade} \times \text{Desempenho} \times \text{Qualidade}
+\end{equation}
+
+\subsubsection{Disponibilidade (A)}
+
+Representa a razão entre o tempo total programado e o tempo total
+disponível:
+
+\begin{equation}
+	A = \frac{\text{TTS}}{\text{TTA}}
+\end{equation}
+
+\textbf{Interpretação}: Que percentual do tempo disponível foi
+efetivamente agendado para cirurgias?
+
+\textbf{Categorias de perdas que impactam A}:
+\begin{itemize}
+	\item Falha de equipamento
+	\item Tempo de setup (preparação da sala)
+	\item Não agendamento (slots vagos)
+\end{itemize}
+
+\subsubsection{Desempenho (P)}
+
+Representa a razão entre o tempo total utilizado e o tempo total
+programado:
+
+\begin{equation}
+	P = \frac{\text{TTU}}{\text{TTS}}
+\end{equation}
+
+\textbf{Interpretação}: Que percentual do tempo agendado foi
+efetivamente utilizado?
+
+\textbf{Categorias de perdas que impactam P}:
+\begin{itemize}
+	\item Pequenas paradas (atrasos operacionais)
+	\item Variação no tempo cirúrgico
+	\item Cancelamentos
+\end{itemize}
+
+\subsubsection{Qualidade (Q)}
+
+Representa a razão entre o tempo total de valor agregado e o tempo
+total utilizado:
+
+\begin{equation}
+	Q = \frac{\text{TTAV}}{\text{TTU}}
+\end{equation}
+
+\textbf{Interpretação}: Que percentual do tempo utilizado agregou valor
+real (sem retrabalho)?
+
+\textbf{Categorias de perdas que impactam Q}:
+\begin{itemize}
+	\item Reintervenções (cirurgias repetidas)
+\end{itemize}
+
+\subsection{Suporte a XES Enriquecido}
+
+O componente possui capacidade de processar dois tipos de logs XES:
+
+\subsubsection{XES Padrão}
+
+Quando o log contém apenas atributos padrão (activity, timestamp,
+resource), o sistema \textbf{estima} as métricas ORE baseando-se em
+heurísticas:
+
+\begin{itemize}
+	\item Duração planejada estimada pela mediana das durações observadas
+	\item Cancelamentos inferidos de casos incompletos
+	\item Perdas estimadas por valores padrão da literatura
+\end{itemize}
+
+\subsubsection{XES Enriquecido}
+
+Quando o log contém atributos customizados específicos do domínio
+hospitalar, o sistema calcula métricas \textbf{exatas}:
+
+\textbf{Atributos enriquecidos suportados}:
+\begin{itemize}
+	\item \texttt{surgery:status}: status da cirurgia (Realizada,
+	      Cancelada, Pendente)
+	\item \texttt{surgery:actual\_duration}: duração real da cirurgia em
+	      minutos
+	\item \texttt{surgery:cancellation\_reason}: motivo do cancelamento
+	      (Paciente, Equipamento, Recurso)
+	\item \texttt{surgery:reintervention}: flag booleana indicando
+	      reintervenção
+\end{itemize}
+
+\textbf{Exemplo de trace enriquecido}:
+\begin{verbatim}
+<trace>
+  <string key="concept:name" value="Case001"/>
+  <event>
+    <string key="concept:name" value="Surgery"/>
+    <date key="time:timestamp" value="2024-10-13T08:00:00"/>
+    <string key="surgery:status" value="Realizada"/>
+    <int key="surgery:actual_duration" value="125"/>
+    <boolean key="surgery:reintervention" value="false"/>
+  </event>
+</trace>
+\end{verbatim}
+
+\subsection{Decomposição Granular de Perdas}
+
+O sistema categoriza perdas operacionais em sete categorias conforme o
+framework ORE:
+
+\begin{table}[htb]
+	\centering
+	\caption{Categorias de perdas operacionais no framework ORE}
+	\label{tab:ore_losses}
+	\small
+	\begin{tabular}{p{4cm}p{8cm}}
+		\hline
+		\textbf{Categoria de Perda}        & \textbf{Descrição}                                                 \\
+		\hline
+		Falha de Equipamento               & Tempo perdido por quebra ou indisponibilidade de equipamentos      \\
+		Setup                              & Tempo de preparação da sala entre cirurgias (padrão: 15 min/caso) \\
+		Não Agendamento                    & Slots disponíveis não utilizados (TTA - TTS)                       \\
+		Pequenas Paradas                   & Interrupções breves durante procedimentos                          \\
+		Variação no Tempo Cirúrgico        & Diferença entre tempo planejado e tempo real                       \\
+		Cancelamentos                      & Cirurgias agendadas mas não realizadas                             \\
+		Reintervenções                     & Repetição de procedimentos (retrabalho)                            \\
+		\hline
+	\end{tabular}
+\end{table}
+
+\subsection{Integração com o Pipeline}
+
+Embora independente, o ORECalculator pode ser invocado através da
+fachada \texttt{ProcessMiningPipeline}:
+
+\begin{verbatim}
+# Uso independente
+ore_calc = ORECalculator(daily_hours=11.5, setup_time_minutes=15)
+metrics = ore_calc.calculate_from_log("surgical_log.xes")
+
+# Uso através do pipeline
+pipeline = ProcessMiningPipeline()
+ore_metrics = pipeline.calculate_ore("surgical_log.xes")
+
+# Uso integrado com pipeline completo
+results = pipeline.run_full_pipeline("surgical_log.xes")
+# results['ore_metrics'] contém OREMetrics (se aplicável)
+\end{verbatim}
+
+\subsection{Saída do Componente}
+
+Um objeto \texttt{OREMetrics} contendo:
+\begin{itemize}
+	\item \textbf{Indicadores}: ore, availability, performance, quality (0-1)
+	\item \textbf{Componentes temporais}: TTA, TTS, TTU, TTAV (horas)
+	\item \textbf{Decomposição de perdas}: Dict com 7 categorias (horas)
+	\item \textbf{Estatísticas de cancelamento}: taxa, motivos, contagens
+	\item \textbf{Cobertura de dados}: percentual de eventos com cada
+	      atributo enriquecido
+\end{itemize}
+
+\section{Interfaces de Acesso ao Sistema}
+
+O Sim2Log-Core oferece duas interfaces complementares para diferentes
+perfis de usuários, implementando uma estratégia de
+\textbf{multi-interface} que amplia a acessibilidade do sistema.
+
+\subsection{Interface Programática (API Python)}
+
+\subsubsection{Público-Alvo}
+
+Pesquisadores, cientistas de dados e desenvolvedores que necessitam
+integrar o sistema em scripts, notebooks Jupyter ou pipelines de
+análise automatizados.
+
+\subsubsection{Características}
+
+\textbf{Alto nível (via Facade)}:
+\begin{verbatim}
+from pipeline import ProcessMiningPipeline, quick_analysis
+
+# Uso simplificado
+results = quick_analysis("log.xes")
+
+# Uso com controle
+pipeline = ProcessMiningPipeline(verbose=True)
+profile = pipeline.analyze_log("log.xes")
+model = pipeline.mine_process("log.xes", variant_filter=0.8)
+sim_result = pipeline.simulate(model, num_cases=100)
+validation = pipeline.validate("original.xes", "synthetic.xes")
+\end{verbatim}
+
+\textbf{Nível de componente (uso independente)}:
+\begin{verbatim}
+from log_analyzer import LogAnalyzer
+from process_mining import ProcessMiner
+from simulation import LogSimulator, SimulationConfig
+
+# Uso granular de componentes individuais
+analyzer = LogAnalyzer()
+profile = analyzer.analyze("log.xes")
+
+miner = ProcessMiner()
+model = miner.mine_process("log.xes")
+
+config = SimulationConfig(num_cases=200, random_seed=123)
+simulator = LogSimulator(config)
+result = simulator.simulate(model)
+\end{verbatim}
+
+\subsubsection{Vantagens}
+
+\begin{itemize}
+	\item \textbf{Automação}: Processamento em lote de múltiplos logs
+	\item \textbf{Integração}: Incorporação em workflows existentes
+	\item \textbf{Flexibilidade}: Acesso granular a componentes individuais
+	\item \textbf{Reprodutibilidade}: Scripts versionados garantem
+	      replicação exata
+	\item \textbf{Programabilidade}: Controle total via código Python
+\end{itemize}
+
+\subsection{Interface Web Interativa (Streamlit Dashboard)}
+
+\subsubsection{Público-Alvo}
+
+Analistas de negócios, profissionais de saúde, gestores hospitalares e
+usuários sem conhecimento de programação que necessitam de análise
+exploratória e validação de processos.
+
+\subsubsection{Funcionalidades}
+
+\begin{enumerate}
+	\item \textbf{Upload de Arquivos}: Drag-and-drop de arquivos XES
+	\item \textbf{Execução Dual-Mode}:
+	      \begin{itemize}
+		      \item \textit{Run Everything}: Pipeline completo com um clique
+		      \item \textit{Step-by-Step}: Controle individual de cada etapa
+	      \end{itemize}
+	\item \textbf{Visualizações Interativas}:
+	      \begin{itemize}
+		      \item Diagrama da Rede de Petri (via Graphviz)
+		      \item Gráficos de barras de frequência de atividades
+		      \item Distribuição de variantes do processo
+		      \item Comparação visual de métricas de qualidade
+	      \end{itemize}
+	\item \textbf{Download de Resultados}:
+	      \begin{itemize}
+		      \item Logs sintéticos (XES e CSV)
+		      \item Modelo de processo (PNML)
+		      \item Relatórios de validação (JSON)
+		      \item Métricas ORE (JSON)
+	      \end{itemize}
+	\item \textbf{Feedback em Tempo Real}: Barras de progresso e mensagens
+	      de status
+	\item \textbf{Tratamento de Erros}: Mensagens descritivas para
+	      problemas comuns
+\end{enumerate}
+
+\subsubsection{Implementação Técnica}
+
+A interface é implementada usando Streamlit 1.28.0, que permite criar
+aplicações web interativas usando apenas Python, sem necessidade de
+conhecimento de HTML, CSS ou JavaScript. A comunicação com o backend
+ocorre através da instância \texttt{ProcessMiningPipeline}, mantendo a
+separação entre interface e lógica de negócio.
+
+\textbf{Execução}:
+\begin{verbatim}
+streamlit run app/app.py
+# Acesso em http://localhost:8501
+\end{verbatim}
+
+\subsubsection{Vantagens}
+
+\begin{itemize}
+	\item \textbf{Acessibilidade}: Usuários não-técnicos podem utilizar o sistema
+	\item \textbf{Exploração Interativa}: Ajuste de parâmetros em tempo real
+	\item \textbf{Visualização Imediata}: Resultados apresentados graficamente
+	\item \textbf{Sem Instalação Cliente}: Acesso via navegador web
+	\item \textbf{Compartilhamento Fácil}: Interface pode ser hospedada e compartilhada
+\end{itemize}
+
+\subsection{Comparação entre Interfaces}
+
+\begin{table}[htb]
+	\centering
+	\caption{Comparação entre as interfaces de acesso}
+	\label{tab:interface_comparison}
+	\small
+	\begin{tabular}{p{3cm}p{5cm}p{5cm}}
+		\hline
+		\textbf{Critério}     & \textbf{API Programática}               & \textbf{Interface Web}                    \\
+		\hline
+		Público-alvo          & Pesquisadores, desenvolvedores          & Analistas, gestores                       \\
+		Conhecimento requer.  & Python intermediário                    & Nenhum (uso intuitivo)                    \\
+		Controle              & Total (nível de código)                 & Limitado a parâmetros expostos            \\
+		Automação             & Fácil (scripts, batch)                  & Difícil (interativa)                      \\
+		Visualização          & Requer código adicional                 & Integrada                                 \\
+		Reprodutibilidade     & Excelente (scripts versionados)         & Moderada (config manual)                  \\
+		Curva de aprendizado  & Íngreme                                 & Suave                                     \\
+		Uso típico            & Análise em lote, integração, pesquisa   & Exploração, validação, demonstração       \\
+		\hline
+	\end{tabular}
+\end{table}
 
 \section{Parâmetros e Configurações}
 

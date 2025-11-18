@@ -54,10 +54,257 @@ responsabilidades:
 
 \section{Arquitetura do Sistema}
 
-O sistema foi desenvolvido seguindo uma arquitetura modular que
-separa as responsabilidades entre os diferentes componentes. Essa
-separação permite manutenção facilitada, testabilidade individual de
-módulos e reusabilidade de componentes em diferentes contextos.
+\subsection{Filosofia Arquitetural}
+
+O Sim2Log-Core foi projetado seguindo uma \textbf{arquitetura em
+camadas modular} com clara separação de responsabilidades. Esta
+abordagem arquitetural fundamenta-se em princípios de engenharia de
+software estabelecidos, incluindo Separação de Responsabilidades
+(\textit{Separation of Concerns}), Princípio da Responsabilidade Única
+(\textit{Single Responsibility Principle}) e Inversão de Dependências
+(\textit{Dependency Inversion}). A arquitetura foi estruturada em cinco
+camadas hierárquicas, conforme ilustrado na
+Figura~\ref{fig:arquitetura_camadas}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{figuras/arquitetura_camadas.png}
+	\caption{Arquitetura em camadas do Sim2Log-Core. Fonte: Autor (2025)}
+	\label{fig:arquitetura_camadas}
+\end{figure}
+
+\subsubsection{Camada 1: Interface de Usuário}
+
+Esta camada fornece o ponto de acesso para usuários finais através de
+um dashboard web interativo implementado com Streamlit. A interface
+permite operações de upload, configuração, execução e visualização de
+resultados sem necessidade de programação.
+
+\subsubsection{Camada 2: Fachada}
+
+Implementa o padrão de projeto Facade através da classe
+\texttt{ProcessMiningPipeline}, que fornece uma interface simplificada
+e unificada para o subsistema complexo. Esta camada oculta a
+complexidade da coordenação entre os cinco componentes independentes,
+oferecendo métodos de alto nível como \texttt{run\_full\_pipeline()} e
+\texttt{quick\_analysis()}.
+
+\subsubsection{Camada 3: Componentes}
+
+Cada componente é uma unidade independente e testável que implementa
+uma responsabilidade específica do sistema. Esta arquitetura baseada em
+componentes permite:
+
+\begin{itemize}
+	\item \textbf{Modularidade}: componentes podem ser usados independentemente
+	\item \textbf{Testabilidade}: cada componente possui testes isolados
+	\item \textbf{Manutenibilidade}: mudanças em um componente não afetam outros
+	\item \textbf{Extensibilidade}: novos componentes podem ser adicionados sem modificar existentes
+\end{itemize}
+
+\subsubsection{Camada 4: Modelos de Dados}
+
+Define estruturas de dados fortemente tipadas usando Python dataclasses,
+garantindo type safety e auto-documentação. Estas classes servem como
+contratos de interface entre os componentes.
+
+\subsubsection{Camada 5: Infraestrutura}
+
+Bibliotecas de terceiros que fornecem funcionalidades fundamentais de
+mineração de processos, simulação, análise estatística e manipulação de
+dados.
+
+\subsection{Padrões de Projeto Utilizados}
+
+\subsubsection{Padrão Facade (Fachada)}
+
+A classe \texttt{ProcessMiningPipeline} implementa o padrão Facade
+\cite{gamma1994design}, fornecendo uma interface unificada e
+simplificada para o subsistema complexo de cinco componentes
+independentes.
+
+\textbf{Problema}: A utilização direta dos componentes individuais
+requer conhecimento detalhado de suas interfaces, dependências e ordem
+de execução, aumentando a complexidade para o usuário.
+
+\textbf{Solução}: O facade encapsula a complexidade da orquestração,
+oferecendo métodos simples:
+
+\begin{verbatim}
+# Interface simplificada
+pipeline = ProcessMiningPipeline()
+results = pipeline.run_full_pipeline("log.xes")
+
+# Em vez de:
+# analyzer = LogAnalyzer()
+# profile = analyzer.analyze("log.xes")
+# miner = ProcessMiner()
+# model = miner.mine_process("log.xes")
+# simulator = LogSimulator(config)
+# result = simulator.simulate(model)
+# validator = LogValidator()
+# validation = validator.validate("original.xes", "synthetic.xes")
+\end{verbatim}
+
+\textbf{Benefícios}:
+\begin{itemize}
+	\item Redução da complexidade para o código cliente
+	\item Desacoplamento entre cliente e implementação interna
+	\item Facilita a orquestração do workflow completo
+	\item Permite evolução interna sem quebrar código cliente
+\end{itemize}
+
+\subsubsection{Arquitetura Baseada em Componentes}
+
+Cada componente (\texttt{LogAnalyzer}, \texttt{ProcessMiner},
+\texttt{LogSimulator}, \texttt{LogValidator}, \texttt{ORECalculator}) é
+projetado para ser independente e reutilizável:
+
+\begin{verbatim}
+# Cada componente pode ser usado isoladamente
+analyzer = LogAnalyzer()
+profile = analyzer.analyze("log.xes")
+
+miner = ProcessMiner()
+model = miner.mine_process("log.xes")
+
+simulator = LogSimulator(config)
+result = simulator.simulate(model)
+\end{verbatim}
+
+\textbf{Benefícios}:
+\begin{itemize}
+	\item Modularidade e coesão alta
+	\item Acoplamento baixo entre componentes
+	\item Testabilidade independente
+	\item Facilita manutenção e evolução
+\end{itemize}
+
+\subsubsection{Data Classes para Type Safety}
+
+O sistema utiliza Python dataclasses com type hints para garantir
+segurança de tipos e auto-documentação:
+
+\begin{verbatim}
+@dataclass
+class ProcessModel:
+    petri_net: object
+    initial_marking: object
+    final_marking: object
+    activities: Dict[str, ActivityStatistics]
+    arrival_rate: float
+    median_case_duration: float
+    quality_metrics: Dict[str, float]
+\end{verbatim}
+
+\textbf{Benefícios}:
+\begin{itemize}
+	\item Type hints para suporte de IDEs
+	\item Código auto-documentado
+	\item Validação em tempo de desenvolvimento
+	\item Serialização facilitada
+\end{itemize}
+
+\subsubsection{Padrão Strategy para Ajuste de Distribuições}
+
+O ajuste de distribuições estatísticas implementa o padrão Strategy,
+testando múltiplas estratégias (Normal, Log-Normal, Exponencial) e
+selecionando a melhor através do teste de Kolmogorov-Smirnov:
+
+\begin{verbatim}
+# Tenta Normal → Log-Normal → Exponencial
+# Seleciona melhor via teste KS (maior p-valor)
+best_fit = fitter.fit(durations)
+\end{verbatim}
+
+\subsection{Arquitetura de Classes}
+
+O sistema é composto por 12 classes principais organizadas em três
+grupos: (1) a classe orquestradora ProcessMiningPipeline, (2) cinco
+componentes de serviço independentes, e (3) sete classes de modelos de
+dados. A Figura~\ref{fig:class_overview} apresenta uma visão geral
+simplificada das classes e seus relacionamentos.
+
+\begin{figure}[H]
+	\centering
+	% TODO: Inserir diagrama overview da arquitetura de classes
+	% \includegraphics[width=0.7\textwidth]{figuras/class_overview.png}
+	\caption{Visão geral da arquitetura de classes do Sim2Log-Core. Fonte: Autor (2025)}
+	\label{fig:class_overview}
+\end{figure}
+
+\subsubsection{Classe Orquestradora: ProcessMiningPipeline}
+
+A classe ProcessMiningPipeline implementa o padrão Facade, fornecendo
+uma interface unificada para todo o sistema. A
+Figura~\ref{fig:class_pipeline} detalha seus atributos e métodos.
+
+\begin{figure}[H]
+	\centering
+	% TODO: Inserir diagrama detalhado do ProcessMiningPipeline
+	\includegraphics[width=0.7\textwidth]{figuras/class_pipeline.png}
+	\caption{Classe ProcessMiningPipeline com atributos e métodos detalhados. Fonte: Autor (2025)}
+	\label{fig:class_pipeline}
+\end{figure}
+
+\subsubsection{Componentes de Serviço}
+
+Os cinco componentes principais (LogAnalyzer, ProcessMiner,
+LogSimulator, LogValidator, ORECalculator) são classes independentes,
+cada uma responsável por uma etapa específica do processamento. A
+Figura~\ref{fig:class_components} apresenta a estrutura detalhada de
+cada componente.
+
+\begin{figure}[H]
+	\centering
+	% TODO: Inserir diagrama detalhado dos componentes
+	\includegraphics[width=0.6\textwidth]{figuras/class_components.png}
+	\caption{Classes de componentes com métodos principais e LOC. Fonte: Autor (2025)}
+	\label{fig:class_components}
+\end{figure}
+
+\subsubsection{Modelos de Dados}
+
+As sete dataclasses (LogProfile, ProcessModel, ActivityStatistics,
+SimulationConfig, SimulationResult, ValidationResult, OREMetrics)
+definem estruturas de dados fortemente tipadas que fluem entre os
+componentes. A Figura~\ref{fig:class_models} detalha a estrutura de
+cada modelo.
+
+\begin{figure}[H]
+	\centering
+	% TODO: Inserir diagrama detalhado dos modelos de dados
+	\includegraphics[width=0.7\textwidth]{figuras/class_models.png}
+	\caption{Classes de modelos de dados com atributos principais. Fonte: Autor (2025)}
+	\label{fig:class_models}
+\end{figure}
+
+\subsection{Princípios de Design Seguidos}
+
+O desenvolvimento do Sim2Log-Core fundamentou-se em princípios
+estabelecidos de engenharia de software:
+
+\begin{table}[htb]
+	\centering
+	\caption{Princípios de design aplicados no sistema}
+	\label{tab:design_principles}
+	\begin{tabular}{p{4cm}p{8cm}}
+		\hline
+		\textbf{Princípio}                             & \textbf{Implementação no Sistema}                                                                           \\
+		\hline
+		\textbf{Separação de Responsabilidades}        & Cada módulo tem responsabilidade única e bem definida                                                       \\
+		\textbf{DRY (Don't Repeat Yourself)}           & Funções comuns centralizadas no módulo utils.py                                                             \\
+		\textbf{Aberto/Fechado}                        & Fácil extensão sem modificar código existente (novos componentes podem ser adicionados)                     \\
+		\textbf{Inversão de Dependências}              & Componentes dependem de abstrações (dataclasses) não de implementações concretas                            \\
+		\textbf{SOLID}                                 & Responsabilidade única, injeção de dependências, segregação de interfaces                                  \\
+		\textbf{Fail-Fast}                             & Validações no início de cada método, lançamento de exceções descritivas                                     \\
+		\textbf{Composition over Inheritance}          & Pipeline compõe componentes em vez de herança                                                               \\
+		\textbf{Single Source of Truth}                & models.py define estruturas de dados usadas por todos                                                       \\
+		\textbf{Reproducibility}                       & Seed fixo, versionamento de dependências, logging completo                                                  \\
+		\textbf{Graceful Degradation}                  & Sistema funciona mesmo com dados parciais (ex: recursos opcionais, atributos enriquecidos opcionais)        \\
+		\hline
+	\end{tabular}
+\end{table}
 
 \section{Implementação dos Componentes Principais}
 
