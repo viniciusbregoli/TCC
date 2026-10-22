@@ -1,154 +1,40 @@
-# TCC - LaTeX Project
+# Simulation model generator for short-term decision making using process mining
 
-Template LaTeX para TCC seguindo normas ABNT usando abnTeX2.
+LaTeX source of my undergraduate thesis (TCC) in Computer Engineering at PUCPR, Curitiba, 2025, advised by Prof. Dr. Edson Emílio Scalabrin. The thesis is written in Portuguese: *Desenvolvimento de gerador de modelos de simulação para tomada de decisão no curto prazo usando process mining*.
 
-## 📁 Estrutura do Projeto
+**[Read the PDF](tcc.pdf)** · Code: [Sim2Log-core](https://github.com/viniciusbregoli/Sim2Log-core)
 
-```
-TCC/
-├── tcc.tex              # Documento principal
-├── referencias.bib      # Bibliografia (adicione suas referências aqui)
-├── tcc.pdf             # PDF gerado (atualiza automaticamente)
-├── compile.sh          # Script de compilação completa
-├── format.sh           # Script de formatação do código
-├── pdfs/               # PDFs de referência
-└── .vscode/            # Configurações do editor
-```
+## Summary
 
-## 🚀 Como Usar
+Building a simulation model of a process by hand takes time and expertise. This work generates one automatically from an event log (XES), so a manager can test short-term alternatives, such as surgical center scheduling, without modelling the process first.
 
-### Método 1: Auto-compilação (Recomendado)
+The prototype, a Streamlit web app, does five things:
 
-Se você tem o **LaTeX Workshop** instalado no Cursor/VS Code:
+- **Log analysis:** profiles the input log (cases, activities, variants, durations).
+- **Process mining:** discovers the process model (Petri net and process tree) with the Inductive Miner.
+- **Simulation:** runs a discrete-event simulation of the discovered model and writes a synthetic log.
+- **Validation:** compares the original and synthetic logs (variants, activity and duration distributions, Kolmogorov-Smirnov tests).
+- **ORE indicators:** computes Operating Room Effectiveness metrics.
 
-1. Abra `tcc.tex`
-2. Pressione `Ctrl+S` para salvar
-3. ✨ **Pronto!** O arquivo será formatado E compilado automaticamente
+It was validated with real surgical scheduling data from a surgical center.
 
-### Método 2: Scripts manuais
+![Layered architecture: Streamlit UI, a pipeline facade, five services (LogAnalyzer, ProcessMiner, LogSimulator, LogValidator, ORECalculator), data models, and PM4Py, SimPy, Pandas and SciPy underneath](figuras/arquitetura_camadas.png)
 
-```bash
-# Formatar código LaTeX
-./format.sh
+**Stack:** Python, PM4Py, SimPy, Pandas, SciPy, Streamlit. The thesis uses abnTeX2 for the Brazilian ABNT format.
 
-# Compilar PDF
-./compile.sh
+## Build
 
-# Ambos
-./format.sh && ./compile.sh
+Needs a TeX distribution with abnTeX2 (TeX Live or MacTeX).
+
+```sh
+./compile.sh   # pdflatex, bibtex, then two more pdflatex passes; writes tcc.pdf
 ```
 
-### Método 3: Watch mode (auto-compila ao salvar)
-
-```bash
-latexmk -pdf -pvc tcc.tex
-```
-
-## ✅ Formatação ABNT Automática
-
-- ✅ Margens: 3cm (esquerda/superior), 2cm (direita/inferior)
-- ✅ Fonte: Times New Roman 12pt
-- ✅ Espaçamento: 1,5 linhas
-- ✅ Parágrafo: Recuo de 1,3cm
-- ✅ Citações e referências: Padrão ABNT
-- ✅ Sumário, listas e numeração: Automáticos
-
-## 📝 Editando seu TCC
-
-1. **Informações básicas** (linhas 44-56 de `tcc.tex`):
-   - Título, autor, orientador, instituição, ano
-
-2. **Resumo** (linhas 167-171):
-   - Escreva seu resumo e palavras-chave
-
-3. **Abstract** (linhas 174-183):
-   - Versão em inglês do resumo
-
-4. **Conteúdo** (linhas 214+):
-   - Edite os capítulos: Introdução, Referencial Teórico, Metodologia, etc.
-
-5. **Referências** (arquivo `referencias.bib`):
-   - Adicione suas referências bibliográficas no formato BibTeX
-
-## 🎯 Elementos do Template
-
-### Pré-textuais
-- Capa
-- Folha de rosto
-- Resumo (português)
-- Abstract (inglês)
-- Lista de figuras
-- Lista de tabelas
-- Sumário
-
-### Textuais
-- Introdução
-- Referencial Teórico
-- Metodologia
-- Desenvolvimento
-- Conclusão
-
-### Pós-textuais
-- Referências
-- Apêndices
-- Anexos
-
-## 🔧 Ferramentas Instaladas
-
-- **TeX Live** - Distribuição LaTeX completa
-- **abnTeX2** - Formatação ABNT
-- **latexindent** - Formatador de código
-- **LaTeX Workshop** - Extensão VS Code (opcional mas recomendado)
-
-## 💡 Dicas
-
-- Use `Ctrl+S` para salvar, formatar e compilar automaticamente
-- O formatador quebra linhas automaticamente (1 sentença por linha)
-- Arquivos auxiliares (`.aux`, `.log`, etc.) são limpos automaticamente
-- Para figuras, use formatos PDF, PNG ou JPG
-- Mantenha backup do arquivo `.tex`
-
-## 📚 Referências Bibliográficas
-
-Adicione suas referências no arquivo `referencias.bib` usando formato BibTeX:
-
-```bibtex
-@article{exemplo2023,
-  author = {Sobrenome, Nome},
-  title = {Título do Artigo},
-  journal = {Nome da Revista},
-  year = {2023},
-  volume = {1},
-  pages = {1--10}
-}
-
-@book{exemplo2022,
-  author = {Sobrenome, Nome},
-  title = {Título do Livro},
-  publisher = {Editora},
-  year = {2022},
-  address = {Cidade}
-}
-```
-
-Cite no texto usando: `\cite{exemplo2023}`
-
-## 🐛 Solução de Problemas
-
-**PDF não atualiza:**
-- Certifique-se que LaTeX Workshop está instalado
-- Verifique a aba "Output" > "LaTeX Workshop" para erros
-- Use `./compile.sh` como fallback
-
-**Erros de compilação:**
-- Verifique a sintaxe LaTeX
-- Confira se todas as referências estão corretas
-- Veja o arquivo `.log` para detalhes
-
-**Formatação não funciona:**
-- Execute `./format.sh` manualmente para testar
-- Verifique se `latexindent` está instalado: `latexindent --version`
-
----
-
-**Ambiente pronto! Bom trabalho! 📝🎓**
+| File | Content |
+|---|---|
+| `tcc.tex` | Main document and metadata |
+| `pretextual.tex` | Abstract (Portuguese and English) and front matter |
+| `cap_*.tex` | Chapters: introduction, background, methodology, development, conclusion |
+| `postextual.tex` | Post-textual part: the bibliography |
+| `referencias.bib` | Bibliography entries |
+| `figuras/` | Diagrams and figures |
