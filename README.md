@@ -35,5 +35,6 @@ Needs a TeX distribution with abnTeX2 (TeX Live or MacTeX).
 | `tcc.tex` | Main document and metadata |
 | `pretextual.tex` | Abstract (Portuguese and English) and front matter |
 | `cap_*.tex` | Chapters: introduction, background, methodology, development, conclusion |
-| `referencias.bib` | Bibliography |
+| `postextual.tex` | Post-textual part: the bibliography |
+| `referencias.bib` | Bibliography entries |
 | `figuras/` | Diagrams and figures |
